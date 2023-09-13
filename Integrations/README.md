@@ -1,0 +1,1 @@
+Integrations are anything extending IriusRisk functionality via its APIs. This can include report generation, automated creation or destruction of items, or two-way integrations with third-party tools.

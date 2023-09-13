@@ -1,0 +1,1 @@
+Shape libraries can be imported into a non-iriusrisk draw.io and used to create compatible diagrams, without the need for an OTM parser/import.

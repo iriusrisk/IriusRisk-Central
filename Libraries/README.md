@@ -1,0 +1,1 @@
+Here are libraries of components and risk patterns not contained within IriusRisk directly. They can be manually imported.
