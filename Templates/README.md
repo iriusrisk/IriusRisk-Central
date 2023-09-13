@@ -1,2 +1,1 @@
-Here you'll find various items to aid your IriusRisk journey:
-- 
+Templates are common architectures that can be resused as an IriusRisk project, or be added as a part of a project.
