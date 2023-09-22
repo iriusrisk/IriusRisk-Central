@@ -1,27 +1,26 @@
-import iriusrisk.v1.commandline as _commandline
-import iriusrisk.v1.configfile as _configfile
-from configparser import NoSectionError
 import logging
 import http.client
 import json
 import sys
+
+import iriusrisk.v1.commandline as _commandline
+import iriusrisk.v1.configfile as _configfile
 
 # Automatically loaded and executed when this module is loaded.
 # 
 # This script automatically parses the command line and any configuration files found.
 # It also determines the ultimate URL that will be used for calling IriusRisk.
 
-
 __all__=["config", "log"]
 
-class _Configuration:
+class _configuration:
     key = None
     url = None
     verbose = False
     quiet = False
     dryrun = False
 
-config = _Configuration()
+config = _configuration()
 log = logging.getLogger('iriusrisk.v1')
 _parser = _commandline.get_parser()
 _parsed_args = ()
