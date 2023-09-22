@@ -6,7 +6,7 @@ create more complex scripts that create, call and process API calls.
 Using this shell program provides default command-line and configuration-file
 entries useful for making IriusRisk API calls. Most of the command line 
 arguments provided can be duplicated in configuration files, thereby allowing
-you to providethem in a file once across multiple script calls.
+you to provide them in a file once across multiple script calls.
 
 For further information, clone this subdirectory and execute the main file:
 
