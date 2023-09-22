@@ -12,14 +12,12 @@ For further information, clone this subdirectory and execute the main file:
 
     python3 main.py
 
-<<<<<<< HEAD
-This describes in greater detail how to call the program shell. Also see comments
-in the main.py file for an example of how to use it.
+This describes in greater detail how to call the program shell. 
 
 ### TODO
 * Need to look for ini files in multiple locations
 * Need to add a toolkit to ease HTTP calls
-=======
+
 This will describe in detail how to call the program shell.
 
 ## Usage example
