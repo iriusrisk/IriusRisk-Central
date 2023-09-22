@@ -38,4 +38,3 @@ This will describe in detail how to call the program shell.
         python3 main.py --key {valid API key} --subdomain {SaaS sub-domain}
 
 This will list out the names of all the projects in the specified IriusRisk instance, available to the user of the API key.
->>>>>>> a4b4cc9 (refinements, including adding first facade methods)
