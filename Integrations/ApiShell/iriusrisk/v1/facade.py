@@ -37,4 +37,4 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True):
     return (resp, result)
 
 def do_get(path, headers={}, params={}, convert_response=True):
-    pass
+    return call_endpoint(path, "GET", headers, params, convert_response)

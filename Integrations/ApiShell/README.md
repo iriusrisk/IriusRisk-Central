@@ -24,9 +24,9 @@ This will describe in detail how to call the program shell.
 * clone or branch this repository
 * Edit the main.py file, appending the following lines to it:
 
-        from iriusrisk.v1.facade import call_endpoint
+        from iriusrisk.v1.facade import do_get
 
-        (resp, json) = call_endpoint("products", "GET")
+        (resp, json) = do_get("products")
         for i in json:
             print(i["name"])
 
