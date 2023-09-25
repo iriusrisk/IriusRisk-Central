@@ -19,11 +19,15 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True):
     path = f"/api/v1/{path}"
     log.debug("Making a {verb} call to {path} at {config.url}")
     conn = http.client.HTTPSConnection(config.url)
-    conn.request(verb, path, params, headers)
-    resp = conn.getresponse()
+
+    if config.dryrun:
+        resp = None
+    else :
+        conn.request(verb, path, params, headers)
+        resp = conn.getresponse()
 
     result = None
-    if convert_response:
+    if convert_response and not config.dryrun:
         data = resp.read().decode("utf-8")
         if resp.status == 200 and headers["accept"] == "application/json":
             result = json.loads(data)
@@ -31,3 +35,6 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True):
             result = data
 
     return (resp, result)
+
+def do_get(path, headers={}, params={}, convert_response=True):
+    pass
