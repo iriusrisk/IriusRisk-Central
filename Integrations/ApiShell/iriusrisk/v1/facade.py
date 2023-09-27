@@ -13,12 +13,13 @@ def _build_path(path, encode_path):
             return path
 
     if encode_path:
-        elements = [len(path)]
-        for i in range(len(path)):
-            elements[i] = quote(path[i])
-        
+        elements = []
+
+        for element in path:
+            elements.append(quote(element))
+
         path = elements
-    
+
     return "/".join(path)
 
 def call_endpoint(path, verb, headers={}, params={}, convert_response=True, encode_path=False):
@@ -55,4 +56,4 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True, enco
     return (resp, result)
 
 def do_get(path, headers={}, params={}, convert_response=True, encode_path=False):
-    return call_endpoint(path, "GET", headers, params, convert_response)
+    return call_endpoint(path, "GET", headers, params, convert_response, encode_path)
