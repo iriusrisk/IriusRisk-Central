@@ -1,10 +1,28 @@
 import http.client
 import json
+from urllib.parse import quote
 from iriusrisk.v1 import *
 
 # Provides helper methods that make accessing the IriusRisk v1 API easier.
 
-def call_endpoint(path, verb, headers={}, params={}, convert_response=True):
+def _build_path(path, encode_path):
+    if type(path) is str:
+        if encode_path:
+            path = path.split("/")
+        else:
+            return path
+
+    if encode_path:
+        elements = [len(path)]
+        for i in range(len(path)):
+            elements[i] = quote(path[i])
+        
+        path = elements
+    
+    return "/".join(path)
+
+def call_endpoint(path, verb, headers={}, params={}, convert_response=True, encode_path=False):
+    path = _build_path(path, encode_path)
     log.info(f"Calling endpoint {path} with verb {verb}")
 
     if not "api-token" in headers:
@@ -36,5 +54,5 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True):
 
     return (resp, result)
 
-def do_get(path, headers={}, params={}, convert_response=True):
+def do_get(path, headers={}, params={}, convert_response=True, encode_path=False):
     return call_endpoint(path, "GET", headers, params, convert_response)
