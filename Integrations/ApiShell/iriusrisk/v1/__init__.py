@@ -24,7 +24,6 @@ config = _configuration()
 _log = logging.getLogger('iriusrisk.v1')
 _parser = _commandline.get_parser()
 _parsed_args = ()
-_raw_config = _configfile.parse_config()
 
 def _get_item(value, key, default_value=None):
     if value:
@@ -71,19 +70,15 @@ def check_url(url):
         conn.request("GET", "/health", None, headers)
         resp = conn.getresponse()
         if resp.status != 200:
-            _log.error("Call to {url} returned status of {resp.status} ({resp.reason}); program will exit")
+            _log.error(f"Call to {url} returned status of {resp.status} ({resp.reason}); program will exit")
             exit(-1)
 
         data = resp.read().decode("utf-8")
         json_obj = json.loads(data)
-        _log.debug("Successfully checked health of {url} (server: {json_obj['company']})")
+        _log.debug(f"Successfully checked health of {url} (server: {json_obj['company']})")
 
 ### Start reading the config files and command line args
 _parser = _commandline.get_parser()
-
-if not len(sys.argv) > 1 and not _raw_config:
-    _parser.print_help()
-    exit(-1)
 
 _parsed_args = _parser.parse_args()
 
@@ -93,6 +88,12 @@ if _parsed_args.verbose:
 elif _parsed_args.quiet:
     config.quiet = True
     logging.basicConfig(level=logging.ERROR)
+
+_raw_config = _configfile.parse_config()
+
+if not len(sys.argv) > 1 and not _raw_config:
+    _parser.print_help()
+    exit(-1)
 
 if not _raw_config:
     _log.info("No configuration file (iriusrisk.ini) found in any of the locations.")

@@ -38,7 +38,7 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True, enco
         headers["accept"] = "application/json"
 
     path = f"/api/v1/{path}"
-    _log.debug("Making a {verb} call to {path} at {config.url}")
+    _log.debug(f"Making a {verb} call to {path} at {config.url}")
     conn = http.client.HTTPSConnection(config.url)
 
     if config.dryrun:
