@@ -8,21 +8,19 @@ import platform
 # 
 # Provides hierarchical searching and loading of configuration files.
 #
-# TODO Currently only finds config file in the current working directory. Need
-# to add the user data directory and global data directory, in a cross-platform manner.
-#
 # See https://docs.python.org/3/library/configparser.html
 
 # Mac:
 #   - User: $HOME/.iriusrisk/iriusrisk.ini
-#   - Global: ??? /usr/Shared/.iriusrisk/iriusrisk.ini
+#   - Global: /usr/Shared/.iriusrisk/iriusrisk.ini
 #
 # Win:
 #   - User: %LocalAppDataFolder%/.iriusrisk/iriusrisk.ini
 #   - Global: %AppDataFolder%/.iriusrisk/iriusrisk.ini
 # 
 # Linux:
-#   - User:
+#   - User: $HOME/.iriusrisk/iriusrisk.ini
+#   - Global: /etc/.iriusrisk/iriusrisk.ini
 
 _log = logging.getLogger("iriusrisk.v1")
 
