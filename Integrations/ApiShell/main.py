@@ -1,4 +1,5 @@
 from iriusrisk.v1 import *
+import logging
 
 # This import does a few things automatically:
 #    * it parses the command line
@@ -8,4 +9,4 @@ from iriusrisk.v1 import *
 #
 # For further information to the possible parameters, execute this file with the --help parameter
 
-log.warning(f"Accessing IriusRisk via the URL {config.url}")
+logging.getLogger(__name__).warning(f"Accessing IriusRisk via the URL {config.url}")
