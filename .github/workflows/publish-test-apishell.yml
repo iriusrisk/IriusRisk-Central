@@ -6,11 +6,11 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Upload Python Package to PyPi
+name: Upload Python Package to Test PyPi
 
 on:
   release:
-    types: [published]
+    types: [prepublished]
 
 permissions:
   contents: read
@@ -40,14 +40,15 @@ jobs:
         name: python-package-distributions
         path: dist/
 
-  publish-to-pypi:
-    name: Publish Python distro to PyPi
+  publish-to-testpypi:
+    name: Publish Python distro to TestPyPi
     needs:
     - build
     runs-on: ubuntu-latest
 
     environment:
-      name: pypi
+      name: testpypi
+      url: https://test.pypi.org/project/iriusrisk-apishell-v1/
 
     permissions:
       id-token: write
@@ -58,5 +59,7 @@ jobs:
       with:
         name: python-package-distributions
         path: dist/
-    - name: Publish distribution to PyPi
+    - name: Publish distribution to TestPyPi
       uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
