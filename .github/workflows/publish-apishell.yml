@@ -49,6 +49,8 @@ jobs:
     environment:
       name: testpypi
       url: https://test.pypi.org/project/iriusrisk-apishell-v1/
+    permissions:
+      id-token: write
 
     steps:
     - name: Download all the dists
@@ -60,5 +62,4 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
+
