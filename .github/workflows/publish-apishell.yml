@@ -33,12 +33,12 @@ jobs:
         build
         --user
     - name: Build a binary wheel and source tarball
-      run: python3 -m build Integrations/ApiShell/
+      run: python3 -m build Integrations/ApiShell/ -outdir dist/
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
-        path: Integrations/ApiShell/dist/
+        path: dist/
 
   publish-to-testpypi:
     name: Publish Python distro to TestPyPi
@@ -55,7 +55,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: python-package-distributions
-        path: Integrations/ApiShell/dist/
+        path: dist/
     - name: Publish distribution to TestPyPi
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
