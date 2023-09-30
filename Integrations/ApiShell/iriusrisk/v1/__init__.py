@@ -1,3 +1,29 @@
+"""This module provides helper methods for accessing IriusRisk API version v1.
+It automatically parses the command line and searches for configuration files.
+Call --help on the command line to get detailed information regarding which
+config attributes are expected on the comand line and in the configuration
+files, as well as other details regarding configuration prioritization.
+
+Besides initial configuration, this module contains the sub-module "facade,"
+which itself provides helper methods for calling the IriusRisk API.
+
+The configuration values are contained in an object named "config," which is
+imported by default. All configuration items are attributes of that object 
+and reflect the name of the attribute as defined. So for instance, typical
+attributes are as follows:
+
+config:
+    url     : the URL, calculated or defined, to the IriusRisk instance
+    key     : the API key required to access the instance
+    dryrun  : whether actual remote calls should be made or not
+    verbose : whether verbose output should be included
+    quiet   : whether output should only be minimal or not
+
+There may be other attributes, as well. For instance, while subdomain is a
+valid application parameter, it is not a required one. It will only be an 
+attribute of config if it is actually passed, either as an applicaiton 
+parameter or within a configuration file.
+"""
 import logging
 import http.client
 import json
