@@ -33,12 +33,20 @@ jobs:
         build
         --user
     - name: Build a binary wheel and source tarball
+<<<<<<< HEAD
       run: python3 -m build Integrations/ApiShell/
+=======
+      run: python3 -m build Integrations/ApiShell/ --outdir dist
+>>>>>>> 8f94485ebbeeef645b53c754bfbe00d55378e2f7
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
+<<<<<<< HEAD
         path: Integrations/ApiShell/dist/
+=======
+        path: dist/
+>>>>>>> 8f94485ebbeeef645b53c754bfbe00d55378e2f7
 
   publish-to-testpypi:
     name: Publish Python distro to TestPyPi
@@ -55,10 +63,18 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: python-package-distributions
+<<<<<<< HEAD
         path: Integrations/ApiShell/dist/
     - name: Publish distribution to TestPyPi
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/simple/
+=======
+        path: dist/
+    - name: Publish distribution to TestPyPi
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+>>>>>>> 8f94485ebbeeef645b53c754bfbe00d55378e2f7
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
