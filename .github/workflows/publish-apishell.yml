@@ -33,7 +33,7 @@ jobs:
         build
         --user
     - name: Build a binary wheel and source tarball
-      run: python3 -m build Integrations/ApiShell/ -outdir dist/
+      run: python3 -m build Integrations/ApiShell/ --outdir dist
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
       with:
