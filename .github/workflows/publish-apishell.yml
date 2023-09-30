@@ -49,6 +49,7 @@ jobs:
     environment:
       name: testpypi
       url: https://test.pypi.org/project/iriusrisk-apishell-v1/
+
     permissions:
       id-token: write
 
@@ -62,4 +63,3 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
-
