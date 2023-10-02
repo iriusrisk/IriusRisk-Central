@@ -42,7 +42,7 @@ jobs:
 
   publish-to-pypi:
     name: Publish Python distro to PyPi
-    if: (!contains(github.ref, 'refs/tags/*-test'))
+    if: ${{ (!contains(github.ref, '-test')) }}
     needs:
     - build
     runs-on: ubuntu-latest
@@ -64,7 +64,7 @@ jobs:
 
   publish-to-testpypi:
     name: Publish Python distro to TestPyPi
-    if: contains(github.ref, 'refs/tags/*-test')
+    if: ${{ contains(github.ref, '-test') }}
     needs:
     - build
     runs-on: ubuntu-latest
