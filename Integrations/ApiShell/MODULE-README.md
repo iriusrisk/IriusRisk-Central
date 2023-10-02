@@ -27,7 +27,6 @@ This describes in greater detail how to call the program shell.
 
 * Call the program from the command line:
 
-        cd ./IriusRisk-Central/Integrations/ApiShell/
         python3 main.py --key {valid API key} --subdomain {SaaS sub-domain}
 
 This will list out the names of all the projects in the specified IriusRisk
