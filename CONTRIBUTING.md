@@ -19,7 +19,7 @@ While we often spend a lot of time working on our time-savers, we typically tend
 
 Unfortunately, others don't have our insights into what we're doing, so may not see the purpose, let alone udnerstand the details. For this reason, it's important to carefully document everything we're providing to the community.
 
-This takes different forms for the different artifacts. For external scripts (found in [Integrations](Integrations/README.md)), sound commenting according to the script language in question should suffice. For [Templates](Templates/README.md), typically a short description should suffice. Shapes are similar--just mentioning what they are and when to use them is typically enough.
+This takes different forms for the different artifacts. For external scripts (found in [Integrations](Integrations/README.md)), sound commenting according to the script language in question should suffice. For [Templates](Templates/README.md), typically a short description should suffice. [Shapes](Shapes/README.md) are similar--just mentioning what they are and when to use them is typically enough.
 
 For [Libraries](Libraries/README.md), especially complex ones, it might be advisable to include a more detailed description. This should include:
 * What the library covers
