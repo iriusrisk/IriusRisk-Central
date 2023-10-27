@@ -11,6 +11,8 @@ Contributing to the library can be done via the standard pull-request method. He
 * Commit those changes to your fork and push them to GitHub
 * Create a pull-request against the IriusRisk-Central repository (**main** branch)
 
+[CLICK HERE for detailed directions!](STEP-BY-STEP.md)
+
 Please don't hesitate to reach out if you have any questions about this process.
 
 ### Documentation
