@@ -27,3 +27,4 @@ Templates are common architectures that can be resused as an IriusRisk project, 
 * simple-3-tier-web-application.xml
 * simple-web-app.xml
 * st-generator-form-template.xml
+* sap-hana-on-gcp.xml
