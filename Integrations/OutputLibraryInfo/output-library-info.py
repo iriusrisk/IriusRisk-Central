@@ -9,7 +9,7 @@
 #   Components: Contains all components
 #      Cols: component name, comp ref, library ref, risk pattern, countermeasure name
 #
-# Note: this library uses two modules from PyPy, XlsxWriter and iriusrisk_apishell_v1.
+# Note: this library uses two modules from PyPi, XlsxWriter and iriusrisk_apishell_v1.
 # The IriusRisk library automatically parses the command line, and looks for 
 # initialization files in the local file system. From these, it determines the API key 
 # and the instance URL. For more information, call:
