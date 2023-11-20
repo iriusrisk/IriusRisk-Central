@@ -21,6 +21,7 @@ This script is designed to associate countermeasures with standards in a CMS (Co
 Create a file named `standards_to_cms.txt` with the following format:
 
    countermeasure1, standard_ref1, reference1
+
    countermeasure2, standard_ref2, reference2
 
    Replace `countermeasure1` (this is a ref ID for the countermeasure), `standard_ref1`, `reference1`, etc., with your actual data.
