@@ -1,4 +1,4 @@
-# Countermeasure to CMS Association Script
+# Associated Standards to Countermeasures Script
 
 This script is designed to associate countermeasures with standards in a CMS (Content Management System) using an API. It reads input data from a file (`standards_to_cms.txt`) and makes API requests to associate each countermeasure with the specified standard and reference.
 
