@@ -36,7 +36,3 @@ Create a file named `standards_to_cms.txt` with the following format:
 - The script uses the Requests library to make API requests.
 - Make sure that your API endpoint and authentication details are correctly configured in the script.
 - Check the script's output for any errors or status messages from the API requests.
-
-```
-
-Make sure to replace `script.py` with the actual filename if it's different. Adjust the content based on your specific use case and requirements.
