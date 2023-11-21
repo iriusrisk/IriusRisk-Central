@@ -1,0 +1,4 @@
+requests
+Pandas
+Jinja2
+matplotlib

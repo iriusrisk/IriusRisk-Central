@@ -3,12 +3,14 @@ This project generates a threat report for a product based on its components and
 
 ## Requirements
 * Python 3
+* requests library
 * Pandas library
 * Jinja2 library
 * matplotlib library
 * A **product ID** and **API token** for the product to be analyzed
 
 ## Usage
+1. Install the needed libraries by calling `python3 -m pip install -r requirements.txt`
 1. Set up the `credentials.json` file with the API token
 1. Set up the `tmp_config.json` file with the base url and the product ID for the product to be analyzed
 1. Set up the `tmp_config.json` file with required component tags that you want in the report. Leave required_tags empty if you don't use tags
