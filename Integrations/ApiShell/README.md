@@ -8,9 +8,9 @@ entries useful for making IriusRisk API calls. Most of the command line
 arguments provided can be duplicated in configuration files, thereby allowing
 you to provide them in a file once across multiple script calls.
 
-For further information, clone this subdirectory and execute the main file:
+For further information, clone this subdirectory and execute the following:
 
-    python3 main.py
+    python3 -c 'import iriusrisk.v1' --help
 
 This describes in greater detail how to call the program shell. 
 

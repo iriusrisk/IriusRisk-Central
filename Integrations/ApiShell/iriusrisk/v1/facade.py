@@ -5,7 +5,7 @@ import http.client
 import json
 import logging
 from urllib.parse import quote
-from iriusrisk.v1 import *
+from iriusrisk import config
 
 # Provides helper methods that make accessing the IriusRisk v1 API easier.
 _log = logging.getLogger('iriusrisk.v1')
@@ -42,11 +42,11 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True, enco
     encode_path     : (default: False): whether URL encoding should be applied to the
                       various elements of the path.
 
-    The method returns a tuple containing (in order) the HTTP response, and JSON
-    returned as the body of the response. The second element of the tuple is None
-    if convert_response == False.
-
-    See the Python json module for information regarding the returned JSON object.
+    The method returns a tuple containing the HTTP response and data returned as the body
+    of the response. The type of the data depends on two things. First, if convert_response
+    is False, plain text is returned. Otherwise, it depends on the return type of the 
+    API call. If (for instance) the return type is "application/json," then a json object
+    is returned.
     """
     path = _build_path(path, encode_path)
     _log.info(f"Calling endpoint {path} with verb {verb}")
@@ -80,6 +80,8 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True, enco
 
     return (resp, result)
 
+"""Call the specified endpoint using "GET."
+"""
 def do_get(path, headers={}, params={}, convert_response=True, encode_path=False):
     """Call the indicated endpoint via GET. See call_endpoint for more details."""
     return call_endpoint(path, "GET", headers, params, convert_response, encode_path)
