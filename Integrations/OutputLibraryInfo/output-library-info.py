@@ -16,7 +16,7 @@
 #
 #    python3 -c 'from iriusrisk.v1 import *' --help
 #
-from iriusrisk.v1 import *
+from iriusrisk import config
 from iriusrisk.v1.facade import do_get
 
 import datetime
