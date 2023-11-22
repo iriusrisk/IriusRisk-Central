@@ -57,4 +57,7 @@ So specifying the API key in a config file would look something like this:
     parser.add_argument("-v", "--verbose", help="Output extended log information", action='store_true')
     parser.add_argument("-q", "--quiet", help="Only output log messages indicating errors", action='store_true')
     parser.add_argument("--dryrun", help="Do everything but actual HTTP calls", action='store_true')
+
+    parser.add_argument("-k", "--key", help="API Key to use when accessing the v1 API")
+    # parser.add_argument("-t", "--token", help="OAuth2 Token to use when accessing the v2 API")
     return parser

@@ -7,7 +7,7 @@ includes=["iriusrisk/"]
 
 [project]
 name = "iriusrisk_apishell_v1"
-version = "0.3.1"
+version = "0.3.2"
 authors = [
     { name="Walter Gildersleeve", email="wgildersleeve@iriusrisk.com"},
 ]

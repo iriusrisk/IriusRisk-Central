@@ -18,20 +18,18 @@ import json
 import logging
 import sys
 
-__all__=["config,parse_arguments,get_commandline_parser"]
+__all__=["get_config", "get_commandline_parser", "do_initialization"]
 
-config = None
-parse_args_on_load = True
+_config_holder = [ None ]
 
 _log = logging.getLogger('iriusrisk')
 _parser = iriusrisk.commandline.get_parser()
 
-"""Call this method before loading any sub-modules of iriusrisk. This then 
-prevents the automatic parsing of the configuration files and command line,
-which is normally done following initialization of the sub-modules. 
-"""
-def suppress_parse_args_on_load():
-    parse_args_on_load = False
+def get_config():
+    if not _config_holder[0]:
+        raise Exception("Configuration file not initialized. iriusrisk.parse_arguments() must be called first.")
+    
+    return _config_holder[0]
 
 """This returns the instance of the argparse class used by this method. Use 
 this to add needed command line parameters prior to calling parse_arguments().
@@ -39,12 +37,16 @@ this to add needed command line parameters prior to calling parse_arguments().
 def get_commandline_parser():
     return _parser
 
-"""Parse the command line arguments, and load in any config files. By default,
-this method is called after any sub-module of iriusrisk is initialized.
+"""Parse the command line and load in any initialization files.
 """
-def parse_arguments():
-    global config
+def do_initialization():
+    global _config_holder
+    if _config_holder[0]:
+        _log.info("iriusrisk.parse_arguments() called multiple times")
+        return
+
     config = _parser.parse_args()
+    _config_holder[0] = config
     
     if config.verbose:
         logging.basicConfig(level=logging.DEBUG)
@@ -82,6 +84,7 @@ def parse_arguments():
     _check_url(config.url)
 
 def _get_url(config_file):
+    config = get_config()
     full_url = _get_item(config_file, config.full_url, "full-url", None)
     if full_url:
         _log.info("Using the --full-url option. No URL will be derived from domain or subdomain.")
@@ -116,6 +119,7 @@ def _check_url(url):
         _log.warn("You must supply one of subdomain, domain or url on the command line or in the ini file")
         _log.warn("Get extended help (--help) from the program for more information")
 
+    config = get_config()
     if not config.dryrun:
         _log.info("Making a call to the given URL as a fail-fast test")
         _log.debug("Note that this does not test the security key's validity, but just whether")
