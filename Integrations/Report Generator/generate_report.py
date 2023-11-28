@@ -119,7 +119,7 @@ def generate_table_data(filtered_df):
     return table_data
 
 def render_template_to_file(template_file, output_file, context):
-    env = Environment(loader=FileSystemLoader('.'))
+    env = Environment(autoescape=True,loader=FileSystemLoader('.'))
     env.globals['enumerate'] = enumerate
     template = env.get_template(template_file)
 
