@@ -1,148 +1,91 @@
-"""This module provides helper methods for accessing IriusRisk API version v1.
-It automatically parses the command line and searches for configuration files.
-Call --help on the command line to get detailed information regarding which
-config attributes are expected on the comand line and in the configuration
-files, as well as other details regarding configuration prioritization.
-
-Besides initial configuration, this module contains the sub-module "facade,"
-which itself provides helper methods for calling the IriusRisk API.
-
-The configuration values are contained in an object named "config," which is
-imported by default. All configuration items are attributes of that object 
-and reflect the name of the attribute as defined. So for instance, typical
-attributes are as follows:
-
-config:
-    url     : the URL, calculated or defined, to the IriusRisk instance
-    key     : the API key required to access the instance
-    dryrun  : whether actual remote calls should be made or not
-    verbose : whether verbose output should be included
-    quiet   : whether output should only be minimal or not
-
-There may be other attributes, as well. For instance, while subdomain is a
-valid application parameter, it is not a required one. It will only be an 
-attribute of config if it is actually passed, either as an applicaiton 
-parameter or within a configuration file.
+"""This module contains helper methods for calling the IriusRisk API.
 """
-import logging
+
 import http.client
 import json
-import sys
+import logging
+from urllib.parse import quote
+from iriusrisk import get_config
 
-import iriusrisk.v1.commandline as _commandline
-import iriusrisk.v1.configfile as _configfile
+__all__=["do_get","call_endpoint"]
 
-# Automatically loaded and executed when this module is loaded.
-# 
-# This script automatically parses the command line and any configuration files found.
-# It also determines the ultimate URL that will be used for calling IriusRisk.
-
-__all__=["config"]
-
-class _configuration:
-    key = None
-    url = None
-    verbose = False
-    quiet = False
-    dryrun = False
-
-config = _configuration()
+# Provides helper methods that make accessing the IriusRisk v1 API easier.
 _log = logging.getLogger('iriusrisk.v1')
-_parser = _commandline.get_parser()
-_parsed_args = ()
 
-def _get_item(value, key, default_value=None):
-    if value:
-        _log.debug(f"Found {key} on the command line. Will take precedence over config file")
-        return value
-    
-    if key in _raw_config["DEFAULT"]:
-        _log.debug(f"Found {key} in a configuration file but not on the command line.")
-        return _raw_config["DEFAULT"][key]
-    
-    _log.debug(f"Item {key} not found in configuration file or on the command line.")
-    return default_value
+def _build_path(path, encode_path):
+    if type(path) is str:
+        if encode_path:
+            path = path.split("/")
+        else:
+            return path
 
-def get_url():
-    port = _get_item(_parsed_args.port, "port", "443")
-    url = _get_item(_parsed_args.url, "url")
-    if url:
-        _log.info("Using the --url option. No URL will be derived from domain or subdomain.")
-        return url
-    
-    subdomain = _get_item(_parsed_args.subdomain, "subdomain")
-    if subdomain:
-        _log.info("Using the --subdomain option. URL will be derived by appending .iriusrisk.com (SaaS instance).")
-        return f"{subdomain}.iriusrisk.com:{port}"
-    
-    domain = _get_item(_parsed_args.domain, "domain")
+    if encode_path:
+        elements = []
 
-    if domain:
-        _log.info("Using the --domain option. Protocol assumed to be HTTPS")
-        return "{domain}:{port}"
+        for element in path:
+            elements.append(quote(element))
 
-def check_url(url):
-    if not url:
-        _log.error("No URL has been specified!")
-        _log.warn("You must supply one of subdomain, domain or url on the command line or in the ini file")
-        _log.warn("Get extended help (--help) from the program for more information")
+        path = elements
 
-    if not config.dryrun:
-        _log.info("Making a call to the given URL as a fail-fast test")
-        _log.debug("Note that this does not test the security key's validity, but just whether")
-        _log.debug("the URL is valid and accepting requests.")
-        headers = { "accept": "application/json" }
-        conn = http.client.HTTPSConnection(url)
-        conn.request("GET", "/health", None, headers)
+    return "/".join(path)
+
+def call_endpoint(path, verb, headers={}, params={}, convert_response=True, encode_path=False):
+    """Call a named endpoint of the IriusRisk API.
+
+    Arguments:
+    path            : the endpoint path. May be a collection of strings, each element
+                      another call depth. So to call the URL
+                      "/api/v1/products/:productid/threats," you would pass three 
+                      elements in the collection, ["products", f"{productid}", "threats"]
+    verb            : the verb when calling the endpoint, for instance GET, PUT, POST etc
+    headers         : (optional) any headers to include on the call
+    params          : (optional) any parameters to include on the call
+    convert_response: (default: True): whether the response should be converted to JSON
+    encode_path     : (default: False): whether URL encoding should be applied to the
+                      various elements of the path.
+
+    The method returns a tuple containing the HTTP response and data returned as the body
+    of the response. The type of the data depends on two things. First, if convert_response
+    is False, plain text is returned. Otherwise, it depends on the return type of the 
+    API call. If (for instance) the return type is "application/json," then a json object
+    is returned.
+    """
+    path = _build_path(path, encode_path)
+    _log.info(f"Calling endpoint {path} with verb {verb}")
+
+    config = get_config()
+
+    if not "api-token" in headers:
+        if config.key:
+            headers["api-token"] = config.key
+        else:
+            _log.info("No API key was provided to this application; API call will likely fail")        
+
+    if not "accept" in headers:
+        headers["accept"] = "application/json"
+
+    path = f"/api/v1/{path}"
+    _log.debug(f"Making a {verb} call to {path} at {config.url}")
+    conn = http.client.HTTPSConnection(config.url)
+
+    if config.dryrun:
+        resp = None
+    else :
+        conn.request(verb, path, params, headers)
         resp = conn.getresponse()
-        if resp.status != 200:
-            _log.error(f"Call to {url} returned status of {resp.status} ({resp.reason}); program will exit")
-            exit(-1)
 
+    result = None
+    if convert_response and not config.dryrun:
         data = resp.read().decode("utf-8")
-        json_obj = json.loads(data)
-        _log.debug(f"Successfully checked health of {url} (server: {json_obj['company']})")
+        if resp.status == 200 and headers["accept"] == "application/json":
+            result = json.loads(data)
+        else:
+            result = data
 
-### Start reading the config files and command line args
-_parser = _commandline.get_parser()
+    return (resp, result)
 
-_parsed_args = _parser.parse_args()
-
-if _parsed_args.verbose:
-    config.verbose = True
-    logging.basicConfig(level=logging.DEBUG)
-elif _parsed_args.quiet:
-    config.quiet = True
-    logging.basicConfig(level=logging.ERROR)
-
-_raw_config = _configfile.parse_config()
-
-if not len(sys.argv) > 1 and not _raw_config:
-    _parser.print_help()
-    exit(-1)
-
-if not _raw_config:
-    _log.info("No configuration file (iriusrisk.ini) found in any of the locations.")
-    _log.info("See help (--help) for more information.")
-    _raw_config = { "DEFAULT":{}}
-elif "DEFAULT" in _raw_config:
-    _log.info("Successfully parsed at least one configuration file")
-else:
-    _log.warn("At least one configuration file was read in, but no [DEFAULT] section was found.")
-    _log.info("All configurations in the file(s) will therefore be ignored. See help (--help)")
-    _log.info("for further information")
-
-_log.info("Starting configuration initialization")
-
-config.key = _get_item(_parsed_args.key, "key")
-
-if not config.key:
-    _log.error("No --key has been specified. Any API call will fail. See help (--help) for more information.")
-
-config.dryrun = _parsed_args.dryrun
-
-if config.dryrun:
-    _log.info("Option --dryrun passed on the command line. No HTTP calls will be made.")
-
-config.url = get_url()
-check_url(config.url)
+"""Call the specified endpoint using "GET."
+"""
+def do_get(path, headers={}, params={}, convert_response=True, encode_path=False):
+    """Call the indicated endpoint via GET. See call_endpoint for more details."""
+    return call_endpoint(path, "GET", headers, params, convert_response, encode_path)

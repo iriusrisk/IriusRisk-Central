@@ -8,23 +8,18 @@ entries useful for making IriusRisk API calls. Most of the command line
 arguments provided can be duplicated in configuration files, thereby allowing
 you to provide them in a file once across multiple script calls.
 
-For further information, clone this subdirectory and execute the main file:
+For further information, clone this subdirectory and execute the following:
 
-    python3 main.py
+    python3 -c 'import iriusrisk.auto_initialize' --help
 
 This describes in greater detail how to call the program shell. 
 
-### TODO
-* Need to look for ini files in multiple locations
-* Need to add a toolkit to ease HTTP calls
-
-This will describe in detail how to call the program shell.
-
 ## Usage example
 * clone or branch this repository
-* Edit the main.py file, appending the following lines to it:
+* Create the file main.py, consisting of the following:
 
-        from iriusrisk.v1.facade import do_get
+        import iriusrisk.auto_initialize
+        from iriusrisk.v1 import *
 
         (resp, json) = do_get("products")
         for i in json:
