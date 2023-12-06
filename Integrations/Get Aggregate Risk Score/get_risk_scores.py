@@ -77,6 +77,32 @@ def get_risk_score(project_name, sub_domain, api_key):
             # Print the result
             print(f"Average Residual Risk: {average_residual_risk}")
 
+    url = f"https://{sub_domain}.iriusrisk.com//api/v1/products/{project_name}"
+
+    payload = json.dumps({
+        "name": f"{project_name}",
+        "desc": "",
+        "tags": "",
+        "udts": [
+            {
+                "ref": "overall_risk",
+                "value": f"{average_residual_risk}"
+            }
+        ]
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'api-token': f'{api_key}'
+    }
+
+    response = requests.request("PUT", url, headers=headers, data=payload)
+
+    print(response.text)
+    if response.status_code == 200:
+        print("Custom Field was Updated")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Retrieve and calculate average residual risk for a project")
     parser.add_argument("project_name", help="Name of the project")
@@ -91,4 +117,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-#get_risk_score("aa", "james-rabe", "a11db0e1-1502-416e-ac1e-06ca6686fba9")
