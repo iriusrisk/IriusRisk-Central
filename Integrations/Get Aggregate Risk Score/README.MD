@@ -23,3 +23,13 @@ python3 get_risk_scores.py aa james-rabe api-key
 
 The final output should display the residual risk for each project and project component and the "Average Residual Risk: xx.xx" which represents the Residual risk of the project and the projects of the project components found in this project. 
 
+# Part 2
+
+If the intended purpose is to update a custom field attached to the project, please add the following into your IriusRisk instance. 
+
+## Create the custom field
+
+Create a custom field with a unique id of "overall_risk" with a type of text field. 
+
+When the total residual risk is calculated, it will output the value to this custom field. 
+
