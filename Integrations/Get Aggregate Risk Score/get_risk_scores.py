@@ -90,3 +90,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#get_risk_score("aa", "james-rabe", "a11db0e1-1502-416e-ac1e-06ca6686fba9")
