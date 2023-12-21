@@ -25,4 +25,4 @@ Note that these permissions are all read-only. No changes are made to any IriusR
 1. Add the URL and API key to an initialization file. (Alternatively, pass them on the command line using --key and --url.)
 1. Call `python3 output-threat-details.py --project {project-ref}`. This will output the CSV results, or any errors encountered.
 
-For further configuration possibilities, call `python3 output-threat-details.py --help`
+For further configuration possibilities, or to see how to create an initialization file, call `python3 output-threat-details.py --help`
