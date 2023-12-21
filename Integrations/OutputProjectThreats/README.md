@@ -15,10 +15,7 @@ threat within the project:
 * A URL to an IriusRisk instance, and
 * An [API token](https://support.iriusrisk.com/hc/en-us/articles/360021521291-Get-an-API-Key) associated with the IriusRisk instance
 
-The user associated with the API token must have the following permissions:
-* API_ACCESS
-
-Note that these permissions are all read-only. No changes are made to any IriusRisk project.
+Note that the script is read-only. No changes are made to any IriusRisk project.
 
 ### Usage
 1. Install the requirements by calling `python3 -m pip install -r requirements.txt` from this (the *./OutputProjectThreats/*) folder.
