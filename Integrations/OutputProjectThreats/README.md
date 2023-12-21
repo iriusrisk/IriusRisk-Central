@@ -2,11 +2,13 @@
 The script `output-threat-details.py` takes a project reference and outputs all threats contained
 within it in CSV (tab delimited) format. Specifically, it outputs the following details for every 
 threat within the project:
-* Threat Reference
-* Name
+* Associated Component (Reference, Name)
+* Associated Use-Case
+* Threat Reference and Name
 * State (Implemented, Required etc)
 * Owner
-* Risk Rating (Current, Inherent and Projected)
+* C.I.A. values + Ease of Exploitation
+* Risk Rating (Inherent, Current and Projected)
 * Values assocaited with all UDTs (custom fields)
 
 ### Requirements
