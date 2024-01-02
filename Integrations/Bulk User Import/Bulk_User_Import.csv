@@ -1,0 +1,4 @@
+firstName,lastName,email,username,role
+test,test,jrabe+test1@iriusrisk.com,test1,ROLE_ADMIN
+test,test,jrabe+test2@iriusrisk.com,test2,ROLE_ADMIN
+test,test,jrabe+test3@iriusrisk.com,test3,ROLE_ADMIN
