@@ -7,7 +7,7 @@ import logging
 from urllib.parse import quote
 from iriusrisk import get_config
 
-__all__=["do_get","call_endpoint"]
+__all__=["do_get", "do_put", "do_post", "do_delete", "call_endpoint"]
 
 # Provides helper methods that make accessing the IriusRisk v1 API easier.
 _log = logging.getLogger('iriusrisk.v1')
@@ -29,7 +29,7 @@ def _build_path(path, encode_path):
 
     return "/".join(path)
 
-def call_endpoint(path, verb, headers={}, params={}, convert_response=True, encode_path=False):
+def call_endpoint(path, verb, headers={}, body=None, convert_response=True, encode_path=False):
     """Call a named endpoint of the IriusRisk API.
 
     Arguments:
@@ -71,7 +71,7 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True, enco
     if config.dryrun:
         resp = None
     else :
-        conn.request(verb, path, params, headers)
+        conn.request(verb, path, body, headers)
         resp = conn.getresponse()
 
     result = None
@@ -86,6 +86,15 @@ def call_endpoint(path, verb, headers={}, params={}, convert_response=True, enco
 
 """Call the specified endpoint using "GET."
 """
-def do_get(path, headers={}, params={}, convert_response=True, encode_path=False):
+def do_get(path, headers={}, convert_response=True, encode_path=False):
     """Call the indicated endpoint via GET. See call_endpoint for more details."""
-    return call_endpoint(path, "GET", headers, params, convert_response, encode_path)
+    return call_endpoint(path, "GET", headers, None, convert_response, encode_path)
+
+def do_put(path, body, headers={}, convert_response=True, encode_path=False):
+    return call_endpoint(path, "PUT", headers, body, convert_response, encode_path)
+
+def do_post(path, body, headers={}, convert_response=True, encode_path=False):
+    return call_endpoint(path, "POST", headers, body, convert_response, encode_path)
+
+def do_delete(path, headers={}, convert_response=True, encode_path=False):
+    return call_endpoint(path, "DELETE", headers, None, convert_response, encode_path)
