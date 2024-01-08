@@ -3,6 +3,8 @@ dist/
 .vscode
 __pycache__
 .pyc
-.venv
+.venv*
 .DS_Store
 iriusrisk.ini
+test.py
+tmp/
