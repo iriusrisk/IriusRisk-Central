@@ -11,14 +11,14 @@ calls.
 
 For further information, install this module locally and run the following:
 
-    python3 -c 'import iriusrisk.auto_initialize' --help
+    python3 -c 'import iriusrisk.autoinit' --help
 
 This describes in greater detail how to call the program shell. 
 
 ## Usage example
 * Create the file main.py, consisting of the following:
 
-        import iriusrisk.auto_initialize
+        import iriusrisk.autoinit
         from iriusrisk.v1 import *
 
         (resp, json) = do_get("products")
