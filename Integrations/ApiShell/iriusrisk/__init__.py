@@ -18,12 +18,25 @@ import json
 import logging
 import sys
 
-__all__=["get_config", "get_commandline_parser", "do_initialization"]
+__all__=["get_config", "get_commandline_parser", "do_initialization", "get_connection"]
 
 _config_holder = [ None ]
 
 _log = logging.getLogger('iriusrisk')
 _parser = iriusrisk.commandline.get_parser()
+
+def get_connection(path):
+    config = get_config()
+    if config.proxy_url:
+        proxy = f"{config.proxy_url}:{config.proxy_port}"
+        conn = http.client.HTTPSConnection(proxy)
+        conn.set_tunnel(path)
+        _log.info(f"Connecting to {path} via proxy {proxy}")
+    else:
+        conn = http.client.HTTPSConnection(path)
+        _log.info(f"Connecting to {path}")
+
+    return conn
 
 def get_config():
     if not _config_holder[0]:
@@ -73,12 +86,21 @@ def do_initialization():
     _log.info("Starting configuration initialization")
 
     config.key = _get_item(_raw_config, config.key, "key", None)
+    config.proxy_port = _get_item(_raw_config, config.proxy_port, "proxy_port", None)
+    config.proxy_url = _get_item(_raw_config, config.proxy_url, "proxy_url", None)
 
     if not config.key:
         _log.error("No --key has been specified. Any API call will fail. See help (--help) for more information.")
 
     if config.dryrun:
         _log.info("Option --dryrun passed on the command line. No HTTP calls will be made.")
+    elif config.proxy_url:
+        if not config.proxy_port:
+            _log.error("Proxy URL was provided without a proxy port number")
+            exit(-1)
+    elif config.proxy_port:
+        _log.error("Proxy port number was provided without a proxy URL")
+        exit(-1)
 
     config.url = _get_url(_raw_config)
     _check_url(config.url)
@@ -100,7 +122,7 @@ def _get_url(config_file):
     if domain:
         _log.info("Using the --domain option. Protocol assumed to be HTTPS")
         return "{domain}:443"
-    
+
 def _get_item(config_file, value, key, default_value):
     if value:
         _log.debug(f"Found {key} on the command line. Will take precedence over config file")
@@ -120,12 +142,13 @@ def _check_url(url):
         _log.warn("Get extended help (--help) from the program for more information")
 
     config = get_config()
+
     if not config.dryrun:
         _log.info("Making a call to the given URL as a fail-fast test")
         _log.debug("Note that this does not test the security key's validity, but just whether")
         _log.debug("the URL is valid and accepting requests.")
         headers = { "accept": "application/json" }
-        conn = http.client.HTTPSConnection(url)
+        conn = get_connection(url)
         conn.request("GET", "/health", None, headers)
         resp = conn.getresponse()
         if resp.status != 200:

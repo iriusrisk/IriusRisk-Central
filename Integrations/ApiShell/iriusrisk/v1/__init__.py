@@ -5,7 +5,7 @@ import http.client
 import json
 import logging
 from urllib.parse import quote
-from iriusrisk import get_config
+from iriusrisk import get_config, get_connection
 
 __all__=["do_get", "do_put", "do_post", "do_delete", "call_endpoint"]
 
@@ -66,7 +66,7 @@ def call_endpoint(path, verb, headers={}, body=None, convert_response=True, enco
 
     path = f"/api/v1/{path}"
     _log.debug(f"Making a {verb} call to {path} at {config.url}")
-    conn = http.client.HTTPSConnection(config.url)
+    conn = get_connection(config.url)
 
     if config.dryrun:
         resp = None

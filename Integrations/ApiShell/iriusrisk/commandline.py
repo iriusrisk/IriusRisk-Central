@@ -54,10 +54,12 @@ So specifying the API key in a config file would look something like this:
     parser.add_argument("-s", "--subdomain", help="Subdomain of a SaaS instance. Will be prepended to .iriusrisk.com")
     parser.add_argument("-d", "--domain", help="The entire domain of the target system, without protocol or path.")
     parser.add_argument("-f", "--full-url", help="The target system's complete URL, port number included, but no protocol.")
-    parser.add_argument("-v", "--verbose", help="Output extended log information", action='store_true')
+    parser.add_argument("-k", "--key", help="API Key to use when accessing the v1 API")
     parser.add_argument("-q", "--quiet", help="Only output log messages indicating errors", action='store_true')
+    parser.add_argument("-v", "--verbose", help="Output extended log information", action='store_true')
+    parser.add_argument("--proxy_port", help="The proxy server port; required if --proxy_url specified", type=int, metavar="NUM")
+    parser.add_argument("--proxy_url", help="The proxy server URL, if present", metavar="URL")
     parser.add_argument("--dryrun", help="Do everything but actual HTTP calls", action='store_true')
 
-    parser.add_argument("-k", "--key", help="API Key to use when accessing the v1 API")
     # parser.add_argument("-t", "--token", help="OAuth2 Token to use when accessing the v2 API")
     return parser
