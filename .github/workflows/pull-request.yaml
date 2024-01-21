@@ -24,12 +24,11 @@ jobs:
             - name: Scan for Secrets
               uses: actions/checkout@v4
             - run: |
-                docker run --rm -it -v "$PWD:/pwd" \
-                ghcr.io/trufflesecurity/trufflehog:latest filesystem \
-                /pwd/IriusRisk-Central/Integrations/ --json --fail > trufflehog-results.json
+                docker run --rm -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest \
+                filesystem /pwd/IriusRisk-Central/Integrations/ --fail > trufflehog
             - name: Save Results
               uses: actions/upload-artifact@v3
               with:
-                name: trufflehog-results.json
-                path: trufflehog-results.json
+                name: trufflehog-results.txt
+                path: trufflehog
         continue-on-error: true
