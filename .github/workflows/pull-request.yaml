@@ -4,10 +4,8 @@
 #
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+# Run the following workflow against any pull request. This does various
+# SAST, DAST and SCA checking.
 
 name: Check pull requests
 
