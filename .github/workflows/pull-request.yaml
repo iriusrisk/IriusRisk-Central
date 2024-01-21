@@ -24,7 +24,7 @@ jobs:
             - name: Scan for Secrets
               uses: actions/checkout@v4
             - run: |
-                docker run --rm -it -v "${pwd}:/pwd" \
+                docker run --rm -it -v "$PWD:/pwd" \
                 ghcr.io/trufflesecurity/trufflehog:latest filesystem \
                 /pwd/IriusRisk-Central/Integrations/ --json --fail > trufflehog-results.json
             - name: Save Results
