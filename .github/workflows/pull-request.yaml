@@ -15,7 +15,7 @@ on:
 #    pull_request: this will be what we use eventually
     push:
       branches:
-        - "security-tooling" # for testing
+        - "safety-tooling" # for testing
 
 jobs:
     test-for-secrets:
