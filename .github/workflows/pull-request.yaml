@@ -23,12 +23,10 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Debug
-              run: pwd & ls -la
             - name: Scan for secrets
               run: |
                 docker run --rm -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest \
-                filesystem /pwd/IriusRisk-Central/Integrations/ --fail > trufflehog.txt
+                filesystem /pwd/Integrations/ --fail > trufflehog.txt
             - name: Save Results
               uses: actions/upload-artifact@v3
               with:
