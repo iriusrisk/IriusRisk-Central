@@ -33,4 +33,5 @@ jobs:
                 name: trufflehog
                 path: trufflehog.txt
                 if-no-files-found: error
+                if: always()
         continue-on-error: true
