@@ -1,0 +1,35 @@
+# This workflow will upload a Python Package using Twine when the repository
+# is published. If the reference to the published version contains the text
+# "-test," then it will be published to Test PyPi, otherwise to prod.
+#
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Check pull requests
+
+on:
+#    pull_request: this will be what we use eventually
+    push:
+      branches:
+        - security-tooling # for testing
+
+jobs:
+    test-for-secrets:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Scan for Secrets
+              uses: actions/checkout@v4
+            - run: |
+                docker run --rm -it -v "${pwd}:/pwd" \
+                ghcr.io/trufflesecurity/trufflehog:latest filesystem \
+                /pwd/IriusRisk-Central/Integrations/ --json --fail > trufflehog-results.json
+            - name: Save Results
+              uses: actions/upload-artifact@v3
+              with:
+                name: trufflehog-results.json
+                path: trufflehog-results.json
+        continue-on-error: true
