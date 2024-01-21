@@ -25,10 +25,11 @@ jobs:
               uses: actions/checkout@v4
             - run: |
                 docker run --rm -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest \
-                filesystem /pwd/IriusRisk-Central/Integrations/ --fail > trufflehog
+                filesystem /pwd/IriusRisk-Central/Integrations/ --fail > trufflehog.txt
             - name: Save Results
               uses: actions/upload-artifact@v3
               with:
-                name: trufflehog-results.txt
-                path: trufflehog
+                name: trufflehog
+                path: trufflehog.txt
+                if-no-files-found: error
         continue-on-error: true
