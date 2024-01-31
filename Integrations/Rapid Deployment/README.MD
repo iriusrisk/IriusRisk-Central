@@ -16,7 +16,7 @@ pip3 install requirements.txt
 
 API_KEY = "YOUR API KEY"
 
-URL = "https://<yoursubdomain>.iriusrisk.com//api/v1"
+URL = "https://yoursubdomain.iriusrisk.com//api/v1"
 
 These could also be imported as environmental variables with some slight adjustments to the script
 
