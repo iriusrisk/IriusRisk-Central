@@ -8,7 +8,7 @@ The purpose of this set of scripts is to assist with the deployment of the Irius
 
 ```python
 
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 
 ```
 
