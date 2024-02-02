@@ -5,7 +5,7 @@ It is generally considered good practice for third-party libraries to only be as
 
 ## Contents
 * [STRIDE-with-CAPEC](STRIDE-with-CAPEC.md)
-* [v4.13 CWE Library](/Libraries/v4.13 CWE IriusRisk Library)
+* [v4.13 CWE Library](Libraries/v4.13 CWE IriusRisk Library/README.MD)
 
 ## Further information
 * [Understanding IriusRisk Libraries and Standards](https://support.iriusrisk.com/hc/en-us/articles/360054376552-Understanding-IriusRisk-Libraries-and-Standards#:~:text=IriusRisk%20libraries%20are%20collections%20of,knowledgebase%20containers%20for%20security%20content.)
