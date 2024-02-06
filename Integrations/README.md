@@ -12,4 +12,5 @@ Here you will find anything extending IriusRisk functionality via its APIs. This
 * Get Threats & Countermeasures Report in Excel: Creates an excel output that retrieves threats and countermeasures from a project
 * Manage Compoonent Visibility: Manages visibility into full categories of components within the Objects > Components interface 
 * Output Project Threats: Outputs threats from a project 
-* BU - Transfers: Transfers business units from one tenant to another using the API. 
+* BU - Transfers: Transfers business units from one tenant to another using the API.
+* All Projects Threats Report: Outputs threats from all projects where countermeasures are not in a recommended state into an output json file for import into a secondary tool. 
