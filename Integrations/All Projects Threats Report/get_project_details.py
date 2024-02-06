@@ -103,7 +103,7 @@ def get_project_details(ref):
         for comp in project_data['components']:
             for control in comp['controls']:
                 threats = control.get('threats')  # Get threats
-                if threats is not None:  # Check if threats is not None
+                if threats is not None and control['state'] != "Recommended":  # Check if threats is not None and control state is not recommended
                     for threat in threats:
                         project_output.append({
                             'Project Name': project_data['name'],
