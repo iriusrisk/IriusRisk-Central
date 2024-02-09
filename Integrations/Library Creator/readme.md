@@ -22,6 +22,14 @@ Before using this script, ensure that you have the following:
 
 1. Open the `config.py` file and replace the `API_KEY` and `URL` placeholders with your IriusRisk API key and endpoint URL.
 
+```python
+
+API_KEY = "your_api_key"
+
+URL = "your_url_here"
+
+```
+
 ## Usage
 
 1. Prepare the input data in a excel file with the following columns:
@@ -54,7 +62,7 @@ Before using this script, ensure that you have the following:
     Example:
     ```python
 
-    What is the location of your xlsx spreadsheet? "C:\Users\jrabe_iriusrisk\PycharmProjects\library_creation - default\LEN_CustomComponents_2024_Jan_24.xlsx"
+    What is the location of your xlsx spreadsheet? "C:\Users\jrabe_iriusrisk\library_builder\library_contents.xlsx"
 
     What is the name of the spreadsheet sheet? Library_Creator
     ```
