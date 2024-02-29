@@ -6,10 +6,15 @@ from datetime import datetime
 
 project_names = get_projects.get_projects()
 
+# Disable SSL certificate verification
+requests.packages.urllib3.disable_warnings()
+
+
 class Threat:
     def __init__(self, ref, name):
         self.ref = ref
         self.name = name
+
 
 class Control:
     def __init__(self, ref, name, desc, state, priority, risk, threats):
@@ -23,6 +28,7 @@ class Control:
         if threats is not None:
             self.threats = [Threat(threat['ref'], threat['name']) for threat in threats]
 
+
 class Component:
     def __init__(self, uuid, ref, name, weaknesses, controls, usecases):
         self.uuid = uuid
@@ -32,14 +38,19 @@ class Component:
         self.controls = []
         if isinstance(controls, list):
             # If controls is a list, iterate over each control data and initialize Control objects
-            self.controls = [Control(control['ref'], control['name'], control['desc'], control['state'], control['priority'], control['risk'], control['threats']) for control in controls]
+            self.controls = [
+                Control(control['ref'], control['name'], control['desc'], control['state'], control['priority'],
+                        control['risk'], control['threats']) for control in controls]
         elif isinstance(controls, dict):
             # If controls is a dictionary, initialize a single Control object
-            self.controls = [Control(controls['ref'], controls['name'], controls['desc'], controls['state'], controls['priority'], controls['risk'], controls['threats'])]
+            self.controls = [
+                Control(controls['ref'], controls['name'], controls['desc'], controls['state'], controls['priority'],
+                        controls['risk'], controls['threats'])]
         else:
             # Handle the case where controls has unexpected data type
             print(f"Invalid controls data format: {controls}")
         self.usecases = usecases
+
 
 class Project:
     def __init__(self, ref, name, workflowState, assets, trustZones, udts, components):
@@ -49,7 +60,22 @@ class Project:
         self.assets = assets
         self.trustZones = trustZones
         self.udts = udts
-        self.components = [Component(comp['uuid'], comp['ref'], comp['name'], comp['weaknesses'], comp['controls'], comp['usecases']) for comp in components]
+        self.components = [
+            Component(comp['uuid'], comp['ref'], comp['name'], comp['weaknesses'], comp['controls'], comp['usecases'])
+            for comp in components]
+
+def qualitative_risk(risk):
+    if risk <= 20:
+        return "VERY LOW"
+    elif risk <= 40:
+        return "LOW"
+    elif risk <= 60:
+        return "MEDIUM"
+    elif risk <= 80:
+        return "HIGH"
+    else:
+        return "VERY HIGH"
+
 
 def get_project_details(ref):
     url = f"{config.baseURL}/api/v1/products/{ref}"
@@ -58,41 +84,9 @@ def get_project_details(ref):
         'api-token': config.api_token
     }
 
-    response = requests.get(url, headers=headers)
-    '''
-    if response.status_code == 200:
-        project_data = response.json()
-        formatted_project_data = json.dumps(project_data, indent=4)
+    # Disable SSL certificate verification
+    response = requests.get(url, headers=headers, verify=False)
 
-        timestamp = datetime.now()
-        timestamp_str = timestamp.strftime("%Y-%m-%d %H:%M:%S")
-
-        # Write formatted project data to output.txt file
-        with open(f'{ref}.txt', 'w') as f:
-            f.write(f"Project Details for reference {ref} Timestamp: {timestamp_str}\n")
-            f.write(formatted_project_data + "\n\n")
-            f.write("=" * 50 + "\n\n")  # Add separator for each project
-
-        # Create Project instance and print project details
-        project = Project(
-            project_data['ref'],
-            project_data['name'],
-            project_data['workflowState'],
-            project_data['assets'],
-            project_data['trustZones'],
-            project_data['udts'],
-            project_data['components']
-        )
-        
-        for component in project.components:
-            for control in component.controls:
-                for threat in control.threats:
-                    with open('projects_output.txt', 'a') as f:
-                        f.write(f"Project Name - {project.name} // Component Name - {component.name} // Threat Name - {threat.name} // Threat Risk - {control.risk} // Control Name - {control.name} // Control State - {control.state} // Control Priority - {control.priority}  \n\n")
-
-    else:
-        print(f"Failed to fetch project details for reference {ref}. Status code: {response.status_code}")
-    '''
     if response.status_code == 200:
         project_data = response.json()
 
@@ -102,22 +96,26 @@ def get_project_details(ref):
 
         for comp in project_data['components']:
             for control in comp['controls']:
-                threats = control.get('threats')  # Get threats
-                if threats is not None and control['state'] != "Recommended":  # Check if threats is not None and control state is not recommended
+                threats = control.get('threats')
+                if threats is not None and control['state'] != "Recommended":
                     for threat in threats:
                         project_output.append({
                             'Project Name': project_data['name'],
+                            'Project UDTs': project_data['udts'],
                             'Component Name': comp['name'],
                             'Threat Name': threat['name'],
                             'Threat Risk': control['risk'],
+                            'Threat Risk Level': qualitative_risk(control['risk']),
                             'Control Name': control['name'],
                             'Control State': control['state'],
                             'Control Priority': control['priority']
                         })
+        # Write to JSON file only if project_output is not empty
+        if project_output:
+            with open(f'projects_json_output - {timestamp_str}.json', 'a') as f:
+                json.dump(project_output, f, indent=4)
+                f.write('\n')
 
-        with open(f'projects_json_output - {timestamp_str}.json', 'a') as f:
-            json.dump(project_output, f, indent=4)
-            f.write('\n')
 
 for ref in project_names:
     get_project_details(ref)
