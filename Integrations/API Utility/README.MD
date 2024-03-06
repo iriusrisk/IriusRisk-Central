@@ -20,7 +20,7 @@ chmod +x "./IriusRisk-Central/Integrations/API Utility/install_irtool_reqs"
 Run the install script:
 "./IriusRisk-Central/Integrations/API Utility/install_irtool_reqs"
 
-Copy the ir_api_util folder to you home directory
+Copy the ir_api_util folder to you home directory:
 cp -r "./IriusRisk-Central/Integrations/API Utility/ir_api_util/" ~
 
 Running the Utility
