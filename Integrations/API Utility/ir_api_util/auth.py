@@ -22,5 +22,6 @@ class Auth:
         if not os.path.exists(file_path):
             print("\nCould not find your IR token file.")
             user_input = input("Please enter your API token: ")
+            print("")
             with open(file_path, 'w') as file:
                 file.write(user_input)
