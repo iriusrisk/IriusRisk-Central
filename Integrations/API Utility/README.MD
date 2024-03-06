@@ -2,7 +2,7 @@ IR Tool Utility
 The IR Tool Utility is designed to facilitate interactions with the IR API, streamlining operations and data management tasks. This document provides instructions on preparing the environment and running the utility.
 
 Prerequisites
-Ensure Python3 is installed on your system. You can check your Python version by running:
+Ensure Python3 is installed on your system.
 
 Setup
 Preparing the Environment
@@ -26,5 +26,9 @@ Feature Details:
 This feature will export to CSV and Excel the status of your project with respect to countermeasure status. It will prompt you for you IR project reference ID. 
 In addition, it will include the countermeasure status of associated projects by tag.
 For example, if your project contains a project component, and you tag that component with reference ID of its actual project, the countermeasure data will for that project component will be included along with the data for your target project.
+
+Feature 2: Get Project List
+Feature Details:
+This feature will return via json file, a list of the projects in your instance.
 
 Additional features to be added as needed in the future.
