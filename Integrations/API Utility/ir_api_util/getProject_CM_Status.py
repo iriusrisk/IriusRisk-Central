@@ -33,6 +33,7 @@ class ProjectComponentStatus:
             df.to_csv(csv_file, index=False)
             df.to_excel(excel_file, index=False)
             print(f"Data exported to {csv_file} and {excel_file}")
+            print("")
         else:
             print("No control data found for the specified project and related projects.")
 
@@ -73,7 +74,7 @@ def main(project_ref):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python getProjectComponentStatus.py <project_ref>")
+        print("Usage: python getProject_CM_Status.py <project_ref>")
         sys.exit(1)
     project_ref = sys.argv[1]
     main(project_ref)
