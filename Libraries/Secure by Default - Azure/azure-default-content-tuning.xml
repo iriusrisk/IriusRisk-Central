@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library ref="azure-default-content-tuning" name="Azure Default Content Tuning" enabled="true" revision="1" tags="">
+  <desc/>
+  <categoryComponents/>
+  <componentDefinitions/>
+  <supportedStandards/>
+  <riskPatterns/>
+  <rules>
+    <rule name="All admins have individual accounts by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-A03_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Audit logs are exported for storage by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-L05_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Azure Cloud Roles are configured and defined by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-A11_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Azure Defender enabled by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZURE-SECURITY-CENTER4_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Microsoft-Azure" value="AZURE-KEY-VAULT7_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Azure instances are in different vnets by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-N09_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Microsoft-Azure" value="AZ-N08_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Azure resource groups are managed from approved location by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZURE-APPROVED-LOCATIONS_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Diagnostic Logs are enabled by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-L01_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Managed Identities are used by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZURE-MANAGED-ID_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Mechanisms are in place to enforce and monitor least privilege by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-A10_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="MFA Enabled by Default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-A04_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Microsoft-Azure" value="AZURE-USER-MFA_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Network-based IDS/IPS is deployed by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZURE-IDS-IPS_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="NSG Flow Logs enabled by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZURE-NSG-FLOW-LOGS_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="NSGs are as restrictive as possible by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-N01_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="NSGs block incoming traffic from 0.0.0.0/0 by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-N02_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Microsoft-Azure" value="AZ-N04_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Microsoft-Azure" value="AZ-N03_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Password Expiration set by Default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-A12_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="PIM enabled for admins by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZURE-AD10_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="RBAC Applied to Groups by Default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-A09_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Security center security policy set by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-V02_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Security center's adaptive hardening is enabled by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZURE-ADAPTIVE-NET-HARDENING_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="Service Tags are used in place of IP addresses by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZURE-TAGS_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="User access is recertified periodically by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Microsoft-Azure" value="AZ-A07_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+  </rules>
+</library>
