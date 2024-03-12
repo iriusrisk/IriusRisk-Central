@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library ref="aws-default-content-tuning" name="AWS Default Content Tuning" enabled="true" revision="1" tags="">
+  <desc/>
+  <categoryComponents/>
+  <componentDefinitions/>
+  <supportedStandards/>
+  <riskPatterns/>
+  <rules>
+    <rule name="01 - IAM Access" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="C-RP-AWS-IOT-ANALYTICS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-RP-AWS-IOT-SITEWISE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-BRAKET1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-CLOUDTRAIL1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-CLOUDWATCH1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-ECR1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-EFS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-EKS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-EKS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-EVENTBRIDGE2_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-EVENTBRIDGE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-FSX-WFS2_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-ELASTICSEARCH1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-API-GW1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-AMPLIFY1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-APP-DISC-SERVICE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-ARTIFACT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-ATHENA1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-A2I1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-BATCH1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-ACM1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CHATBOT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CHIME1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CLOUD-MAP1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CLOUDFORMATION1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CLOUDHSM1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CODECOMMIT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CODEDEPLOY1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CODESTAR1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-COMP-OPT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CONFIG1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-CONTROL-TOWER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-COST-MGMT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-DATA-EXCHANGE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-DATA-PIPELINE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-DEEPCOMPOSER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-DEEPRACER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-DETECTIVE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-DEV-FARM1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-DIRECT-CONNECT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-DIR-SERVICE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-DYNAMODB1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-EC2-AUTO-SCALING1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-ELASTIC-BEANSTALK2_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-ELASTIC-TRANSCODER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-ELASTICACHE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-APP-SOFT-QUOTE-CONF1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-MEDIALIVE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-MEDIASTORE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-FIREWALL-MANAGER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-RP-AWS-FREERTOS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-GLACIER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-GLOBAL-ACC1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-GLUE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-GLUE-SCHEMA-REGISTRY1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-GROUND-STATION1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-GUARDDUTY1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-HEALTH1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-INSPECTOR1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-RP-AWS-IOT-1-CLICK1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-IOT-THINGS-CORE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-RP-AWS-IOT-EVENTS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-RP-AWS-IOT-GREENGRASS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-IOT-THINGS-GRAPH1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-KENDRA1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-KINESIS-ANALYTICS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-KINESIS-FIREHOSE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-KINESIS-DATA1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-KINESIS-VIDEO1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-KMS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-LEX1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-LIGHTSAIL1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-MACIE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-MARKETPLACE-SELLER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-MARKETPLACE-BUYER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-MIGRATION-HUB1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-MQ1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-MSK1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-OPSWORKS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-PERSONALIZE1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-PINPOINT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-PRIVATE-CERTIFICATE-AUTHORITY2_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-QLDB1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-REDSHIFT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-REKOGNITION1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-RAM1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-RESOURCE-GROUPS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-ROBOMAKER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-ROSA6_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SAGEMAKER2_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SECRETS-MANAGER1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SEC-HUB1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SMS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SERVERLESS-APP-REPO1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SERVICE-CATALOG1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SHIELD1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SES1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-SITE-TO-SITE-VPN1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-SQS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SSO1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-STEP-FUNCTIONS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-STORAGE-GATEWAY1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SUMERIAN1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-SUPPORT1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-SWF1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-TIMESTREAM1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-TRUSTED-ADVISOR1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-WAF1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-WA-TOOL1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-WORKDOCS1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-WORKLINK1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="C-AWS-WORKMAIL1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-CLIENT-VPN1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-PRIVATELINK1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-VPC1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="02 - S3 Encryption by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-S3-7.4_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="03 - All resources are tagged by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="aws-tier-5.1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="04 - VPC Security groups are used by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="AWS-VPC5_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="05 - Ingress from 0.0.0.0 is blocked on all ports" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-Network-5.5_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-Network-5.3_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-Network-5.4_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="06 - S3 Public Access is restricted by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="restrict-s3-bucket-access_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="07 - EC2 instances launched into VPC by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-EC2-6.1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="08 - MFA enabled for IAM and Room users by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-IAM-2.4_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-IAM-2.2_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="09 - Strong Password policy by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-IAM-2.6_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="10 - Privileges are allocated by groups or roles by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-IAM-2.7_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="11 - SNS topics are used for sending out notifications by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="aws-tier-4.1_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="aws-tier-4.2_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="12 - AWS Configuration changes alerts are configured by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-Monitoring-4.9_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+        <action project="Hydras-AWS-Foundation" value="AWS-Monitoring-3_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="13 - IAM Users have individual accounts" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-IAM-2.3_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="14 - VPC endpoint policies are configured by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="AWS-VPC4_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="15 - VPC Flow logs are enabled by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="Hydras-AWS-Logging-3.7_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="16 - Server side and in transit encryption are in place by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="aws-tier-1.16_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+    <rule name="17 - CloudTrail logs are logged to a dedicated and central S3 bucket by default" module="component" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="Hydras-AWS-Foundation" value="AWS-CLOUDTRAIL2_::_Implemented_::__::_false" name="MARK_CONTROL_AS"/>
+      </actions>
+    </rule>
+  </rules>
+</library>
