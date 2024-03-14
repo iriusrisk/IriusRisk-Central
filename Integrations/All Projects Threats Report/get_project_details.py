@@ -3,6 +3,11 @@ import requests
 import get_projects
 import json
 from datetime import datetime
+import urllib3
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+# Suppress InsecureRequestWarning
+urllib3.disable_warnings(InsecureRequestWarning)
 
 project_names = get_projects.get_projects()
 
@@ -51,6 +56,19 @@ class Project:
         self.udts = udts
         self.components = [Component(comp['uuid'], comp['ref'], comp['name'], comp['weaknesses'], comp['controls'], comp['usecases']) for comp in components]
 
+def qualitative_risk(risk):
+    if risk <= 20:
+        return "VERY LOW"
+    elif risk <= 40:
+        return "LOW"
+    elif risk <= 60:
+        return "MEDIUM"
+    elif risk <= 80:
+        return "HIGH"
+    else:
+        return "VERY HIGH"
+
+
 def get_project_details(ref):
     url = f"{config.baseURL}/api/v1/products/{ref}"
     headers = {
@@ -58,7 +76,7 @@ def get_project_details(ref):
         'api-token': config.api_token
     }
 
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, verify=False)
     '''
     if response.status_code == 200:
         project_data = response.json()
@@ -112,6 +130,7 @@ def get_project_details(ref):
                             'Component Name': comp['name'],
                             'Threat Name': threat['name'],
                             'Threat Risk': control['risk'],
+                            'Threat Risk Level': qualitative_risk(control['risk']),
                             'Control Name': control['name'],
                             'Control State': control['state'],
                             'Control Priority': control['priority']
