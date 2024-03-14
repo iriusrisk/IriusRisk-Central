@@ -108,6 +108,7 @@ def get_project_details(ref):
                     for threat in threats:
                         project_output.append({
                             'Project Name': project_data['name'],
+                            'Project UDTs': project_data['udts'],
                             'Component Name': comp['name'],
                             'Threat Name': threat['name'],
                             'Threat Risk': control['risk'],
