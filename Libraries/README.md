@@ -1,5 +1,5 @@
 ## Libraries
-Libraries contain various things associated with Threat Modeelling. For instance, a library can contain Risk Patterns, which themselves refer to Use Cases, Threats, Weaknesses, Controls and other considerations when modelling threats. They also contain architectural components, automation rules, relative risk scores, and linkages beteween all the above. 
+Libraries contain various things associated with Threat Modeling. For instance, a library can contain Risk Patterns, which themselves refer to Use Cases, Threats, Weaknesses, Controls and other considerations when modelling threats. They also contain architectural components, automation rules, relative risk scores, and linkages beteween all the above. 
 
 It is generally considered good practice for third-party libraries to only be as large as absolutely necessary. Therefore, any components contained within a library should be logically related, for instance to represent a single paradigm (STRIDE, for instance) or implementation (GCP, Cisco, etc).
 
