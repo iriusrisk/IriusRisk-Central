@@ -1,4 +1,4 @@
-# BU Transfer README
+# Business Unit Transfer README
 
 ## Overview
 This script is designed to interact with the IriusRisk API for managing business units. It performs two main operations:
