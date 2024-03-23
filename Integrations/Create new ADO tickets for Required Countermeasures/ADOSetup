@@ -1,0 +1,60 @@
+import requests
+import requests
+import base64
+import json
+import config
+import ADOSetup
+
+class AzureDevOpsIssueTracker:
+    def __init__(self, organization, project, personal_access_token):
+        self.organization = organization
+        self.project = project
+        self.personal_access_token = personal_access_token
+        self.base_url = f"https://dev.azure.com/{organization}/{project}/_apis"
+        self.headers = {
+            'Content-Type': 'application/json-patch+json',  # Updated content type
+            'Authorization': f'Basic {base64.b64encode(bytes(f":{personal_access_token}", "utf-8")).decode()}'
+        }
+
+    def create_issue(self, title, description, assigned_to=None, priority=None, ADO_CF=None):
+        issue_type = config.issue_type
+        url = f"{self.base_url}/wit/workitems/${issue_type}?api-version=6.0"  # Endpoint for creating an issue
+        data = [
+            {
+                "op": "add",
+                "path": "/fields/System.Title",
+                "value": title
+            },
+            {
+                "op": "add",
+                "path": "/fields/System.Description",
+                "value": description
+            }
+        ]
+
+        if assigned_to:
+            data.append({
+                "op": "add",
+                "path": "/fields/System.AssignedTo",
+                "value": assigned_to
+            })
+
+        if priority:
+            data.append({
+                "op": "add",
+                "path": "/fields/Microsoft.VSTS.Common.Priority",
+                "value": priority
+            })
+        
+        if ADO_CF:
+            data.append({
+                "op": "add",
+                "path": "/fields/Custom.ADO_CF",
+                "value": ADO_CF
+            })
+
+        response = requests.post(url, headers=self.headers, json=data, verify=False)  # Disable SSL verification
+        if response.status_code == 200:
+            return {"status_code": response.status_code, "data": response.json()}
+        else:
+            return {"status_code": response.status_code, "error": f"Failed to create issue: {response.status_code} - {response.text}"}
