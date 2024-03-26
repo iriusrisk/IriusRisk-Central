@@ -2,9 +2,12 @@ import os
 import subprocess
 
 class Reception:
-    print("")
     def __init__(self):
-        self.menu = ["Main Menu:", "", "1. Get Project List", "2. Export IR Project Status","9. Exit"]
+        self.menu = ["Main Menu:", "",
+                     "1. Get Project List",
+                     "2. Export IR Project Status",
+                     "8. User Access Report",
+                     "9. Exit"]
         self.menuSelection = 0
 
     def main_menu(self):
@@ -37,6 +40,10 @@ class Reception:
                 project_id = input("Enter the target Project ID: ")
                 print("")
                 self.execute_script('~/ir_api_util/getProject_CM_Status.py', [project_id])
+            elif choice == "8":
+                days = input("Enter the number of days for the User Access Report: ")
+                print("")
+                self.execute_script('~/ir_api_util/userAccessReport.py', [days])
             elif choice == "9":
                 print("Exiting")
                 break
