@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library ref="CWE-Top-25" name="CWE Top 25" enabled="true" revision="1" tags="">
+  <desc/>
+  <categoryComponents/>
+  <componentDefinitions/>
+  <supportedStandards/>
+  <riskPatterns>
+    <riskPattern uuid="bff1719d-06f6-43b4-a857-077b64c7988a" ref="CodeExecution" name="Code Execution" desc="">
+      <tags/>
+      <weaknesses>
+        <weakness ref="Improper-Neutralization-of-Special-Elements-used-in-a-Command-('Command-Injection')" name="Improper Neutralization of Special Elements used in a Command ('Command Injection')" state="0" impact="50">
+          <desc/>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </weakness>
+        <weakness ref="Improper-Neutralization-of-Special-Elements-used-in-an-OS-Command-('OS-Command-Injection')" name="Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')" state="0" impact="50">
+          <desc/>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </weakness>
+      </weaknesses>
+      <countermeasures>
+        <countermeasure ref="Detection_Methods" name="Detection Methods" platform="" cost="1" risk="0" state="Recommended" library="" source="MANUAL">
+          <desc>&lt;br&gt;METHOD:Automated Static Analysis // DESCRIPTION: :Automated static analysis, commonly referred to as Static Application Security Testing (SAST), can find some instances of this weakness by analyzing source code (or binary/compiled code) without having to execute it. Typically, this is done by building a model of data flow and control flow, then searching for potentially-vulnerable patterns that connect sources (origins of input) with sinks (destinations where the data interacts with external components, a lower layer such as the OS, etc.) // EFFECTIVENESS: High&lt;br&gt;</desc>
+          <implementations/>
+          <references/>
+          <standards/>
+          <customFields>
+            <customField ref="Compensating Controls" value=""/>
+            <customField ref="ext_it" value=""/>
+            <customField ref="milestone" value=""/>
+          </customFields>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </countermeasure>
+        <countermeasure ref="Potential_Mitigations" name="Potential Mitigations" platform="" cost="1" risk="0" state="Recommended" library="" source="MANUAL">
+          <desc>&lt;br&gt;PHASE:Architecture and Design // DESCRIPTION: :If at all possible, use library calls rather than external processes to recreate the desired functionality.&lt;br&gt;PHASE:Implementation // DESCRIPTION: :If possible, ensure that all external commands called from the program are statically created.&lt;br&gt;PHASE:Implementation // STRATEGY:Input Validation // DESCRIPTION: :Assume all input is malicious. Use an accept known good input validation strategy, i.e., use a list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, boat may be syntactically valid because it only contains alphanumeric characters, but it is not valid if the input is only expected to contain colors such as red or blue. Do not rely exclusively on looking for malicious or malformed inputs. This is likely to miss at least one undesirable input, especially if the code's environment changes. This can give attackers enough room to bypass the intended validation. However, denylists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright.&lt;br&gt;PHASE:Operation // DESCRIPTION: :Run time: Run time policy enforcement may be used in an allowlist fashion to prevent use of any non-sanctioned commands.&lt;br&gt;PHASE:System Configuration // DESCRIPTION: :Assign permissions that prevent the user from accessing/opening privileged files.&lt;br&gt;</desc>
+          <implementations/>
+          <references/>
+          <standards/>
+          <customFields>
+            <customField ref="Compensating Controls" value=""/>
+            <customField ref="ext_it" value=""/>
+            <customField ref="milestone" value=""/>
+          </customFields>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </countermeasure>
+      </countermeasures>
+      <usecases>
+        <usecase ref="Tampering" name="Tampering" desc="" library="">
+          <threats>
+            <threat ref="Command-Injection-Attacks" name="Command Injection Attacks" state="Expose" source="MANUAL" library="">
+              <desc>Attackers could inject malicious commands into system commands executed by the application, leading to unauthorized access, data leakage, or system compromise.&lt;br&gt;&lt;br&gt;SCOPE:Integrity&lt;br&gt;SCOPE:Confidentiality&lt;br&gt;SCOPE:Availability // IMPACT:Execute Unauthorized Code or Commands // NOTE:If a malicious user injects a character (such as a semi-colon) that delimits the end of one command and the beginning of another, it may be possible to then insert an entirely new and unrelated command that was not intended to be executed.&lt;br&gt;</desc>
+              <riskRating confidentiality="75" integrity="75" availability="75" easeOfExploitation="25"/>
+              <references/>
+              <weaknesses>
+                <weakness ref="Improper-Neutralization-of-Special-Elements-used-in-a-Command-('Command-Injection')">
+                  <countermeasures>
+                    <countermeasure ref="Detection_Methods" mitigation="100"/>
+                    <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+                  </countermeasures>
+                </weakness>
+              </weaknesses>
+              <countermeasures>
+                <countermeasure ref="Detection_Methods" mitigation="100"/>
+                <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+              </countermeasures>
+              <customFields>
+                <customField ref="Attack Complexity" value=""/>
+                <customField ref="Attack Vector" value=""/>
+                <customField ref="CFMEA-ID" value=""/>
+                <customField ref="Mitre" value=""/>
+                <customField ref="Privileges Required" value=""/>
+                <customField ref="Records" value=""/>
+                <customField ref="STRIDE" value=""/>
+                <customField ref="User Interaction" value=""/>
+                <customField ref="calc" value=""/>
+                <customField ref="stride2" value=""/>
+                <customField ref="value3" value=""/>
+                <customField ref="value4" value=""/>
+              </customFields>
+            </threat>
+            <threat ref="Operating-System-Command-Injection" name="Operating System Command Injection" state="Expose" source="MANUAL" library="">
+              <desc>Attackers could inject malicious commands into operating system commands executed by the application, allowing them to execute arbitrary commands on the underlying operating system with the privileges of the application.&lt;br&gt;&lt;br&gt;SCOPE:Confidentiality&lt;br&gt;SCOPE:Integrity&lt;br&gt;SCOPE:Availability&lt;br&gt;SCOPE:Non-Repudiation // IMPACT:Execute Unauthorized Code or Commands // IMPACT:DoS: Crash, Exit, or Restart // IMPACT:Read Files or Directories // IMPACT:Modify Files or Directories // IMPACT:Read Application Data // IMPACT:Modify Application Data // IMPACT:Hide Activities // NOTE:Attackers could execute unauthorized commands, which could then be used to disable the product, or read and modify data for which the attacker does not have permissions to access directly. Since the targeted application is directly executing the commands instead of the attacker, any malicious activities may appear to come from the application or the application's owner.&lt;br&gt;</desc>
+              <riskRating confidentiality="75" integrity="75" availability="75" easeOfExploitation="25"/>
+              <references/>
+              <weaknesses>
+                <weakness ref="Improper-Neutralization-of-Special-Elements-used-in-an-OS-Command-('OS-Command-Injection')">
+                  <countermeasures>
+                    <countermeasure ref="Detection_Methods" mitigation="100"/>
+                    <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+                  </countermeasures>
+                </weakness>
+              </weaknesses>
+              <countermeasures>
+                <countermeasure ref="Detection_Methods" mitigation="100"/>
+                <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+              </countermeasures>
+              <customFields>
+                <customField ref="Attack Complexity" value=""/>
+                <customField ref="Attack Vector" value=""/>
+                <customField ref="CFMEA-ID" value=""/>
+                <customField ref="Mitre" value=""/>
+                <customField ref="Privileges Required" value=""/>
+                <customField ref="Records" value=""/>
+                <customField ref="STRIDE" value=""/>
+                <customField ref="User Interaction" value=""/>
+                <customField ref="calc" value=""/>
+                <customField ref="stride2" value=""/>
+                <customField ref="value3" value=""/>
+                <customField ref="value4" value=""/>
+              </customFields>
+            </threat>
+          </threats>
+        </usecase>
+      </usecases>
+    </riskPattern>
+    <riskPattern uuid="b225852c-be5d-48eb-957d-e1db9772ab44" ref="Database" name="Database" desc="">
+      <tags/>
+      <weaknesses>
+        <weakness ref="Improper-Input-Validation" name="Improper Input Validation" state="0" impact="50">
+          <desc/>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </weakness>
+        <weakness ref="Improper-Neutralization-of-Special-Elements-used-in-an-SQL-Command-('SQL-Injection')" name="Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')" state="0" impact="50">
+          <desc/>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </weakness>
+      </weaknesses>
+      <countermeasures>
+        <countermeasure ref="Detection_Methods" name="Detection Methods" platform="" cost="1" risk="0" state="Recommended" library="" source="MANUAL">
+          <desc>&lt;br&gt;METHOD:Automated Static Analysis // DESCRIPTION: :Some instances of improper input validation can be detected using automated static analysis. A static analysis tool might allow the user to specify which application-specific methods or functions perform input validation; the tool might also have built-in knowledge of validation frameworks such as Struts. The tool may then suppress or de-prioritize any associated warnings. This allows the analyst to focus on areas of the software in which input validation does not appear to be present. Except in the cases described in the previous paragraph, automated static analysis might not be able to recognize when proper input validation is being performed, leading to false positives - i.e., warnings that do not have any security consequences or require any code changes.&lt;br&gt;METHOD:Manual Static Analysis // DESCRIPTION: :When custom input validation is required, such as when enforcing business rules, manual analysis is necessary to ensure that the validation is properly implemented.&lt;br&gt;METHOD:Fuzzing // DESCRIPTION: :Fuzzing techniques can be useful for detecting input validation errors. When unexpected inputs are provided to the software, the software should not crash or otherwise become unstable, and it should generate application-controlled error messages. If exceptions or interpreter-generated error messages occur, this indicates that the input was not detected and handled within the application logic itself.&lt;br&gt;METHOD:Automated Static Analysis - Binary or Bytecode // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Cost effective for partial coverage: Bytecode Weakness Analysis - including disassembler + source code weakness analysis Binary Weakness Analysis - including disassembler + source code weakness analysis // EFFECTIVENESS: SOAR Partial&lt;br&gt;METHOD:Manual Static Analysis - Binary or Bytecode // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Cost effective for partial coverage: Binary / Bytecode disassembler - then use manual analysis for vulnerabilities &amp; anomalies // EFFECTIVENESS: SOAR Partial&lt;br&gt;METHOD:Dynamic Analysis with Automated Results Interpretation // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Web Application Scanner Web Services Scanner Database Scanners // EFFECTIVENESS: High&lt;br&gt;METHOD:Dynamic Analysis with Manual Results Interpretation // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Fuzz Tester Framework-based Fuzzer Cost effective for partial coverage: Host Application Interface Scanner Monitored Virtual Environment - run potentially malicious code in sandbox / wrapper / virtual machine, see if it does anything suspicious // EFFECTIVENESS: High&lt;br&gt;METHOD:Manual Static Analysis - Source Code // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Focused Manual Spotcheck - Focused manual analysis of source Manual Source Code Review (not inspections) // EFFECTIVENESS: High&lt;br&gt;METHOD:Automated Static Analysis - Source Code // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Source code Weakness Analyzer Context-configured Source Code Weakness Analyzer // EFFECTIVENESS: High&lt;br&gt;METHOD:Architecture or Design Review // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Inspection (IEEE 1028 standard) (can apply to requirements, design, source code, etc.) Formal Methods / Correct-By-Construction Cost effective for partial coverage: Attack Modeling // EFFECTIVENESS: High&lt;br&gt;</desc>
+          <implementations/>
+          <references/>
+          <standards/>
+          <customFields>
+            <customField ref="Compensating Controls" value=""/>
+            <customField ref="ext_it" value=""/>
+            <customField ref="milestone" value=""/>
+          </customFields>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </countermeasure>
+        <countermeasure ref="Potential_Mitigations" name="Potential Mitigations" platform="" cost="1" risk="0" state="Recommended" library="" source="MANUAL">
+          <desc>&lt;p&gt;&lt;br&gt;&lt;strong&gt;PHASE&lt;/strong&gt;:Architecture and Design // STRATEGY:Attack Surface Reduction // DESCRIPTION: :Consider using language-theoretic security (LangSec) techniques that characterize inputs using a formal language and build recognizers for that language. This effectively requires parsing to be a distinct layer that effectively enforces a boundary between raw input and internal data representations, instead of allowing parser code to be scattered throughout the program, where it could be subject to errors or inconsistencies that create weaknesses. [REF-1109] [REF-1110] [REF-1111]&lt;br&gt;PHASE:Architecture and Design // STRATEGY:Libraries or Frameworks // DESCRIPTION: :Use an input validation framework such as Struts or the OWASP ESAPI Validation API. Note that using a framework does not automatically address all input validation problems; be mindful of weaknesses that could arise from misusing the framework itself (CWE-1173).&lt;br&gt;PHASE:Architecture and Design Implementation // STRATEGY:Attack Surface Reduction // DESCRIPTION: :Understand all the potential areas where untrusted inputs can enter your software: parameters or arguments, cookies, anything read from the network, environment variables, reverse DNS lookups, query results, request headers, URL components, e-mail, files, filenames, databases, and any external systems that provide data to the application. Remember that such inputs may be obtained indirectly through API calls.&lt;br&gt;PHASE:Implementation // STRATEGY:Input Validation // DESCRIPTION: :Assume all input is malicious. Use an accept known good input validation strategy, i.e., use a list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, boat may be syntactically valid because it only contains alphanumeric characters, but it is not valid if the input is only expected to contain colors such as red or blue. Do not rely exclusively on looking for malicious or malformed inputs. This is likely to miss at least one undesirable input, especially if the code's environment changes. This can give attackers enough room to bypass the intended validation. However, denylists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright. // EFFECTIVENESS: High&lt;br&gt;PHASE:Architecture and Design // DESCRIPTION: :For any security checks that are performed on the client side, ensure that these checks are duplicated on the server side, in order to avoid CWE-602. Attackers can bypass the client-side checks by modifying values after the checks have been performed, or by changing the client to remove the client-side checks entirely. Then, these modified values would be submitted to the server. Even though client-side checks provide minimal benefits with respect to server-side security, they are still useful. First, they can support intrusion detection. If the server receives input that should have been rejected by the client, then it may be an indication of an attack. Second, client-side error-checking can provide helpful feedback to the user about the expectations for valid input. Third, there may be a reduction in server-side processing time for accidental input errors, although this is typically a small savings.&lt;br&gt;PHASE:Implementation // DESCRIPTION: :When your application combines data from multiple sources, perform the validation after the sources have been combined. The individual data elements may pass the validation step but violate the intended restrictions after they have been combined.&lt;br&gt;PHASE:Implementation // DESCRIPTION: :Be especially careful to validate all input when invoking code that crosses language boundaries, such as from an interpreted language to native code. This could create an unexpected interaction between the language boundaries. Ensure that you are not violating any of the expectations of the language with which you are interfacing. For example, even though Java may not be susceptible to buffer overflows, providing a large argument in a call to native code might trigger an overflow.&lt;br&gt;PHASE:Implementation // DESCRIPTION: :Directly convert your input type into the expected data type, such as using a conversion function that translates a string into a number. After converting to the expected data type, ensure that the input's values fall within the expected range of allowable values and that multi-field consistencies are maintained.&lt;br&gt;PHASE:Implementation // DESCRIPTION: :Inputs should be decoded and canonicalized to the application's current internal representation before being validated (CWE-180, CWE-181). Make sure that your application does not inadvertently decode the same input twice (CWE-174). Such errors could be used to bypass allowlist schemes by introducing dangerous inputs after they have been checked. Use libraries such as the OWASP ESAPI Canonicalization control. Consider performing repeated canonicalization until your input does not change any more. This will avoid double-decoding and similar scenarios, but it might inadvertently modify inputs that are allowed to contain properly-encoded dangerous content.&lt;br&gt;PHASE:Implementation // DESCRIPTION: :When exchanging data between components, ensure that both components are using the same character encoding. Ensure that the proper encoding is applied at each interface. Explicitly set the encoding you are using whenever the protocol allows you to do so.&lt;br&gt;&amp;nbsp;&lt;/p&gt;</desc>
+          <implementations/>
+          <references/>
+          <standards/>
+          <customFields>
+            <customField ref="Compensating Controls" value=""/>
+            <customField ref="ext_it" value=""/>
+            <customField ref="milestone" value=""/>
+          </customFields>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields>
+              <customField ref="Documentation Links" value=""/>
+            </customFields>
+          </test>
+        </countermeasure>
+      </countermeasures>
+      <usecases>
+        <usecase ref="Tampering" name="Tampering" desc="" library="">
+          <threats>
+            <threat ref="Data-Injection-Attacks" name="Data Injection Attacks" state="Expose" source="MANUAL" library="">
+              <desc>Attackers could inject malicious code or unexpected data into the application, leading to various security vulnerabilities such as SQL injection, cross-site scripting (XSS), or command injection.&lt;br&gt;&lt;br&gt;SCOPE:Availability // IMPACT:DoS: Crash, Exit, or Restart // IMPACT:DoS: Resource Consumption (CPU) // IMPACT:DoS: Resource Consumption (Memory) // NOTE:An attacker could provide unexpected values and cause a program crash or excessive consumption of resources, such as memory and CPU.&lt;br&gt;SCOPE:Confidentiality // IMPACT:Read Memory // IMPACT:Read Files or Directories // NOTE:An attacker could read confidential data if they are able to control resource references.&lt;br&gt;SCOPE:Integrity&lt;br&gt;SCOPE:Confidentiality&lt;br&gt;SCOPE:Availability // IMPACT:Modify Memory // IMPACT:Execute Unauthorized Code or Commands // NOTE:An attacker could use malicious input to modify data or possibly alter control flow in unexpected ways, including arbitrary command execution.&lt;br&gt;</desc>
+              <riskRating confidentiality="75" integrity="75" availability="75" easeOfExploitation="25"/>
+              <references/>
+              <weaknesses>
+                <weakness ref="Improper-Input-Validation">
+                  <countermeasures>
+                    <countermeasure ref="Detection_Methods" mitigation="100"/>
+                    <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+                  </countermeasures>
+                </weakness>
+              </weaknesses>
+              <countermeasures>
+                <countermeasure ref="Detection_Methods" mitigation="100"/>
+                <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+              </countermeasures>
+              <customFields>
+                <customField ref="Attack Complexity" value=""/>
+                <customField ref="Attack Vector" value=""/>
+                <customField ref="CFMEA-ID" value=""/>
+                <customField ref="Mitre" value=""/>
+                <customField ref="Privileges Required" value=""/>
+                <customField ref="Records" value=""/>
+                <customField ref="STRIDE" value=""/>
+                <customField ref="User Interaction" value=""/>
+                <customField ref="calc" value=""/>
+                <customField ref="stride2" value=""/>
+                <customField ref="value3" value=""/>
+                <customField ref="value4" value=""/>
+              </customFields>
+            </threat>
+            <threat ref="SQL-Injection-Attacks" name="SQL Injection Attacks" state="Expose" source="MANUAL" library="">
+              <desc>Attackers could inject malicious SQL queries into input fields, potentially allowing them to access, modify, or delete data from the application's database, or execute arbitrary SQL commands.&lt;br&gt;&lt;br&gt;SCOPE:Confidentiality // IMPACT:Read Application Data // NOTE:Since SQL databases generally hold sensitive data, loss of confidentiality is a frequent problem with SQL injection vulnerabilities.&lt;br&gt;SCOPE:Access Control // IMPACT:Bypass Protection Mechanism // NOTE:If poor SQL commands are used to check user names and passwords, it may be possible to connect to a system as another user with no previous knowledge of the password.&lt;br&gt;SCOPE:Access Control // IMPACT:Bypass Protection Mechanism // NOTE:If authorization information is held in a SQL database, it may be possible to change this information through the successful exploitation of a SQL injection vulnerability.&lt;br&gt;SCOPE:Integrity // IMPACT:Modify Application Data // NOTE:Just as it may be possible to read sensitive information, it is also possible to make changes or even delete this information with a SQL injection attack.&lt;br&gt;</desc>
+              <riskRating confidentiality="75" integrity="75" availability="75" easeOfExploitation="25"/>
+              <references/>
+              <weaknesses>
+                <weakness ref="Improper-Neutralization-of-Special-Elements-used-in-an-SQL-Command-('SQL-Injection')">
+                  <countermeasures>
+                    <countermeasure ref="Detection_Methods" mitigation="100"/>
+                    <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+                  </countermeasures>
+                </weakness>
+              </weaknesses>
+              <countermeasures>
+                <countermeasure ref="Detection_Methods" mitigation="100"/>
+                <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+              </countermeasures>
+              <customFields>
+                <customField ref="Attack Complexity" value=""/>
+                <customField ref="Attack Vector" value=""/>
+                <customField ref="CFMEA-ID" value=""/>
+                <customField ref="Mitre" value=""/>
+                <customField ref="Privileges Required" value=""/>
+                <customField ref="Records" value=""/>
+                <customField ref="STRIDE" value=""/>
+                <customField ref="User Interaction" value=""/>
+                <customField ref="calc" value=""/>
+                <customField ref="stride2" value=""/>
+                <customField ref="value3" value=""/>
+                <customField ref="value4" value=""/>
+              </customFields>
+            </threat>
+          </threats>
+        </usecase>
+      </usecases>
+    </riskPattern>
+    <riskPattern uuid="e4325226-f46d-4dbc-ba86-9f3e808e3e4e" ref="FileSystem" name="File System" desc="">
+      <tags/>
+      <weaknesses>
+        <weakness ref="Improper-Limitation-of-a-Pathname-to-a-Restricted-Directory-('Path-Traversal')" name="Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')" state="0" impact="50">
+          <desc/>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </weakness>
+      </weaknesses>
+      <countermeasures>
+        <countermeasure ref="Detection_Methods" name="Detection Methods" platform="" cost="1" risk="0" state="Recommended" library="" source="MANUAL">
+          <desc>&lt;br&gt;METHOD:Automated Static Analysis // DESCRIPTION: :Automated techniques can find areas where path traversal weaknesses exist. However, tuning or customization may be required to remove or de-prioritize path-traversal problems that are only exploitable by the product's administrator - or other privileged users - and thus potentially valid behavior or, at worst, a bug instead of a vulnerability. // EFFECTIVENESS: High&lt;br&gt;METHOD:Manual Static Analysis // DESCRIPTION: :Manual white box techniques may be able to provide sufficient code coverage and reduction of false positives if all file access operations can be assessed within limited time constraints. // EFFECTIVENESS: High&lt;br&gt;METHOD:Automated Static Analysis - Binary or Bytecode // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Bytecode Weakness Analysis - including disassembler + source code weakness analysis Cost effective for partial coverage: Binary Weakness Analysis - including disassembler + source code weakness analysis // EFFECTIVENESS: High&lt;br&gt;METHOD:Manual Static Analysis - Binary or Bytecode // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Cost effective for partial coverage: Binary / Bytecode disassembler - then use manual analysis for vulnerabilities &amp; anomalies // EFFECTIVENESS: SOAR Partial&lt;br&gt;METHOD:Dynamic Analysis with Automated Results Interpretation // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Web Application Scanner Web Services Scanner Database Scanners // EFFECTIVENESS: High&lt;br&gt;METHOD:Dynamic Analysis with Manual Results Interpretation // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Fuzz Tester Framework-based Fuzzer // EFFECTIVENESS: High&lt;br&gt;METHOD:Manual Static Analysis - Source Code // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Manual Source Code Review (not inspections) Cost effective for partial coverage: Focused Manual Spotcheck - Focused manual analysis of source // EFFECTIVENESS: High&lt;br&gt;METHOD:Automated Static Analysis - Source Code // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Source code Weakness Analyzer Context-configured Source Code Weakness Analyzer // EFFECTIVENESS: High&lt;br&gt;METHOD:Architecture or Design Review // DESCRIPTION: :According to SOAR, the following detection techniques may be useful: Highly cost effective: Formal Methods / Correct-By-Construction Cost effective for partial coverage: Inspection (IEEE 1028 standard) (can apply to requirements, design, source code, etc.) // EFFECTIVENESS: High&lt;br&gt;</desc>
+          <implementations/>
+          <references/>
+          <standards/>
+          <customFields>
+            <customField ref="Compensating Controls" value=""/>
+            <customField ref="ext_it" value=""/>
+            <customField ref="milestone" value=""/>
+          </customFields>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </countermeasure>
+        <countermeasure ref="Potential_Mitigations" name="Potential Mitigations" platform="" cost="1" risk="0" state="Recommended" library="" source="MANUAL">
+          <desc>&lt;br&gt;PHASE:Implementation // STRATEGY:Input Validation // DESCRIPTION: :Assume all input is malicious. Use an accept known good input validation strategy, i.e., use a list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, boat may be syntactically valid because it only contains alphanumeric characters, but it is not valid if the input is only expected to contain colors such as red or blue. Do not rely exclusively on looking for malicious or malformed inputs. This is likely to miss at least one undesirable input, especially if the code's environment changes. This can give attackers enough room to bypass the intended validation. However, denylists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright. When validating filenames, use stringent allowlists that limit the character set to be used. If feasible, only allow a single . character in the filename to avoid weaknesses such as CWE-23, and exclude directory separators such as / to avoid CWE-36. Use a list of allowable file extensions, which will help to avoid CWE-434. Do not rely exclusively on a filtering mechanism that removes potentially dangerous characters. This is equivalent to a denylist, which may be incomplete (CWE-184). For example, filtering / is insufficient protection if the filesystem also supports the use of as a directory separator. Another possible error could occur when the filtering is applied in a way that still produces dangerous data (CWE-182). For example, if ../ sequences are removed from the .../...// string in a sequential fashion, two instances of ../ would be removed from the original string, but the remaining characters would still form the ../ string.&lt;br&gt;PHASE:Architecture and Design // DESCRIPTION: :For any security checks that are performed on the client side, ensure that these checks are duplicated on the server side, in order to avoid CWE-602. Attackers can bypass the client-side checks by modifying values after the checks have been performed, or by changing the client to remove the client-side checks entirely. Then, these modified values would be submitted to the server.&lt;br&gt;PHASE:Implementation // STRATEGY:Input Validation // DESCRIPTION: :Inputs should be decoded and canonicalized to the application's current internal representation before being validated (CWE-180). Make sure that the application does not decode the same input twice (CWE-174). Such errors could be used to bypass allowlist validation schemes by introducing dangerous inputs after they have been checked. Use a built-in path canonicalization function (such as realpath() in C) that produces the canonical version of the pathname, which effectively removes .. sequences and symbolic links (CWE-23, CWE-59). This includes: realpath() in C getCanonicalPath() in Java GetFullPath() in ASP.NET realpath() or abs_path() in Perl realpath() in PHP&lt;br&gt;PHASE:Architecture and Design // STRATEGY:Libraries or Frameworks // DESCRIPTION: :Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid.&lt;br&gt;PHASE:Operation // STRATEGY:Firewall // DESCRIPTION: :Use an application firewall that can detect attacks against this weakness. It can be beneficial in cases in which the code cannot be fixed (because it is controlled by a third party), as an emergency prevention measure while more comprehensive software assurance measures are applied, or to provide defense in depth. // EFFECTIVENESS: Moderate&lt;br&gt;PHASE:Architecture and Design Operation // STRATEGY:Environment Hardening // DESCRIPTION: :Run your code using the lowest privileges that are required to accomplish the necessary tasks [REF-76]. If possible, create isolated accounts with limited privileges that are only used for a single task. That way, a successful attack will not immediately give the attacker access to the rest of the software or its environment. For example, database applications rarely need to run as the database administrator, especially in day-to-day operations.&lt;br&gt;PHASE:Architecture and Design // STRATEGY:Enforcement by Conversion // DESCRIPTION: :When the set of acceptable objects, such as filenames or URLs, is limited or known, create a mapping from a set of fixed input values (such as numeric IDs) to the actual filenames or URLs, and reject all other inputs. For example, ID 1 could map to inbox.txt and ID 2 could map to profile.txt. Features such as the ESAPI AccessReferenceMap [REF-185] provide this capability.&lt;br&gt;PHASE:Architecture and Design Operation // STRATEGY:Sandbox or Jail // DESCRIPTION: :Run the code in a jail or similar sandbox environment that enforces strict boundaries between the process and the operating system. This may effectively restrict which files can be accessed in a particular directory or which commands can be executed by the software. OS-level examples include the Unix chroot jail, AppArmor, and SELinux. In general, managed code may provide some protection. For example, java.io.FilePermission in the Java SecurityManager allows the software to specify restrictions on file operations. This may not be a feasible solution, and it only limits the impact to the operating system; the rest of the application may still be subject to compromise. Be careful to avoid CWE-243 and other weaknesses related to jails. // EFFECTIVENESS: Limited&lt;br&gt;PHASE:Architecture and Design Operation // STRATEGY:Attack Surface Reduction // DESCRIPTION: :Store library, include, and utility files outside of the web document root, if possible. Otherwise, store them in a separate directory and use the web server's access control capabilities to prevent attackers from directly requesting them. One common practice is to define a fixed constant in each calling program, then check for the existence of the constant in the library/include file; if the constant does not exist, then the file was directly requested, and it can exit immediately. This significantly reduces the chance of an attacker being able to bypass any protection mechanisms that are in the base program but not in the include files. It will also reduce the attack surface.&lt;br&gt;PHASE:Implementation // DESCRIPTION: :Ensure that error messages only contain minimal details that are useful to the intended audience and no one else. The messages need to strike the balance between being too cryptic (which can confuse users) or being too detailed (which may reveal more than intended). The messages should not reveal the methods that were used to determine the error. Attackers can use detailed information to refine or optimize their original attack, thereby increasing their chances of success. If errors must be captured in some detail, record them in log messages, but consider what could occur if the log messages can be viewed by attackers. Highly sensitive information such as passwords should never be saved to log files. Avoid inconsistent messaging that might accidentally tip off an attacker about internal state, such as whether a user account exists or not. In the context of path traversal, error messages which disclose path information can help attackers craft the appropriate attack strings to move through the file system hierarchy.&lt;br&gt;PHASE:Operation Implementation // STRATEGY:Environment Hardening // DESCRIPTION: :When using PHP, configure the application so that it does not use register_globals. During implementation, develop the application so that it does not rely on this feature, but be wary of implementing a register_globals emulation that is subject to weaknesses such as CWE-95, CWE-621, and similar issues.&lt;br&gt;</desc>
+          <implementations/>
+          <references/>
+          <standards/>
+          <customFields>
+            <customField ref="Compensating Controls" value=""/>
+            <customField ref="ext_it" value=""/>
+            <customField ref="milestone" value=""/>
+          </customFields>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </countermeasure>
+      </countermeasures>
+      <usecases>
+        <usecase ref="Information-Disclosure" name="Information Disclosure" desc="" library="">
+          <threats>
+            <threat ref="Directory-Traversal-Attacks" name="Directory Traversal Attacks" state="Expose" source="MANUAL" library="">
+              <desc>Attackers could manipulate file paths to access files and directories outside of the intended directory, potentially exposing sensitive information or executing unauthorized actions on the system.&lt;br&gt;&lt;br&gt;SCOPE:Integrity&lt;br&gt;SCOPE:Confidentiality&lt;br&gt;SCOPE:Availability // IMPACT:Execute Unauthorized Code or Commands // NOTE:The attacker may be able to create or overwrite critical files that are used to execute code, such as programs or libraries.&lt;br&gt;SCOPE:Integrity // IMPACT:Modify Files or Directories // NOTE:The attacker may be able to overwrite or create critical files, such as programs, libraries, or important data. If the targeted file is used for a security mechanism, then the attacker may be able to bypass that mechanism. For example, appending a new account at the end of a password file may allow an attacker to bypass authentication.&lt;br&gt;SCOPE:Confidentiality // IMPACT:Read Files or Directories // NOTE:The attacker may be able read the contents of unexpected files and expose sensitive data. If the targeted file is used for a security mechanism, then the attacker may be able to bypass that mechanism. For example, by reading a password file, the attacker could conduct brute force password guessing attacks in order to break into an account on the system.&lt;br&gt;SCOPE:Availability // IMPACT:DoS: Crash, Exit, or Restart // NOTE:The attacker may be able to overwrite, delete, or corrupt unexpected critical files such as programs, libraries, or important data. This may prevent the product from working at all and in the case of a protection mechanisms such as authentication, it has the potential to lockout every user of the product.&lt;br&gt;</desc>
+              <riskRating confidentiality="75" integrity="75" availability="75" easeOfExploitation="25"/>
+              <references/>
+              <weaknesses>
+                <weakness ref="Improper-Limitation-of-a-Pathname-to-a-Restricted-Directory-('Path-Traversal')">
+                  <countermeasures>
+                    <countermeasure ref="Detection_Methods" mitigation="100"/>
+                    <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+                  </countermeasures>
+                </weakness>
+              </weaknesses>
+              <countermeasures>
+                <countermeasure ref="Detection_Methods" mitigation="100"/>
+                <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+              </countermeasures>
+              <customFields>
+                <customField ref="Attack Complexity" value=""/>
+                <customField ref="Attack Vector" value=""/>
+                <customField ref="CFMEA-ID" value=""/>
+                <customField ref="Mitre" value=""/>
+                <customField ref="Privileges Required" value=""/>
+                <customField ref="Records" value=""/>
+                <customField ref="STRIDE" value=""/>
+                <customField ref="User Interaction" value=""/>
+                <customField ref="calc" value=""/>
+                <customField ref="stride2" value=""/>
+                <customField ref="value3" value=""/>
+                <customField ref="value4" value=""/>
+              </customFields>
+            </threat>
+          </threats>
+        </usecase>
+      </usecases>
+    </riskPattern>
+    <riskPattern uuid="fcbd45ec-d06d-42e6-a7aa-5bc81147bba2" ref="WebApplication" name="Web Application" desc="">
+      <tags/>
+      <weaknesses>
+        <weakness ref="Improper-Neutralization-of-Input-During-Web-Page-Generation-('Cross-site-Scripting')" name="Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')" state="0" impact="50">
+          <desc/>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </weakness>
+      </weaknesses>
+      <countermeasures>
+        <countermeasure ref="Detection_Methods" name="Detection Methods" platform="" cost="1" risk="0" state="Recommended" library="" source="MANUAL">
+          <desc>&lt;br&gt;METHOD:Automated Static Analysis // DESCRIPTION: :Use automated static analysis tools that target this type of weakness. Many modern techniques use data flow analysis to minimize the number of false positives. This is not a perfect solution, since 100% accuracy and coverage are not feasible, especially when multiple components are involved. // EFFECTIVENESS: Moderate&lt;br&gt;METHOD:Black Box // DESCRIPTION: :Use the XSS Cheat Sheet [REF-714] or automated test-generation tools to help launch a wide variety of attacks against your web application. The Cheat Sheet contains many subtle XSS variations that are specifically targeted against weak XSS defenses. // EFFECTIVENESS: Moderate&lt;br&gt;</desc>
+          <implementations/>
+          <references/>
+          <standards/>
+          <customFields>
+            <customField ref="Compensating Controls" value=""/>
+            <customField ref="ext_it" value=""/>
+            <customField ref="milestone" value=""/>
+          </customFields>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </countermeasure>
+        <countermeasure ref="Potential_Mitigations" name="Potential Mitigations" platform="" cost="1" risk="0" state="Recommended" library="" source="MANUAL">
+          <desc>&lt;br&gt;PHASE:Architecture and Design // STRATEGY:Libraries or Frameworks // DESCRIPTION: :Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid. Examples of libraries and frameworks that make it easier to generate properly encoded output include Microsoft's Anti-XSS library, the OWASP ESAPI Encoding module, and Apache Wicket.&lt;br&gt;PHASE:Implementation Architecture and Design // DESCRIPTION: :Understand the context in which your data will be used and the encoding that will be expected. This is especially important when transmitting data between different components, or when generating outputs that can contain multiple encodings at the same time, such as web pages or multi-part mail messages. Study all expected communication protocols and data representations to determine the required encoding strategies. For any data that will be output to another web page, especially any data that was received from external inputs, use the appropriate encoding on all non-alphanumeric characters. Parts of the same output document may require different encodings, which will vary depending on whether the output is in the: HTML body Element attributes (such as src=XYZ) URIs JavaScript sections Cascading Style Sheets and style property etc. Note that HTML Entity Encoding is only appropriate for the HTML body. Consult the XSS Prevention Cheat Sheet [REF-724] for more details on the types of encoding and escaping that are needed.&lt;br&gt;PHASE:Architecture and Design Implementation // STRATEGY:Attack Surface Reduction // DESCRIPTION: :Understand all the potential areas where untrusted inputs can enter your software: parameters or arguments, cookies, anything read from the network, environment variables, reverse DNS lookups, query results, request headers, URL components, e-mail, files, filenames, databases, and any external systems that provide data to the application. Remember that such inputs may be obtained indirectly through API calls. // EFFECTIVENESS: Limited&lt;br&gt;PHASE:Architecture and Design // DESCRIPTION: :For any security checks that are performed on the client side, ensure that these checks are duplicated on the server side, in order to avoid CWE-602. Attackers can bypass the client-side checks by modifying values after the checks have been performed, or by changing the client to remove the client-side checks entirely. Then, these modified values would be submitted to the server.&lt;br&gt;PHASE:Architecture and Design // STRATEGY:Parameterization // DESCRIPTION: :If available, use structured mechanisms that automatically enforce the separation between data and code. These mechanisms may be able to provide the relevant quoting, encoding, and validation automatically, instead of relying on the developer to provide this capability at every point where output is generated.&lt;br&gt;PHASE:Implementation // STRATEGY:Output Encoding // DESCRIPTION: :Use and specify an output encoding that can be handled by the downstream component that is reading the output. Common encodings include ISO-8859-1, UTF-7, and UTF-8. When an encoding is not specified, a downstream component may choose a different encoding, either by assuming a default encoding or automatically inferring which encoding is being used, which can be erroneous. When the encodings are inconsistent, the downstream component might treat some character or byte sequences as special, even if they are not special in the original encoding. Attackers might then be able to exploit this discrepancy and conduct injection attacks; they even might be able to bypass protection mechanisms that assume the original encoding is also being used by the downstream component. The problem of inconsistent output encodings often arises in web pages. If an encoding is not specified in an HTTP header, web browsers often guess about which encoding is being used. This can open up the browser to subtle XSS attacks.&lt;br&gt;PHASE:Implementation // DESCRIPTION: :With Struts, write all data from form beans with the bean's filter attribute set to true.&lt;br&gt;PHASE:Implementation // STRATEGY:Attack Surface Reduction // DESCRIPTION: :To help mitigate XSS attacks against the user's session cookie, set the session cookie to be HttpOnly. In browsers that support the HttpOnly feature (such as more recent versions of Internet Explorer and Firefox), this attribute can prevent the user's session cookie from being accessible to malicious client-side scripts that use document.cookie. This is not a complete solution, since HttpOnly is not supported by all browsers. More importantly, XMLHTTPRequest and other powerful browser technologies provide read access to HTTP headers, including the Set-Cookie header in which the HttpOnly flag is set. // EFFECTIVENESS: Defense in Depth&lt;br&gt;PHASE:Implementation // STRATEGY:Input Validation // DESCRIPTION: :Assume all input is malicious. Use an accept known good input validation strategy, i.e., use a list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, boat may be syntactically valid because it only contains alphanumeric characters, but it is not valid if the input is only expected to contain colors such as red or blue. Do not rely exclusively on looking for malicious or malformed inputs. This is likely to miss at least one undesirable input, especially if the code's environment changes. This can give attackers enough room to bypass the intended validation. However, denylists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright. When dynamically constructing web pages, use stringent allowlists that limit the character set based on the expected value of the parameter in the request. All input should be validated and cleansed, not just parameters that the user is supposed to specify, but all data in the request, including hidden fields, cookies, headers, the URL itself, and so forth. A common mistake that leads to continuing XSS vulnerabilities is to validate only fields that are expected to be redisplayed by the site. It is common to see data from the request that is reflected by the application server or the application that the development team did not anticipate. Also, a field that is not currently reflected may be used by a future developer. Therefore, validating ALL parts of the HTTP request is recommended. Note that proper output encoding, escaping, and quoting is the most effective solution for preventing XSS, although input validation may provide some defense-in-depth. This is because it effectively limits what will appear in output. Input validation will not always prevent XSS, especially if you are required to support free-form text fields that could contain arbitrary characters. For example, in a chat application, the heart emoticon (&lt;3) would likely pass the validation step, since it is commonly used. However, it cannot be directly inserted into the web page because it contains the &lt; character, which would need to be escaped or otherwise handled. In this case, stripping the &lt; might reduce the risk of XSS, but it would produce incorrect behavior because the emoticon would not be recorded. This might seem to be a minor inconvenience, but it would be more important in a mathematical forum that wants to represent inequalities. Even if you make a mistake in your validation (such as forgetting one out of 100 input fields), appropriate encoding is still likely to protect you from injection-based attacks. As long as it is not done in isolation, input validation is still a useful technique, since it may significantly reduce your attack surface, allow you to detect some attacks, and provide other security benefits that proper encoding does not address. Ensure that you perform input validation at well-defined interfaces within the application. This will help protect the application even if a component is reused or moved elsewhere.&lt;br&gt;PHASE:Architecture and Design // STRATEGY:Enforcement by Conversion // DESCRIPTION: :When the set of acceptable objects, such as filenames or URLs, is limited or known, create a mapping from a set of fixed input values (such as numeric IDs) to the actual filenames or URLs, and reject all other inputs.&lt;br&gt;PHASE:Operation // STRATEGY:Firewall // DESCRIPTION: :Use an application firewall that can detect attacks against this weakness. It can be beneficial in cases in which the code cannot be fixed (because it is controlled by a third party), as an emergency prevention measure while more comprehensive software assurance measures are applied, or to provide defense in depth. // EFFECTIVENESS: Moderate&lt;br&gt;PHASE:Operation Implementation // STRATEGY:Environment Hardening // DESCRIPTION: :When using PHP, configure the application so that it does not use register_globals. During implementation, develop the application so that it does not rely on this feature, but be wary of implementing a register_globals emulation that is subject to weaknesses such as CWE-95, CWE-621, and similar issues.&lt;br&gt;</desc>
+          <implementations/>
+          <references/>
+          <standards/>
+          <customFields>
+            <customField ref="Compensating Controls" value=""/>
+            <customField ref="ext_it" value=""/>
+            <customField ref="milestone" value=""/>
+          </customFields>
+          <test expiryDate="" expiryPeriod="0">
+            <steps/>
+            <notes/>
+            <source filename="" args="" enabled="true">
+              <output/>
+            </source>
+            <references/>
+            <customFields/>
+          </test>
+        </countermeasure>
+      </countermeasures>
+      <usecases>
+        <usecase ref="Tampering" name="Tampering" desc="" library="">
+          <threats>
+            <threat ref="Cross-site-Scripting-(XSS)-Attacks" name="Cross-site Scripting (XSS) Attacks" state="Expose" source="MANUAL" library="">
+              <desc>Attackers could inject malicious scripts into web pages viewed by other users, potentially stealing session cookies, redirecting users to malicious websites, or performing other malicious actions on behalf of the user.&lt;br&gt;&lt;br&gt;SCOPE:Access Control&lt;br&gt;SCOPE:Confidentiality // IMPACT:Bypass Protection Mechanism // IMPACT:Read Application Data // NOTE:The most common attack performed with cross-site scripting involves the disclosure of information stored in user cookies. Typically, a malicious user will craft a client-side script, which -- when parsed by a web browser -- performs some activity (such as sending all site cookies to a given E-mail address). This script will be loaded and run by each user visiting the web site. Since the site requesting to run the script has access to the cookies in question, the malicious script does also.&lt;br&gt;SCOPE:Integrity&lt;br&gt;SCOPE:Confidentiality&lt;br&gt;SCOPE:Availability // IMPACT:Execute Unauthorized Code or Commands // NOTE:In some circumstances it may be possible to run arbitrary code on a victim's computer when cross-site scripting is combined with other flaws.&lt;br&gt;SCOPE:Confidentiality&lt;br&gt;SCOPE:Integrity&lt;br&gt;SCOPE:Availability&lt;br&gt;SCOPE:Access Control // IMPACT:Execute Unauthorized Code or Commands // IMPACT:Bypass Protection Mechanism // IMPACT:Read Application Data // NOTE:The consequence of an XSS attack is the same regardless of whether it is stored or reflected. The difference is in how the payload arrives at the server. XSS can cause a variety of problems for the end user that range in severity from an annoyance to complete account compromise. Some cross-site scripting vulnerabilities can be exploited to manipulate or steal cookies, create requests that can be mistaken for those of a valid user, compromise confidential information, or execute malicious code on the end user systems for a variety of nefarious purposes. Other damaging attacks include the disclosure of end user files, installation of Trojan horse programs, redirecting the user to some other page or site, running Active X controls (under Microsoft Internet Explorer) from sites that a user perceives as trustworthy, and modifying presentation of content.&lt;br&gt;</desc>
+              <riskRating confidentiality="75" integrity="75" availability="75" easeOfExploitation="25"/>
+              <references/>
+              <weaknesses>
+                <weakness ref="Improper-Neutralization-of-Input-During-Web-Page-Generation-('Cross-site-Scripting')">
+                  <countermeasures>
+                    <countermeasure ref="Detection_Methods" mitigation="100"/>
+                    <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+                  </countermeasures>
+                </weakness>
+              </weaknesses>
+              <countermeasures>
+                <countermeasure ref="Detection_Methods" mitigation="100"/>
+                <countermeasure ref="Potential_Mitigations" mitigation="100"/>
+              </countermeasures>
+              <customFields>
+                <customField ref="Attack Complexity" value=""/>
+                <customField ref="Attack Vector" value=""/>
+                <customField ref="CFMEA-ID" value=""/>
+                <customField ref="Mitre" value=""/>
+                <customField ref="Privileges Required" value=""/>
+                <customField ref="Records" value=""/>
+                <customField ref="STRIDE" value=""/>
+                <customField ref="User Interaction" value=""/>
+                <customField ref="calc" value=""/>
+                <customField ref="stride2" value=""/>
+                <customField ref="value3" value=""/>
+                <customField ref="value4" value=""/>
+              </customFields>
+            </threat>
+          </threats>
+        </usecase>
+      </usecases>
+    </riskPattern>
+  </riskPatterns>
+  <rules/>
+</library>
