@@ -18,7 +18,15 @@ The purpose of this script is to call all countermeasures from all libraries sto
 pip3 install -r requirements.txt
 
 ```
+If those requirements are not being imported into your environment, you can install them manually
+```python
 
+pip3 install pandas
+pip3 install requests
+pip3 install tqdm
+pip3 install bs4
+pip3 install openpyxl
+```
 
 # Execution
 
