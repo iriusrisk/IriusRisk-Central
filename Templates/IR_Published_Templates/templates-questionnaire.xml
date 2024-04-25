@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library ref="templates-questionnaire" name="Templates Questionnaire" enabled="true" revision="1" tags="">
+  <desc/>
+  <categoryComponents/>
+  <componentDefinitions/>
+  <supportedStandards/>
+  <riskPatterns/>
+  <rules>
+    <rule name="* Templates Questionnaire" module="main" generatedByGui="true">
+      <conditions/>
+      <actions>
+        <action project="" value="template-selection_::_Templates_::_Jumpstart your project with our expertly designed templates. Simply choose one that matches what you are threat modeling today._::_1_::_true_::_true_::_" name="INSERT_QUESTION_GROUP"/>
+      </actions>
+    </rule>
+    <rule name="** Templates Choices" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION_GROUP_EXISTS" field="id" value="template-selection_::_group"/>
+      </conditions>
+      <actions>
+        <action project="" value="ai-ml-template_::_1. AI/ML-Powered Analytics Platform_::_Incorporates machine learning models for predictive analytics, data processing, and decision-making, necessitating secure data handling, model training, and inference processes to protect sensitive information and ensure the integrity of the AI/ML pipeline." name="INSERT_QUESTION"/>
+        <action project="" value="mobile-banking-template_::_2. Mobile Banking Application_::_Involves handling sensitive financial transactions and personal data, requiring stringent security protocols." name="INSERT_QUESTION"/>
+        <action project="" value="three-tier-web-application-template_::_3. Three-Tier Web Application_::_A common architecture that separates presentation, application logic, and data storage, prevalent in enterprise systems." name="INSERT_QUESTION"/>
+        <action project="" value="cloud-storage-service-aws-template_::_4. Cloud Storage Service AWS_::_Involves storing, accessing, and managing data over the cloud, necessitating secure data transmission and storage." name="INSERT_QUESTION"/>
+        <action project="" value="cloud-storage-service-azure-template_::_5. Cloud Storage Service Azure_::_Involves storing, accessing, and managing data over the cloud, necessitating secure data transmission and storage." name="INSERT_QUESTION"/>
+        <action project="" value="cloud-storage-service-gcp-template_::_6. Cloud Storage Service GCP_::_Involves storing, accessing, and managing data over the cloud, necessitating secure data transmission and storage." name="INSERT_QUESTION"/>
+        <action project="" value="e-commerce-platform-template_::_7. E-Commerce Platform_::_Manages online sales, customer data, payment processing, and often integrates with other services like inventory or shipping." name="INSERT_QUESTION"/>
+        <action project="" value="iot-device-management-template_::_8. IoT (Internet of Things) Device Management_::_Covers applications managing IoT devices, including firmware updates, data collection, and device monitoring." name="INSERT_QUESTION"/>
+        <action project="" value="empty-canvas_::_9. Start with an empty canvas_::_Skip the template and start from scratch." name="INSERT_QUESTION"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - AI ML" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="ai-ml-template"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-ai-ml-powered-analytics-platform-template" value="iriusrisk-ai-ml-powered-analytics-platform-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - Cloud Storage Service AWS" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="cloud-storage-service-aws-template"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-cloud-storage-service-aws-template" value="iriusrisk-cloud-storage-service-aws-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - Cloud Storage Service Azure" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="cloud-storage-service-azure-template"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-cloud-storage-service-azure-template" value="iriusrisk-cloud-storage-service-azure-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - Cloud Storage Service GCP" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="cloud-storage-service-gcp-template"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-cloud-storage-service-gcp-template" value="iriusrisk-cloud-storage-service-gcp-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - E-Commerce Platform" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="e-commerce-platform-template"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-e-commerce-platform-template" value="iriusrisk-e-commerce-platform-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - Empty Canvas" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="empty-canvas"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-empty-canvas-template" value="iriusrisk-empty-canvas-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - IoT (Internet of Things) Device Management" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="iot-device-management-template"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-iot-internet-of-things-device-management-template" value="iriusrisk-iot-internet-of-things-device-management-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - Mobile Banking" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="mobile-banking-template"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-mobile-banking-application-template" value="iriusrisk-mobile-banking-application-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+    <rule name="*** Template Selected - Three-Tier Web Application" module="main" generatedByGui="true">
+      <conditions>
+        <condition name="CONDITION_QUESTION" field="id" value="three-tier-web-application-template"/>
+      </conditions>
+      <actions>
+        <action project="iriusrisk-three-tier-web-application-template" value="iriusrisk-three-tier-web-application-template" name="IMPORT_TEMPLATE"/>
+      </actions>
+    </rule>
+  </rules>
+</library>
