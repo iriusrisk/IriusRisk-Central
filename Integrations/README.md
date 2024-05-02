@@ -13,4 +13,5 @@ Here you will find anything extending IriusRisk functionality via its APIs. This
 * Manage Compoonent Visibility: Manages visibility into full categories of components within the Objects > Components interface 
 * Output Project Threats: Outputs threats from a project 
 * BU - Transfers: Transfers business units from one tenant to another using the API.
-* All Projects Threats Report: Outputs threats from all projects where countermeasures are not in a recommended state into an output json file for import into a secondary tool. 
+* All Projects Threats Report: Outputs threats from all projects where countermeasures are not in a recommended state into an output json file for import into a secondary tool.
+* [StickyStandards](StickyStandards/README.md): Mark standards as being "sticky" at a project level. This causes the indicated standard(s) to be applied to any future changes to the project.
