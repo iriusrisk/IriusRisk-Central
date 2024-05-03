@@ -2,27 +2,39 @@
 
 The purpose of this script is to collect templates from a GitHub repo, download those locally to a local repo and then post those to the IriusRisk API. 
 
+
 # Installation
 
-Run the setup.py script to install the script dependencies
+Setup the virtual file and clone the GitHub environment
 
-```python
-python .\setup.py install
+```bash
+python3 -m venv env_name
+
+source env_name/bin/activate
+
+git clone https://github.com/IriusRisk/IriusRisk-Central.git
 ```
 
-Update the config.py file with the required variables: 
-```python
-# API URL and Token
-url = "https://insert_your_domain.iriusrisk.com/api/v2/templates/import"
-api_token = 'insert_your_api_token'
+Navigate to the Templates_Manager Folder
 
-# GitHub
-repo_url = "insert_your_repo_root_url"
-repo_sub_folder = "insert_your_sub_folder_if_needed"
+```bash
+cd Integrations/Templates_Manager
 ```
 
-# Execute the download and import of templates
+Install the dependencies for this script. 
 
 ```python
-python .\templates_manager.py 
+pip3 install -r requirements.txt
 ```
+
+# Execute the script and provide the neccessary arguments to run the script
+
+```python
+python3 templates_manager_v2.py --subdomain release --api_token <api_key>
+```
+This will perform the following actions - 
+1. Check if the repo has all of the templates and clone the IriusRisk repo containing the Templates if it does not
+2. If that repo already exists, it will attempt to update the local repo with any new templates
+3. It will post any template found to the templates endpoint through the API
+4. It will post any libraries found to the libraries endpoint through the API
+5. Status of the overall migration will be displayed
