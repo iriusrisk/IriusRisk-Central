@@ -24,7 +24,7 @@ cd Integrations/Templates_Manager
 Install the dependencies for this script. 
 
 ```python
-pip3 install -r requirements.txt
+pip install requests==2.31.0 GitPython==3.1.43 tqdm==4.66.2
 ```
 
 # Execute the script and provide the neccessary arguments to run the script
