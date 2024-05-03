@@ -12,6 +12,8 @@ python3 -m venv env_name
 
 source env_name/bin/activate
 
+cd env_name
+
 git clone https://github.com/IriusRisk/IriusRisk-Central.git
 ```
 
