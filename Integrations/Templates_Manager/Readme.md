@@ -5,7 +5,7 @@ The purpose of this script is to collect templates from a GitHub repo, download 
 
 # Installation
 
-Setup the virtual file and clone the GitHub environment
+Setup the virtual environment and clone the GitHub environment
 
 ```bash
 python3 -m venv env_name
