@@ -39,28 +39,23 @@ and nothing else. Details about a particular library can be parsed by passing in
 reference. If no reference is specified, then an overview of libraries comparing their 
 revision numbers will be output.
 
-options:
-  -h, --help            show this help message and exit
-  --l_key KEY           The API key for the 'left' instance being queried
-  --l_domain DOMAIN     The domain for the 'left' instance being queried
-  --l_port NUM          The port number for the 'left' instance; default: 443
-  --r_key KEY           The API key for the 'right' instance being queried
-  --r_domain DOMAIN     The domain for the 'right' instance being queried
-  --r_port NUM          The port number for the 'right' instance; default: 443
-  -l REF, --library REF
-                        The reference of the library to examine
-  -i, --ignore_identical
-                        Do not output contents of unchanged libraries
-  -d, --debug           Print extended information to stdout/stderr
-  -q, --quiet           Only print error messages to stdout
-  -o DEST, --output DEST
-                        Output results to the indicated file; default:
-                        'results.csv'
-  --proxy_port NUM      The proxy server port; required if --proxy_url
-                        specified
-  --proxy_url URL       The proxy server URL, if present
+### Options:
+    -h, --help             show this help message and exit
+    --l_key KEY            The API key for the 'left' instance being queried
+    --l_domain DOMAIN      The domain for the 'left' instance being queried
+    --l_port NUM           The port number for the 'left' instance; default: 443
+    --r_key KEY            The API key for the 'right' instance being queried
+    --r_domain DOMAIN      The domain for the 'right' instance being queried
+    --r_port NUM           The port number for the 'right' instance; default: 443
+    -l REF, --library REF  The reference of the library to examine
+    -i, --ignore_identical Do not output contents of unchanged libraries
+    -d, --debug            Print extended information to stdout/stderr
+    -q, --quiet            Only print error messages to stdout
+    -o DEST, --output DEST Output results to the indicated file; default: 'results.csv'
+    --proxy_port NUM       The proxy server port; required if --proxy_url specified
+    --proxy_url URL        The proxy server URL, if present
 
-OUTPUT:
+### Output:
 Output can be directed to stdout by passing the arguments '-o - -q'. The minus-sign 
 passed to the -o parameter indicates output to stdout, while -q ensures that no 
 spurious data is output via logs.
