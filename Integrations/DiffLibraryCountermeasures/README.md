@@ -6,21 +6,7 @@ the libraries, though individual libraries can also be selected.
 
 Output is a CSV file (tab delimited) limited to information about the countermeasures,
 specifically the differences between the "left" and "right" versions of the libraries. 
-The following columsn our output:
-
-* Library : The reference ID of the library
-* Risk Pattern : The risk pattern in which the countermeasure is contained
-* Countermeasure : The reference ID of the countermeasure
-* State : The relative state of the left and right countermeasures; one of
-    * NEW (in the right library but not the left)
-    * REMOVED (in the left library but not the right)
-    * CHANGED (differences between the two libraries)
-    * IDENTICAL (left and right versions are the same) 
-* Name : Human-readable name of the countermeasure
-* Description : The description
-* References : Any registered references
-* Test Steps : All the test steps for the countermeasure
-* The values associated with UDTs (if present)
+See below under "Output" for further information.
 
 ### Usage
 
