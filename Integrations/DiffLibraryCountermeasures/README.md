@@ -1,4 +1,4 @@
-## DiffLibraries program
+## DiffLibraryCountermeasures program
 
 This looks for differences between two versions of the same library, generally
 in two different IriusRisk tenants. By default it looks for differences in all
