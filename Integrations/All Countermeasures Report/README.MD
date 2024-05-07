@@ -33,7 +33,7 @@ cd Integrations/'All Countermeasures Report'/
   sub_domain = '{your_full_domain_minus_the_api_endpoint_data}' # for example https://demo.iriusrisk.com
 ```
 
-2. Install the required packages
+4. Install the required packages
 
 ```bash
 pip install -r requirements.txt
