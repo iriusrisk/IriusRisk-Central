@@ -36,7 +36,7 @@ def get_library_details(ref):
     }
 
     # Disable SSL certificate verification
-    response = requests.get(url, headers=headers, verify=False)
+    response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
         library_data = response.json()

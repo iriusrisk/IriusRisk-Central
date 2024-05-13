@@ -76,7 +76,7 @@ def get_project_details(ref):
         'api-token': config.api_token
     }
 
-    response = requests.get(url, headers=headers, verify=False)
+    response = requests.get(url, headers=headers)
     '''
     if response.status_code == 200:
         project_data = response.json()
