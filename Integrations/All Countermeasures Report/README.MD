@@ -4,28 +4,43 @@ The purpose of this script is to call all countermeasures from all libraries sto
 
 # Requirements
 
-1. Config file with the following values defined in the same directory: 
+1. Set up the virtual environment
+
+```bash
+python3 -m menv all-CM-Report
+```
+
+Activate the virtual environment
+```bash
+source all-CM-Report/bin/activate
+```
+
+2. Clone the repo into this environment
+
+```bash
+git clone https://github.com/IriusRisk/IriusRisk-Central.git
+```
+Navigate to the 'All Countermeasures Report'
+
+```bash
+cd Integrations/'All Countermeasures Report'/
+```
+
+3. Edit the config file with the following values defined in the same directory: 
 
 ```python
   api_key = '{your_api_key}'
   sub_domain = '{your_full_domain_minus_the_api_endpoint_data}' # for example https://demo.iriusrisk.com
 ```
 
-2. Install the required packages
+4. Install the required packages
 
-```python
-
-pip3 install -r requirements.txt
-
+```bash
+pip install -r requirements.txt
 ```
-If those requirements are not being imported into your environment, you can install them manually
-```python
 
-pip3 install pandas
-pip3 install requests
-pip3 install tqdm
-pip3 install bs4
-pip3 install openpyxl
+```bash
+pip install pandas requests tqdm bs4 openpyxl
 ```
 
 # Execution
@@ -34,7 +49,7 @@ Open the terminal, call the script
 
 Example: 
 
-```python
+```bash
    python3 get_library_details_v1.py
 ```
 
