@@ -13,3 +13,5 @@ Enabling sticky standards for a given environment requires running a Python-base
 available to that instance (or a subset), creates UDTs (custom fields) at the project level to facilitate, and
 imports a Rules library into the instance to create the architecture questionnaire and to apply and standards
 marked as being "sticky."
+
+Please find full instructions for enabling the sticky standards project [in our wiki](https://github.com/iriusrisk/IriusRisk-Central/wiki/Integration:-Sticky-Standards). If you find any problems with the project or have any suggestions, feel free to open a ticket in [our issues tracker](https://github.com/iriusrisk/IriusRisk-Central/issues).
