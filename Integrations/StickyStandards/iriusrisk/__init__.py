@@ -81,7 +81,7 @@ def _get_standards_from_instance(results, page):
     params = f"page={page}"
     r = do_get(("standards"), params=params)
     if (r.status_code != 200):
-        raise Exception(f"Error querying system for standards; server returned {r.status}")
+        raise Exception(f"Error querying system for standards: {r.reason} ({r.status_code})")
 
     j = r.json()
     for standard in j["_embedded"]["items"]:

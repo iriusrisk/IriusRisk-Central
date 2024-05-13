@@ -38,7 +38,7 @@ def get_sticky_standard_udts(fields = None, page = 0):
     params = f"filter='entity'='project'&page={page}"
     r = do_get("custom-fields", params)
     if r.status_code != 200:
-        raise Exception(f"Error retrieving current project fields: {r.status} ({r.reason})")
+        raise Exception(f"Error retrieving current project fields: {r.reason} ({r.status_code})")
 
     j = r.json()
     for udt in j["_embedded"]["items"]:
@@ -59,7 +59,7 @@ def delete_udt(ref, id):
     r = do_delete(("custom-fields", id))
     if r.status_code != 200:
         _log.error(f"Error deleting {ref} ({id})")
-        _log.error(f"{r.status}: {r.reason}")
+        _log.error(f"{r.reason} ({r.status_code})")
         return False
     
     return True

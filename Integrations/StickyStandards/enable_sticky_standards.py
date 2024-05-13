@@ -19,7 +19,7 @@ def get_library_id(lib_ref):
     params = f"filter='referenceId'='{lib_ref}'"
     r = do_get(("libraries"), params=params)
     if (r.status_code != 200):
-        raise Exception(f"Error querying system for libraries; server returned {r.status_code}")
+        raise Exception(f"Error querying system for libraries: {r.reason} ({r.status_code})")
 
     j = r.json()
     libraries = j["_embedded"]["items"]
@@ -46,7 +46,7 @@ def get_udt_group_id():
     params = "filter='name'='Sticky%20Standards'"
     r = do_get("custom-fields/groups", params)
     if r.status_code != 200:
-        raise Exception(f"Error querying for UDT group (HTTP code {r.status_code})")
+        raise Exception(f"Error querying for UDT group: {r.reason} ({r.status_code})")
 
     j = r.json()
     if len(j["_embedded"]["items"]) > 0:
@@ -58,7 +58,7 @@ def get_udt_group_id():
 }"""
     r = do_post("custom-fields/groups", body)
     if r.status_code != 200:
-        raise Exception(f"Error creating UDT group: {r.status_code} ({r.reason})")
+        raise Exception(f"Error creating UDT group: {r.reason} ({r.status_code})")
 
     j = r.json()
     if not "id" in j:
@@ -76,7 +76,7 @@ def get_extant_udt_fields(fields = None, page = 0):
     params = f"filter='entity'='project'&page={page}"
     r = do_get("custom-fields", params)
     if r.status_code != 200:
-        raise Exception(f"Error retrieving current project fields: {r.status_code} ({r.reason})")
+        raise Exception(f"Error retrieving current project fields: {r.reason} ({r.status_code})")
 
     j = r.json()
     for udt in j["_embedded"]["items"]:
@@ -94,7 +94,7 @@ def get_type_id():
     params = f"filter='name'='TEXT'"
     r = do_get(("custom-fields/types"), params=params)
     if (r.status_code != 200):
-        raise Exception(f"Error querying system for UDT types; server returned {r.status_code}")
+        raise Exception(f"Error querying system for UDT types: {r.reason} ({r.status_code})")
 
     j = r.json()
     types = j["_embedded"]["items"]
@@ -119,7 +119,7 @@ def add_udt(group_id, type_id, ref, name):
 
     r = do_post("custom-fields", body)
     if r.status_code != 200:
-        raise Exception(f"Error creating project UDT: {r.status_code} ({r.reason})")
+        raise Exception(f"Error creating project UDT: {r.reason} ({r.status_code})")
     
     j = r.json()
 
@@ -181,7 +181,7 @@ def create_library():
     body = '{"name": "sticky-standards-autogen","referenceId": "sticky-standards-autogen","description": "Auto-generated library for creating sticky standards. DO NOT EDIT!"}'
     r = do_post("libraries", body)
     if r.status_code != 200:
-        raise Exception(f"Unable to create library sticky-standards-autogen ({r.status_code}; {r.reason})")
+        raise Exception(f"Unable to create library sticky-standards-autogen: {r.reason} ({r.status_code})")
 
     j = r.json()
     return j["id"]
@@ -198,7 +198,7 @@ def upload_library(id, body):
     if r.status_code != 200:
         data = r.text
         print(data)
-        raise Exception(f"Unable to update library sticky-standards-autogen ({r.status_code}; {r.reason})")
+        raise Exception(f"Unable to update library sticky-standards-autogen: {r.reason} ({r.status_code})")
     
 
 def main():
