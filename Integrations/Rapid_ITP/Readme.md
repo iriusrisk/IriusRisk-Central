@@ -25,6 +25,7 @@ Creating an Issue Tracker profile from the API involves four API calls from init
 python3 -m venv IriusRisk-API && cd IriusRisk-API/ && source bin/activate && echo Virtual envrionment created and active && git clone github.com/iriusrisk/IriusRisk-Central.git && echo IriusRisk Github repo cloned
 ```
 **Install the script dependencies**
+
 ```bash
 pip install requests argparse
 ```
@@ -36,6 +37,7 @@ vim config.py
 ```
 ```bash
 jira_url = "https://<yourJiraUrl>.atlassian.net"
+```
 # Creating the Issue Tracker Profile
 
 **Call the script and provide the following arguments**
