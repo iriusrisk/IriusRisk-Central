@@ -33,7 +33,7 @@ pip install requests argparse
 **Add the url of the Jira instance to the config.py file.** 
 
 ```bash
-vim config.py
+vim IriusRisk-Central/Integrations/Rapid_ITP/config.py
 ```
 ```bash
 jira_url = "https://<yourJiraUrl>.atlassian.net"
