@@ -1,18 +1,20 @@
 import pip._vendor.requests as requests
 import sys
 import json
+import config
 
 #-------------INITIALISE ENVIRONMENT-----------------#
-#set request and head
-start_domain = 'https://<domain-1>.iriusrisk.com'
-start_sub_url = '' #initialise
-start_apitoken = '<insert_api_token>' #insert api token value
-start_head = {'api-token': start_apitoken}
 
-post_domain = 'https://<domain-2>.iriusrisk.com'
-post_sub_url = ''
-post_apitoken = '<insert_api_token>'
-post_head = {'api-token': post_apitoken}
+#set request and head
+start_domain = config.start_domain
+start_sub_url = config.start_sub_url
+start_apitoken = config.start_apitoken
+start_head = config.start_head
+
+post_domain = config.post_domain
+post_sub_url = config.post_sub_url
+post_apitoken = config.post_apitoken
+post_head = config.post_head
 
 
 #-------------GET ALL ROLES-----------------------#
@@ -46,7 +48,7 @@ else:
 post_sub_url = '/api/v2/security-classifications'
 post_url = post_domain + post_sub_url  
 for item in filtered_data:
-  myobj = {f"referenceId":, item['referenceId']
+  myobj = {f"referenceId": item['referenceId'],
         "name": item['name'],
         "description": item['description'],
         "confidentiality": item['confidentiality'],
@@ -62,7 +64,7 @@ for item in filtered_data:
   if response.status_code==200:
     print("successful post")
     data_new_role = response.json()
-    filtered_new_role_data = [item for item in data['id']]
+    #filtered_new_role_data = [item for item in data['id']]
     
   #if unauthorised
   elif response.status_code == 401:

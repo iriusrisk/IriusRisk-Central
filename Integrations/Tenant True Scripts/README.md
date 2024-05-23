@@ -27,7 +27,7 @@ post_head = {'api-token': post_apitoken}
 ```
 
 Important:
-Replace 'api-token': '' with your actual API tokens for start_head and post_head to authenticate your API requests.
+Replace '<insert_api_token>' with your actual API tokens for start_head and post_head to authenticate your API requests.
 
 Usage
 To run the scripts, execute the following command from your terminal:

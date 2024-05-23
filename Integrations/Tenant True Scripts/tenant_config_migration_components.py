@@ -1,18 +1,19 @@
 import pip._vendor.requests as requests
 import sys
 import json
+import config
 
 
 #-------------INITIALISE ENVIRONMENT-----------------#
 #set request and head
-start_domain = 'https://domain_1.iriusrisk.com'
+start_domain = config.start_domain
 start_sub_url = '' #initialise
-start_apitoken = 'api-token' #insert api token value
+start_apitoken = config.start_apitoken #insert api token value
 start_head = {'api-token': start_apitoken}
 
-post_domain = 'https://domain_2.iriusrisk.com'
+post_domain = config.post_domain
 post_sub_url = ''
-post_apitoken = 'api-token'
+post_apitoken = config.post_apitoken
 post_head = {'api-token': post_apitoken}
 
 
