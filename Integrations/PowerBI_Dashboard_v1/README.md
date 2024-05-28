@@ -33,7 +33,9 @@ Follow the following steps:
    - tenant
 4. Click 'OK'
 5. Navigate to Home > Queries > Refresh
-   
+
+Parameters
+![Parametersd](https://github.com/iriusrisk/IriusRisk-Central/blob/main/Integrations/PowerBI_Dashboard_v1/assets/Parameters.png)
 
 Congratulations, you have successfully configured your PowerBI project.
 
@@ -44,8 +46,9 @@ We have access on the right hand side of our screen to build more visualizations
 ## Examples
 
 Countermeasures Dashboard
+![Countermeasures Dashboard](https://github.com/iriusrisk/IriusRisk-Central/blob/main/Integrations/PowerBI_Dashboard_v1/assets/CM_Dashboard.png)
 
 
 Threats Dashboard
-
+![Threats Dashboard](https://github.com/iriusrisk/IriusRisk-Central/blob/main/Integrations/PowerBI_Dashboard_v1/assets/Threat_Dashboard.png)
 
