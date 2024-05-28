@@ -75,7 +75,7 @@ if response.status_code == 200: #if successful response
                         description = control_desc  # Pass the countermeasure description
                         assigned_to = ""  # Optional
                         priority = 2  # Optional
-                        
+                        #ADO_CF = "<Insert_Custom_Field_Value>"
                         
                         response = issue_tracker.create_issue(title, description, assigned_to, priority) #add ADO_CF as a parameter if used in config.py
                         
