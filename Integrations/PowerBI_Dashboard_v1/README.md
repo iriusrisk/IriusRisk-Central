@@ -6,7 +6,7 @@ This can be considered version 1, which requires some manual action to select th
 ## Overview
 
 The user has access to a series of dashboards outlining countermeasure and threat data for a project.
-Additionally, this project provides the source data to build custom dashboards and visualizations as you require (trehat & countermeasure data).
+Additionally, this project provides the source data to build custom dashboards and visualizations as you require (threat & countermeasure data).
 
 ## Table of Contents
 
