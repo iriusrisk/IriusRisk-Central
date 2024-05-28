@@ -7,7 +7,7 @@ The purpose of this script is to call all countermeasures from all libraries sto
 1. Set up the virtual environment
 
 ```bash
-python3 -m menv all-CM-Report
+python3 -m venv all-CM-Report
 ```
 
 Activate the virtual environment
