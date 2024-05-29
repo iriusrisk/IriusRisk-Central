@@ -8,6 +8,30 @@ def extract_core_message(comment):
         return parts[1].strip()
     return parts[0].strip()
 
+def update_countermeasure_status(countermeasure, status):
+    """Update the status of a countermeasure in IriusRisk."""
+    data = {
+                "referenceId": str(countermeasure['referenceId']),
+                "name": str(countermeasure['name']),
+                "description": str(countermeasure['description']),
+                "state": 'implemented',
+                "issueId": countermeasure['issueId'],
+                "risk": countermeasure['risk'],
+                "cost": str(countermeasure['cost']),
+                "priority": {
+                    "value": str(countermeasure['priority']['value']),
+                    "type": str(countermeasure['priority']['type'])
+                },
+                "source": str(countermeasure['source']),
+                "edited": countermeasure['edited'],
+                "templateName": str(countermeasure['templateName'])
+            }
+    response = requests.put(f"{config.domain}/api/v2/projects/countermeasures/{countermeasure['id']}", headers={'api-token': config.apitoken}, json=data)
+    if response.status_code == 200:
+        print(f'Countermeasure status updated to {status}')
+    else:
+        print(f'Failed to update countermeasure status: {response.status_code}, {response.text}, {response.json()}')
+
 def sync_comments():
     # Get projects from IriusRisk
     projects_response = requests.get(config.domain + config.sub_url_api_v2, headers={'api-token': config.apitoken})
@@ -34,6 +58,12 @@ def sync_comments():
                                         # Fetch comments from Github
                                         GH_comments_response = requests.get(GH_API_url + '/comments', headers=config.GH_head)
                                         GH_comments = GH_comments_response.json()
+
+                                        # Check if GitHub issue is closed
+                                        GH_issue_response = requests.get(GH_API_url, headers=config.GH_head)
+                                        GH_issue = GH_issue_response.json()
+                                        if GH_issue['state'] == 'closed':
+                                            update_countermeasure_status(countermeasure, 'implemented')
 
                                         # Fetch comments from IriusRisk
                                         IR_comments_response = requests.get(f"{config.domain}/api/v2/projects/countermeasures/{countermeasure_id}/comments", headers={'api-token': config.apitoken})
