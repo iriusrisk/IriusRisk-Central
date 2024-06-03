@@ -33,11 +33,15 @@ Running the Utility
 With the environment prepared, you can run the IR Tool Utility as follows:
 
 #Command Start
+
 cd ir_api_util
+
 #Command End
 
 #Command Start
+
 python3 ir_util.py
+
 #Command End
 
 Follow the on-screen instructions to utilize the utility's features.
