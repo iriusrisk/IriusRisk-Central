@@ -1,6 +1,5 @@
 #----IriusRisk----
 domain = 'https://<insert_IriusRisk_domain>.iriusrisk.com'
-sub_url = '/api/v1/products' #initialise
 sub_url_api_v2 = '/api/v2/projects'
 apitoken = '<insert_IriusRisk_api_token>' #IriusRisk API token
 head = {'api-token': apitoken}
