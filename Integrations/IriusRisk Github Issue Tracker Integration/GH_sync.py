@@ -11,22 +11,9 @@ def extract_core_message(comment):
 def update_countermeasure_status(countermeasure, status):
     """Update the status of a countermeasure in IriusRisk."""
     data = {
-                "referenceId": str(countermeasure['referenceId']),
-                "name": str(countermeasure['name']),
-                "description": str(countermeasure['description']),
-                "state": 'implemented',
-                "issueId": countermeasure['issueId'],
-                "risk": countermeasure['risk'],
-                "cost": str(countermeasure['cost']),
-                "priority": {
-                    "value": str(countermeasure['priority']['value']),
-                    "type": str(countermeasure['priority']['type'])
-                },
-                "source": str(countermeasure['source']),
-                "edited": countermeasure['edited'],
-                "templateName": str(countermeasure['templateName'])
+                "stateTransition": "implemented"
             }
-    response = requests.put(f"{config.domain}/api/v2/projects/countermeasures/{countermeasure['id']}", headers={'api-token': config.apitoken}, json=data)
+    response = requests.put(f"{config.domain}/api/v2/projects/countermeasures/{countermeasure['id']}/state", headers={'api-token': config.apitoken}, json=data)
     if response.status_code == 200:
         print(f'Countermeasure status updated to {status}')
     else:
