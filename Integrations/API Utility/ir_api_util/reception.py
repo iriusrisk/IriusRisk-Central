@@ -8,6 +8,7 @@ class Reception:
                      "2. Export IR Project Status",
                      "8. User Access Report",
                      "9. Business Unit Reports",
+                     "10. Audit Log Report",
                      "0. Exit"]
         self.menuSelection = 0
 
@@ -71,6 +72,8 @@ class Reception:
                 self.execute_script('~/ir_api_util/userAccessReport.py', [days])
             elif choice == "9":
                 self.business_unit_reports_menu()
+            elif choice == "10":
+                self.execute_script_noArgs('~/ir_api_util/auditLogReport.py')
             elif choice == "0":
                 print("Exiting")
                 print("")

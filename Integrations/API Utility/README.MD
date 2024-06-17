@@ -60,4 +60,8 @@ Feature Details:
 This feature offers two options. The first option will generate a CSV reports for a single Business Unit by either Name or UUID.
 The second option will generate the same reports for all business units.
 
+Feature: Audit Log Report
+Feature Details:
+This feature will generate an Excel report focusing on Project Activity and User Activity, sourced from audit log events, for up to 180 days.
+
 Additional features to be added as needed in the future.
