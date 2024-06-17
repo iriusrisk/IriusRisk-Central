@@ -15,18 +15,24 @@ Before using the IR Tool Utility, you must make the install_irtool_reqs script e
 Navigate to the directory containing install_irtool_reqs file.
 
 Make the install script executable:
+#Command Start
 chmod +x "./IriusRisk-Central/Integrations/API Utility/install_irtool_reqs"
+#Command End
 
 Run the install script:
+#Command Start
 "./IriusRisk-Central/Integrations/API Utility/install_irtool_reqs"
+#Command End
 
 Copy the ir_api_util folder to you home directory:
+#Command Start
 cp -r "./IriusRisk-Central/Integrations/API Utility/ir_api_util/" ~
+#Command End
 
 Running the Utility
-With the environment prepared, you can run the IR Tool Utility as follows:
+With the environment prepared, you can run the IR Tool Utility from within the cd ir_api_util as follows:
 
-python3 ir_api_util/ir_util.py
+python3 ir_util.py
 
 Follow the on-screen instructions to utilize the utility's features.
 
@@ -47,5 +53,15 @@ For example, if your project contains a project component, and you tag that comp
 Feature: User Access Report (8)
 Feature Details:
 This feature will produce a simple output which diplays the active or inactive users over a given period in days.
+
+
+Feature: Business Unit Reports
+Feature Details:
+This feature offers two options. The first option will generate a CSV reports for a single Business Unit by either Name or UUID.
+The second option will generate the same reports for all business units.
+
+Feature: Audit Log Report
+Feature Details:
+This feature will generate an Excel report focusing on Project Activity and User Activity, sourced from audit log events, for up to 180 days.
 
 Additional features to be added as needed in the future.

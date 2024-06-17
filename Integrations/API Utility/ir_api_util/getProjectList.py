@@ -3,13 +3,26 @@ import requests
 import os
 import json
 
+def read_config(config_path='config.json'):
+    try:
+        with open(config_path, 'r') as config_file:
+            config = json.load(config_file)
+            output_path = os.path.expanduser(config.get('output_path', '~/'))
+            # Create the directory if it doesn't exist
+            os.makedirs(output_path, exist_ok=True)
+            return output_path
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error reading config file: {e}. Defaulting to home directory.")
+        output_path = os.path.expanduser('~/')
+        os.makedirs(output_path, exist_ok=True)
+        return output_path
+
 class GetProjectList:
-
-
     def __init__(self, api_token_path='~/ir/.ir_user_token', instance_domain_path='~/ir/ir_instance_domain'):
         self.api_token_path = os.path.expanduser(api_token_path)
         self.instance_domain_path = os.path.expanduser(instance_domain_path)
         self.api_token, self.instance_domain = self.read_credentials()
+        self.output_path = read_config()
 
     def read_credentials(self):
         try:
@@ -33,10 +46,11 @@ class GetProjectList:
             response.raise_for_status()  # Raises HTTPError for bad responses
             data = response.json()
             # Write to a file
-            with open('projectList.json', 'w') as file:
+            output_file = os.path.join(self.output_path, 'projectList.json')
+            with open(output_file, 'w') as file:
                 json.dump(data, file, indent=4)
 
-            print("Project list saved to projectList.json")
+            print(f"Project list saved to {output_file}")
             print(" ")
 
         except requests.HTTPError as e:

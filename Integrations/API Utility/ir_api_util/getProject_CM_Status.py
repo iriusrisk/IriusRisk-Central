@@ -2,12 +2,28 @@ import sys
 import os
 import requests
 import pandas as pd
+import json
+
+def read_config(config_path='config.json'):
+    try:
+        with open(config_path, 'r') as config_file:
+            config = json.load(config_file)
+            output_path = os.path.expanduser(config.get('output_path', '~/'))
+            # Create the directory if it doesn't exist
+            os.makedirs(output_path, exist_ok=True)
+            return output_path
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error reading config file: {e}. Defaulting to home directory.")
+        output_path = os.path.expanduser('~/')
+        os.makedirs(output_path, exist_ok=True)
+        return output_path
 
 class ProjectComponentStatus:
     def __init__(self, api_token_path='~/ir/.ir_user_token', instance_domain_path='~/ir/ir_instance_domain'):
         self.api_token_path = os.path.expanduser(api_token_path)
         self.instance_domain_path = os.path.expanduser(instance_domain_path)
         self.api_token, self.instance_domain = self.read_credentials()
+        self.output_path = read_config()
 
     def read_credentials(self):
         try:
@@ -28,14 +44,15 @@ class ProjectComponentStatus:
         # Export to CSV and Excel if data is available
         if df_data['Project']:
             df = pd.DataFrame(df_data)
-            csv_file = f'{project_ref}_control_data.csv'
-            excel_file = f'{project_ref}_control_data.xlsx'
+            csv_file = os.path.join(self.output_path, f'{project_ref}_control_data.csv')
+            excel_file = os.path.join(self.output_path, f'{project_ref}_control_data.xlsx')
             df.to_csv(csv_file, index=False)
             df.to_excel(excel_file, index=False)
             print(f"Data exported to {csv_file} and {excel_file}")
             print("")
         else:
             print("No control data found for the specified project and related projects.")
+            print("")
 
     def _fetch_project_details(self, project_ref, df_data, processed_projects):
         if project_ref in processed_projects:
