@@ -1,5 +1,5 @@
 blinker==1.7.0
-certifi==2023.7.22
+certifi==2024.07.04
 charset-normalizer==3.3.0
 click==8.1.7
 colorama==0.4.6
@@ -19,5 +19,4 @@ requests==2.31.0
 six==1.16.0
 tzdata==2023.3
 urllib3==2.0.7
-vboxapi==1.0
 Werkzeug==3.0.3
