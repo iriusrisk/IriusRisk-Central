@@ -1,6 +1,7 @@
 # Tenant True Up Scripts
 
 This collection of Python scripts is designed to migrate data or configurations from one environment to another.
+API V2 is still in beta, so please choose the directory associated with your version. The most important aspect relates to the version of the POST environment.
 
 ## Configuration
 
