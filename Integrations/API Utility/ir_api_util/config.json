@@ -1,3 +1,4 @@
 {
-    "output_path": "~/ir_api_util_output"
+    "output_path": "~/reports_ir",
+    "page_size": 2000
 }

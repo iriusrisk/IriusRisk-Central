@@ -24,7 +24,7 @@ Run the install script:
 "./IriusRisk-Central/Integrations/API Utility/install_irtool_reqs"
 #Command End
 
-Copy the ir_api_util folder to you home directory:
+Copy the ir_api_util folder to your home directory:
 #Command Start
 cp -r "./IriusRisk-Central/Integrations/API Utility/ir_api_util/" ~
 #Command End
@@ -39,29 +39,35 @@ Follow the on-screen instructions to utilize the utility's features.
 Features
 
 Feature: Get Project List (1)
-Feature Details:
-This feature will return via json file, a list of the projects in your instance.
-
+This feature will return a list of the projects in your instance via a JSON file.
 
 Feature: Export IR Project Status (2)
-Feature Details:
-This feature will export to CSV and Excel the status of your project with respect to countermeasure status. It will prompt you for you IR project reference ID. 
+This feature will export the status of your project to CSV and Excel, focusing on countermeasure status. It will prompt you for your IR project reference ID.
 In addition, it will include the countermeasure status of associated projects by tag.
-For example, if your project contains a project component, and you tag that component with reference ID of its actual project, the countermeasure data will for that project component will be included along with the data for your target project.
-
+For example, if your project contains a project component tagged with the reference ID of its actual project, the countermeasure data for that project component will be included along with the data for your target project.
 
 Feature: User Access Report (8)
-Feature Details:
-This feature will produce a simple output which diplays the active or inactive users over a given period in days.
+This feature generates a report that displays active or inactive users over a specified period in days.
 
+Feature: Business Unit Reports (9)
+This feature offers two options. The first option generates a CSV report for a single Business Unit by either Name or UUID. The second option generates the same report for all Business Units.
 
-Feature: Business Unit Reports
-Feature Details:
-This feature offers two options. The first option will generate a CSV reports for a single Business Unit by either Name or UUID.
-The second option will generate the same reports for all business units.
+Feature: Audit Log Report (10)
+This feature generates an Excel report focusing on Project Activity and User Activity, sourced from audit log events for up to 180 days.
 
-Feature: Audit Log Report
-Feature Details:
-This feature will generate an Excel report focusing on Project Activity and User Activity, sourced from audit log events, for up to 180 days.
+Feature: API Query Checker (12)
+This feature allows users to validate API queries by running checks against expected outputs. It provides two options:
 
-Additional features to be added as needed in the future.
+1. Run API Query Checker
+   This option executes the API Query Checker to validate queries against sample output files. It checks if the API responses match the expected results.
+
+2. Add New Query to be Checked
+   This option allows users to add a new API query for validation. You will be prompted to provide the following details:
+   - Friendly Name: A descriptive name for the API query (e.g., "v1 GET Project Details").
+   - HTTP Method: The type of request (GET, POST, PUT, DELETE).
+   - API URL Endpoint: The API call endpoint (e.g., /v1/projects/{reference-id}).
+   - Sample Output File: The path to a JSON file with the expected output.
+
+Once a query is added, it will be included in future checks performed by the API Query Checker.
+
+Additional features may be added as needed in the future.

@@ -9,6 +9,8 @@ class Reception:
                      "8. User Access Report",
                      "9. Business Unit Reports",
                      "10. Audit Log Report",
+ #                    "11. Create Rule from Excel Workbook",
+                     "12. API Query Checker",
                      "0. Exit"]
         self.menuSelection = 0
 
@@ -16,12 +18,14 @@ class Reception:
         for item in self.menu:
             print(item)
 
+
     def execute_script(self, script_path, args):
         script_absolute_path = os.path.expanduser(script_path)
         try:
             subprocess.run(['python3', script_absolute_path] + args, check=True)
         except subprocess.CalledProcessError as e:
             print(f"Error executing script: {script_absolute_path}, {e}")
+
 
     def execute_script_noArgs(self, script_path):
         script_absolute_path = os.path.expanduser(script_path)
@@ -54,6 +58,42 @@ class Reception:
             print("Invalid Selection. Please try again.")
             self.business_unit_reports_menu()
 
+    def api_query_checker_menu(self):
+        sub_menu = ["API Query Checker:", "",
+                    "1. Run API Query Checker",
+                    "2. Add New Query to be Checked",
+                    "0. Back to Main Menu"]
+        for item in sub_menu:
+            print(item)
+
+        print("")
+        choice = input("Please make a selection: ")
+        print("")
+
+        if choice == "1":
+            self.execute_script_noArgs('~/ir_api_util/apiChecker.py')
+        elif choice == "2":
+            name = input("Enter a Friendly name for the query (v1 GET Project Details): ")
+            print("")
+            method = input("Enter the HTTP method (GET, POST, PUT, DELETE): ").upper()
+            print("")
+            url = input("Enter the API URL endpoint (e.g., /v1/products/{reference-id}): ")
+            print("")
+            sample_output_file = input("Enter the path to the sample output JSON file: ")
+            print("")
+
+            valid_methods = ["GET", "POST", "PUT", "DELETE"]
+            if method not in valid_methods:
+                print(f"Invalid HTTP method: {method}. Please enter one of the following: {', '.join(valid_methods)}")
+            else:
+                self.execute_script('~/ir_api_util/addEndPoint.py', [name, method, url, sample_output_file])
+
+        elif choice == "0":
+            return
+        else:
+            print("Invalid Selection. Please try again.")
+            self.api_query_checker_menu()
+
     def main(self):
         while True:
             self.main_menu()
@@ -74,6 +114,10 @@ class Reception:
                 self.business_unit_reports_menu()
             elif choice == "10":
                 self.execute_script_noArgs('~/ir_api_util/auditLogReport.py')
+#            elif choice == "11":
+#                self.execute_script_noArgs('~/ir_api_util/createRule_FromExcel.py')
+            elif choice == "12":
+                self.api_query_checker_menu()
             elif choice == "0":
                 print("Exiting")
                 print("")
