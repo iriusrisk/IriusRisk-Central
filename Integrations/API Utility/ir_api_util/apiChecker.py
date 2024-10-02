@@ -11,8 +11,11 @@ def load_queries(filename):
         with open(filename, 'r') as file:
             return json.load(file)
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        print(f"Error reading {filename}: {e}")
-        sys.exit(1)
+        print("")
+        print("The apiChecker.json file was not found. Try using the Add feature to create a new query to be checked.")
+        print("")
+        return None
+        #sys.exit(1)
 
 # Read config file for output path and page size
 def read_config(config_path):
