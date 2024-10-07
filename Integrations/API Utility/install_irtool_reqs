@@ -8,3 +8,4 @@ sudo apt-get install python3-pip -y
 pip3 install pandas
 pip3 install openpyxl
 pip3 install pyarrow
+pip3 install deepdiff
