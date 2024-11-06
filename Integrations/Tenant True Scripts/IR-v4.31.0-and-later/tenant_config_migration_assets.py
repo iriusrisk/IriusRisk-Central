@@ -1,114 +1,93 @@
-import pip._vendor.requests as requests
-import sys
-import json
+import helper_functions
 import config
+import constants
+import mappers
+import logging
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logging.info("tenant_config_migration_assets | START")
 
 
-#-------------INITIALISE ENVIRONMENT-----------------#
-#set request and head
-start_domain = config.start_domain
-start_sub_url = config.start_sub_url
-start_apitoken = config.start_apitoken
-start_head = config.start_head
+# Compare the two assets to check if we need to do a PUT
+def is_asset_same(asset, destination_asset):
+    referenceId = asset["name"]
+    for dest_asset in destination_asset:
+        if referenceId == dest_asset["name"]:
+            #   need to delete these to compare asset content
+            del asset["id"]
+            del dest_asset["id"]
+            del asset["securityClassification"]
+            del dest_asset["securityClassification"]
+            if asset == dest_asset:
+                return True
+            else:
+                return False
+    return False
 
-post_domain = config.post_domain
-post_sub_url = config.post_sub_url
-post_apitoken = config.post_apitoken
-post_head = config.post_head
 
-#-------------GET ALL ASSETS domain 1-----------------------#
-#update url
-start_sub_url = '/api/v2/assets'
-start_url = start_domain + start_sub_url
-#GET request
-response = requests.get(start_url, headers=start_head)
-print("\n DOMAIN 1 \n")
-#If successful
-if response.status_code == 200:
-    print("Get request successful")
-    data1 = response.json()
-#-------------GET ALL ASSETS domain 2-----------------------#
-#update url
-post_sub_url = '/api/v2/assets'
-post_url = post_domain + post_sub_url
-#GET request
-response = requests.get(post_url, headers=post_head)
-print("\n DOMAIN 2 \n")
-#If successful
-if response.status_code == 200:
-    print("Get request successful")
-    data2 = response.json()
-#initialise dictionairies
-myobj = {}
-ids_mapping = {}
-#-------------- GET ALL SECURITY CLASSIFICATIONS domain 1-----------------#
-#these items get passed in as the security classification id inside the post request for assets
-#update url
-start_sub_url = '/api/v2/security-classifications'
-start_url = start_domain + start_sub_url
-#GET request
-response = requests.get(start_url, headers=start_head)
-print("\n DOMAIN 1 - Security-classifications\n")
-#If successful
-if response.status_code == 200:
-    print("Get request successful")
-    data3 = response.json()
-#---------------GET ALL SECURITY CLASSIFICATIONS domain 2 ----------------#
-post_sub_url = '/api/v2/security-classifications'
-post_url = post_domain + post_sub_url
-#GET request
-response = requests.get(post_url, headers=post_head)
-data4 = response.json()
-print("\n DOMAIN 2 - Security-classifications\n")
-#If successful
-if response.status_code == 200:
-    print("Get request successful")
-    data4 = response.json()
-#------------ ITERATE OVER THE DATA FROM BOTH APIS
-for item3 in data3['_embedded']['items']:
-    for item4 in data4['_embedded']['items']:
-        # Check if the name matches
-        if item3['name'] == item4['name']:
-            # Extract the IDs            
-            id_from_api3 = item3['id'],
-            name_from_api_3 = item3['name'],
-            id_from_api4 = item4['id'],
-            name_from_api_4 = item4['name']
-            #save the results to a new dict so we can call this later
-            ids_mapping[item3['name']] = {'id_from_api3': id_from_api3, 'id_from_api4': id_from_api4}
-#print in a formatted, nice list.
-print('\nSecurity Classifications available and their associated ids:\n')
-for name, ids in ids_mapping.items():
-    print(name, ids) #print the set of key and values. Names and ids
-    print() # Empty line after each category         
-#------------POST ALL ASSETS -----------------------#
-post_sub_url = '/api/v2/assets'
-post_url = post_domain + post_sub_url
-for item1 in data1["_embedded"]['items']:
-    #get the security classification id's to pass
-    #align the id for the 2nd environment where the name matches what we have in the first
-    for name, ids in ids_mapping.items():
-        if name==item1['securityClassification']['name']:
-            ref_id = ids['id_from_api4']
-            ref_id_filtered = ref_id[0]           
-    #get the object to pass in the post data                
-    myobj = {
-        "name": item1['name'],
-        "description": item1['description'],
-        "securityClassification": {
-           "id": ref_id_filtered
-        }
+# GET all assets
+domain_1_assets_results = helper_functions.get_request(
+    config.start_domain, constants.ENDPOINT_ASSETS, config.start_head
+)
+domain_2_assets_results = helper_functions.get_request(
+    config.post_domain, constants.ENDPOINT_ASSETS, config.post_head
+)
+
+# GET all security classifications
+domain_1_sc_results = helper_functions.get_request(
+    config.start_domain, constants.ENDPOINT_SECURITY_CLASSIFICATIONS, config.start_head
+)
+domain_2_sc_results = helper_functions.get_request(
+    config.post_domain, constants.ENDPOINT_SECURITY_CLASSIFICATIONS, config.post_head
+)
+
+# MAP assets to objects and collect matches
+mapped_domain_1_assets_results = mappers.map_assets(domain_1_assets_results)
+mapped_domain_2_assets_results = mappers.map_assets(domain_2_assets_results)
+asset_matches = helper_functions.find_matches(
+    mapped_domain_1_assets_results, mapped_domain_2_assets_results, "name"
+)
+
+# MAP security classifications to objects and collect matches
+mapped_domain_1_sc_results = mappers.map_security_classifications(domain_1_sc_results)
+mapped_domain_2_sc_results = mappers.map_security_classifications(domain_2_sc_results)
+sc_matches = helper_functions.find_matches(
+    mapped_domain_1_sc_results, mapped_domain_2_sc_results, "name"
+)
+
+# Begin migration
+for asset_domain_1 in mapped_domain_1_assets_results:
+    # Find security classification ID in destination domain
+    sc_id = sc_matches[asset_domain_1["securityClassification"]["name"]]
+
+    # Build asset to send
+    asset_to_send = {
+        "name": asset_domain_1["name"],
+        "description": asset_domain_1["description"],
+        "securityClassification": {"id": sc_id},
     }
-    post_head={'api-token': post_apitoken}
-    #post new roles
-    response = requests.post(post_url, headers=post_head, json = myobj)
-    if response.status_code==200:
-        print("successful post of asset: " + item1['name'])
-        data_new_asset = response.json()
-    #if unauthorised
-    elif response.status_code == 401:
-        print("User is unauthorised. Please check your api token is valid, that your api is enabled in the settings & that you have appropriate permissions on your account")
-        sys.exit() #if unauthorised, exit the script
+
+    # Decide whether to PUT
+    if asset_domain_1["name"] in asset_matches:
+        # Check if the two ASSETs are the same
+        if is_asset_same(asset_domain_1, mapped_domain_2_assets_results) is False:
+            uuid = asset_matches[asset_domain_1["name"]]
+            print(asset_to_send)
+            helper_functions.put_request(
+                uuid,
+                asset_to_send,
+                config.post_domain + constants.ENDPOINT_ASSETS,
+                config.post_head,
+            )
+
+    # Else POST
     else:
-        #print(response.json())
-        print("Request: " + response.request.method + ' ' + item1['name'] + ' ' + post_url + " failed. This asset likely exists already\n")
+        helper_functions.post_request(
+            asset_to_send,
+            config.post_domain + constants.ENDPOINT_ASSETS,
+            config.post_head,
+        )
+
+logging.info("tenant_config_migration_assets | END")
