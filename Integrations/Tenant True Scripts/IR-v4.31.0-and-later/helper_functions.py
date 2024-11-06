@@ -9,7 +9,7 @@ logger = logging.basicConfig(
 
 
 # Handles whatever response we get from requests
-def handle_response(response, url, json_object=None):
+def handle_response(response, url):
     if response.status_code == 200:
         logging.info(
             f"Request {response.request.method} {url} successful with status code {response.status_code}"
@@ -22,7 +22,7 @@ def handle_response(response, url, json_object=None):
         sys.exit()
     else:
         logging.error(
-            f"Request {response.request.method} {url} failed with status code {response.status_code} for object {json_object}"
+            f"Request {response.request.method} {url} failed with status code {response.status_code}"
         )
 
 
@@ -42,7 +42,7 @@ def put_request(uuid, json_object, url, headers):
 # POST request
 def post_request(json_object, url, headers):
     response = requests.post(url, headers=headers, json=json_object)
-    return handle_response(response, url, json_object)
+    return handle_response(response, url)
 
 
 # Finds the matches between 2 fields in 2 lists
