@@ -9,19 +9,6 @@ logging.basicConfig(
 )
 logging.info("tenant_config_migration_security_classifications | START")
 
-def is_role_same(role, destination_roles):
-    referenceId = role["referenceId"]
-    for dest_role in destination_roles:
-        if referenceId == dest_role["referenceId"]:
-            del role["id"]
-            del dest_role["id"]
-            if role == dest_role:
-                return True
-            else:
-                return False
-    return False
-
-
 domain_1_results = helper_functions.get_request(
     config.start_domain, constants.ENDPOINT_SECURITY_CLASSIFICATIONS, config.start_head
 )
@@ -36,7 +23,7 @@ matches = helper_functions.find_matches(domain_1_mapped, domain_2_mapped, "refer
 
 for role in domain_1_mapped:
     if role["referenceId"] in matches:
-        if is_role_same(role, domain_2_mapped) is False:
+        if helper_functions.is_ir_object_same(role, domain_2_mapped) is False:
             uuid = matches[role["referenceId"]]
             del role["referenceId"]
             helper_functions.put_request(

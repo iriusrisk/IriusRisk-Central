@@ -3,10 +3,12 @@ import config
 import constants
 import mappers
 import logging
+import time
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
+start_time = time.time()
 logging.info("tenant_config_migration_assets | START")
 
 
@@ -74,7 +76,6 @@ for asset_domain_1 in mapped_domain_1_assets_results:
         # Check if the two ASSETs are the same
         if is_asset_same(asset_domain_1, mapped_domain_2_assets_results) is False:
             uuid = asset_matches[asset_domain_1["name"]]
-            print(asset_to_send)
             helper_functions.put_request(
                 uuid,
                 asset_to_send,
@@ -90,4 +91,7 @@ for asset_domain_1 in mapped_domain_1_assets_results:
             config.post_head,
         )
 
-logging.info("tenant_config_migration_assets | END")
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+logging.info(f"tenant_config_migration_assets | END | Execution time: {execution_time:.4f} seconds")

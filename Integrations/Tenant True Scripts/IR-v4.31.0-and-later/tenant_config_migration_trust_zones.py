@@ -1,58 +1,38 @@
-import pip._vendor.requests as requests
-import sys
-import json
 import config
+import helper_functions
+import constants
+import mappers
+import logging
 
-def get_api_data(url, headers):
-    """Function to perform a GET request."""
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        print("GET request successful")
-        return response.json()
-    elif response.status_code == 401:
-        print("User is unauthorized. Please check your API token and permissions.")
-        sys.exit()
-    else:
-        print(f"GET request failed for {url}")
-        return None
-
-def post_api_data(url, headers, data):
-    """Function to perform a POST request."""
-    response = requests.post(url, headers=headers, json=data)
-    if response.status_code == 200:
-        print("POST successful")
-        return response.json()
-    elif response.status_code == 401:
-        print("User is unauthorized. Please check your API token and permissions.")
-        sys.exit()
-    else:
-        print(f"POST request failed for {url}")
-        return None
-
-def filter_data(items):
-    """Function to filter the required data fields."""
-    return [{f"referenceId": item['referenceId'],
-             "name": item['name'],
-             "description": item['description'],
-             "trustRating": item['trustRating']} for item in items]
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 def main():
-    # Initialize environment
-    start_url = config.start_domain + '/api/v2/trust-zones'
-    print(start_url)
-    post_url = config.post_domain + '/api/v2/trust-zones'
-    print(post_url)
     # Get data from the API
-    data = get_api_data(start_url, config.start_head)
-    if data:
-        items = data['_embedded']['items']
-        filtered_data = filter_data(items)
+    source_response = helper_functions.get_request(config.start_domain, constants.ENDPOINT_TRUST_ZONES, config.start_head)
+    destination_response = helper_functions.get_request(config.post_domain, constants.ENDPOINT_TRUST_ZONES, config.post_head)
+    if source_response:
+        source_mapped = mappers.map_trust_zones(source_response)
+        destination_mapped = mappers.map_trust_zones(destination_response)
+
+        matches = helper_functions.find_matches(source_mapped, destination_mapped, "referenceId")
+
+        for item in source_mapped:
+            if item["referenceId"] in matches:
+                if helper_functions.is_ir_object_same(item, destination_mapped) is False:
+                    uuid = matches[item["referenceId"]]
+                    helper_functions.put_request(uuid, item, config.post_domain + constants.ENDPOINT_TRUST_ZONES, config.post_head)
+                    logging.info(f"PUT - Updated trust zone {uuid}")
+                else:
+                    logging.info(f"Trust zone [{item['name']}] is the same")
+            else:
+                del item["id"]
+                helper_functions.post_request(item, config.post_domain + constants.ENDPOINT_TRUST_ZONES, config.post_head)
+                logging.info(f"POST - Posted trust zone {item['name']}")
     
-        # Post data to the API
-        for item in filtered_data:
-            post_response = post_api_data(post_url, {'api-token': config.post_apitoken}, item)
-            if not post_response:
-                print(f"Failed to post data for {item['name']}.")
 
 if __name__ == "__main__":
+    logging.info("tenant_config_migration_trust_zones | START")
     main()
+    logging.info("tenant_config_migration_trust_zones | END")

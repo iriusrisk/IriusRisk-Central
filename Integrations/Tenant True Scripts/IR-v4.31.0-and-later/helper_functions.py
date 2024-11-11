@@ -1,3 +1,4 @@
+# Helper Functions
 import pip._vendor.requests as requests
 import sys
 import logging
@@ -14,15 +15,17 @@ def handle_response(response, url):
         logging.info(
             f"Request {response.request.method} {url} successful with status code {response.status_code}"
         )
+        print(response)
         return response.json()
     elif response.status_code == 401:
+        print(response)
         logging.error(
             "User is unauthorized. Please check if your API token is valid, API is enabled in settings, and you have appropriate permissions."
         )
         sys.exit()
     else:
         logging.error(
-            f"Request {response.request.method} {url} failed with status code {response.status_code}"
+            f"Request {response.request.method} {url} failed with status code {response.status_code} : {response.text}"
         )
 
 
@@ -35,7 +38,8 @@ def get_request(base_url, endpoint, headers):
 
 # PUT request
 def put_request(uuid, json_object, url, headers):
-    response = requests.put(url + "/" + uuid, headers=headers, json=json_object)
+    url = url + "/" + uuid
+    response = requests.put(url, headers=headers, json=json_object)
     return handle_response(response, url)
 
 
@@ -43,6 +47,18 @@ def put_request(uuid, json_object, url, headers):
 def post_request(json_object, url, headers):
     response = requests.post(url, headers=headers, json=json_object)
     return handle_response(response, url)
+
+def is_ir_object_same(source_object, destination_objects):
+    referenceId = source_object["referenceId"]
+    for dest_obj in destination_objects:
+        if referenceId == dest_obj["referenceId"]:
+            del source_object["id"]
+            del dest_obj["id"]
+            if source_object == dest_obj:
+                return True
+            else:
+                return False
+    return False
 
 
 # Finds the matches between 2 fields in 2 lists
