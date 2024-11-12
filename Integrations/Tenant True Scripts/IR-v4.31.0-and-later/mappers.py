@@ -41,7 +41,6 @@ def map_business_units(data):
             "referenceId": item["referenceId"],
             "name": item["name"],
             "description": item["description"],
-            "trustRating": item["trustRating"],
         }
         items.append(item_data)
     return items
@@ -106,6 +105,7 @@ def map_trust_zones(data):
         items.append(item_data)
     return items
 
+
 def map_libraries(data):
     items = []
     for item in data["_embedded"]["items"]:
@@ -119,3 +119,14 @@ def map_libraries(data):
             }
             items.append(item_data)
     return items
+
+
+def map_component_to_put(data, category_id):
+    return {
+        "category": {
+            "id": category_id,
+        },
+        "name": data["name"],
+        "description": data["description"],
+        "visible": data.get("visible", True),
+    }

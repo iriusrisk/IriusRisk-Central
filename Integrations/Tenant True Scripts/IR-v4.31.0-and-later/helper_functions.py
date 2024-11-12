@@ -11,14 +11,12 @@ logger = logging.basicConfig(
 
 # Handles whatever response we get from requests
 def handle_response(response, url):
-    if response.status_code == 200:
+    if response.status_code in [200, 201]:
         logging.info(
             f"Request {response.request.method} {url} successful with status code {response.status_code}"
         )
-        print(response)
         return response.json()
     elif response.status_code == 401:
-        print(response)
         logging.error(
             "User is unauthorized. Please check if your API token is valid, API is enabled in settings, and you have appropriate permissions."
         )
@@ -47,6 +45,13 @@ def put_request(uuid, json_object, url, headers):
 def post_request(json_object, url, headers):
     response = requests.post(url, headers=headers, json=json_object)
     return handle_response(response, url)
+
+
+def is_ir_object_same_keep_id(source_object, destination_objects):
+    source_copy = source_object.copy()
+    destination_copy = destination_objects.copy()
+    return is_ir_object_same(source_copy, destination_copy)
+
 
 def is_ir_object_same(source_object, destination_objects):
     referenceId = source_object["referenceId"]

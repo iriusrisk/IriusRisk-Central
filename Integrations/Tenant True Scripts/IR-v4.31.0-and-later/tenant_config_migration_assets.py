@@ -94,4 +94,6 @@ for asset_domain_1 in mapped_domain_1_assets_results:
     end_time = time.time()
     execution_time = end_time - start_time
 
-logging.info(f"tenant_config_migration_assets | END | Execution time: {execution_time:.4f} seconds")
+logging.info(
+    f"tenant_config_migration_assets | END | Execution time: {execution_time:.4f} seconds"
+)

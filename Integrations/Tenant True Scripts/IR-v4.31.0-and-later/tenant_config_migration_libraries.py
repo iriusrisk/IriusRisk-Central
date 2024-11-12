@@ -12,6 +12,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+
 def process_libraries_data(libraries_data):
     # Extract and return custom libraries from API response.
     return [
@@ -30,15 +31,13 @@ def export_libraries_to_xml(libraries_info, domain, headers):
     # Export libraries to XML, save files locally.
     if not os.path.exists("exports"):
         os.makedirs("exports")
-    
-    print("libraries_info: ", libraries_info)
+
     for library in libraries_info:
-        print(library["id"])
         if (library["referenceId"] in libraries_not_to_post) is False:
-            print("Library: ", library["referenceId"])
             logging.info(f"Exporting {library['name']}...")
-            export_url = f'{domain}{constants.ENDPOINT_LIBRARIES}/{library["id"]}/export'
-            print(export_url)
+            export_url = (
+                f'{domain}{constants.ENDPOINT_LIBRARIES}/{library["id"]}/export'
+            )
             response = requests.get(export_url, headers=headers)
             if response.status_code == 200:
                 file_path = os.path.join("exports", f"{library['id']}.xml")
@@ -55,9 +54,7 @@ def export_libraries_to_xml(libraries_info, domain, headers):
 def import_libraries(libraries_info, url, headers):
     # Import libraries from local XML files to the target system.
     for library in libraries_info:
-        print(library["filePath"])
         if library.get("filePath") and os.path.exists(library["filePath"]):
-            print("hello")
             with open(library["filePath"], "rb") as file:
                 files = {
                     "file": (
@@ -89,10 +86,14 @@ if __name__ == "__main__":
 
     sys.stdout.reconfigure(encoding="utf-8")
     source_libraries_data = helper_functions.get_request(
-        config.start_domain, constants.ENDPOINT_LIBRARIES+ '?size=10000', config.start_head
+        config.start_domain,
+        constants.ENDPOINT_LIBRARIES + "?size=10000",
+        config.start_head,
     )
     dest_libraries_data = helper_functions.get_request(
-        config.post_domain, constants.ENDPOINT_LIBRARIES+ '?size=10000', config.post_head
+        config.post_domain,
+        constants.ENDPOINT_LIBRARIES + "?size=10000",
+        config.post_head,
     )
 
     source_libraries_mapped = mappers.map_libraries(source_libraries_data)
@@ -108,7 +109,10 @@ if __name__ == "__main__":
         if item.get("type", "").lower() == "custom":
             if item["referenceId"] in matches:
                 libraries_not_to_post.append(item["referenceId"])
-                if helper_functions.is_ir_object_same(item, dest_libraries_mapped) is False:
+                if (
+                    helper_functions.is_ir_object_same(item, dest_libraries_mapped)
+                    is False
+                ):
                     uuid = matches[item["referenceId"]]
                     del item["referenceId"]
                     helper_functions.put_request(
@@ -119,8 +123,7 @@ if __name__ == "__main__":
                     )
                 else:
                     logging.info(f"Library [{item['name']}] is the same.")
-    
-    print("libraries_not_to_post: ", libraries_not_to_post)
+
     logging.info("Exporting libraries for POSTING...")
     libraries_info = process_libraries_data(source_libraries_data)
     export_libraries_to_xml(libraries_info, config.start_domain, config.start_head)

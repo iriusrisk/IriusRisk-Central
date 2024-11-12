@@ -27,7 +27,6 @@ matches = helper_functions.find_matches(source_mapped, dest_mapped, "referenceId
 
 for business_unit in source_mapped:
     if business_unit["referenceId"] in matches:
-        
         if helper_functions.is_ir_object_same(business_unit, dest_mapped) is False:
             uuid = matches[business_unit["referenceId"]]
             del business_unit["referenceId"]
