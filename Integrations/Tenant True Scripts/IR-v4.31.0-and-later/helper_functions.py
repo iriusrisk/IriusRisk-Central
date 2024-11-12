@@ -2,6 +2,7 @@
 import pip._vendor.requests as requests
 import sys
 import logging
+import constants
 
 # Setting up logging
 logger = logging.basicConfig(
@@ -30,7 +31,7 @@ def handle_response(response, url):
 # GET request
 def get_request(base_url, endpoint, headers):
     url = base_url + endpoint
-    response = requests.get(url, headers=headers)
+    response = requests.get(url+ f"?size={constants.PARAMETER_SIZE}", headers=headers)
     return handle_response(response, url)
 
 

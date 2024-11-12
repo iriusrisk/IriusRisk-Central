@@ -12,7 +12,6 @@ logging.basicConfig(
 )
 
 # -------------INITIALISE ENVIRONMENT-----------------#
-element_size = "?size=10000"
 sys.stdout.reconfigure(encoding="utf-8")
 
 
@@ -105,24 +104,24 @@ def process_components_and_associate_risk_patterns():
     # Get all components from both domains
     data1 = helper_functions.get_request(
         config.start_domain,
-        constants.ENDPOINT_COMPONENTS + "?size=10000",
+        constants.ENDPOINT_COMPONENTS,
         config.start_head,
     )
     data2 = helper_functions.get_request(
         config.post_domain,
-        constants.ENDPOINT_COMPONENTS + "?size=10000",
+        constants.ENDPOINT_COMPONENTS,
         config.post_head,
     )
 
     # Get all component categories from both domains
     categories1 = helper_functions.get_request(
         config.start_domain,
-        constants.ENDPOINT_COMPONENTS_CATEGORIES_SUMMARY + "?size=10000",
+        constants.ENDPOINT_COMPONENTS_CATEGORIES_SUMMARY,
         config.start_head,
     )
     categories2 = helper_functions.get_request(
         config.post_domain,
-        constants.ENDPOINT_COMPONENTS_CATEGORIES_SUMMARY + "?size=10000",
+        constants.ENDPOINT_COMPONENTS_CATEGORIES_SUMMARY,
         config.post_head,
     )
 
