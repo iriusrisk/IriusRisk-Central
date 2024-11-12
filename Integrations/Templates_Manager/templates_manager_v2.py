@@ -86,6 +86,7 @@ try:
                     }
                     headers = {
                         'Accept': 'application/hal+json',
+			'X-Irius-Async': 'false',
                         'api-token': args.api_token
                     }
                     response = requests.post(api_url_templates, headers=headers, files=files)
