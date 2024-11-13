@@ -155,7 +155,7 @@ def main():
 
             if (
                 cf_data["referenceId"] in matches
-                and dest_cfs_data[matches["referenceId"]]["editable"] is True
+                and cf_data["editable"] is True
             ):
                 if (
                     helper_functions.is_ir_object_same(
@@ -175,10 +175,14 @@ def main():
                     )
             else:
                 logging.info("Posting custom field with data:", cf_data)
+                print(cf_data)
+                del cf_data["id"]
                 helper_functions.post_request(
-                    cf_data, config.post_domain, config.post_head
+                    cf_data, config.post_domain + constants.ENDPOINT_CUSTOM_FIELDS, config.post_head
                 )
 
 
 if __name__ == "__main__":
+    logging.info("tenant_config_migration_CustomFields | START")
     main()
+    logging.info("tenant_config_migration_CustomFields | END")

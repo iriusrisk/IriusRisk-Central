@@ -55,9 +55,12 @@ def is_ir_object_same_keep_id(source_object, destination_objects):
 
 
 def is_ir_object_same(source_object, destination_objects):
-    referenceId = source_object["referenceId"]
+    is_ir_object_same_custom_field(source_object, destination_objects, "referenceId")
+
+def is_ir_object_same_custom_field(source_object, destination_objects, field):
+    referenceId = source_object[field]
     for dest_obj in destination_objects:
-        if referenceId == dest_obj["referenceId"]:
+        if referenceId == dest_obj[field]:
             del source_object["id"]
             del dest_obj["id"]
             if source_object == dest_obj:

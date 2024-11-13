@@ -130,3 +130,13 @@ def map_component_to_put(data, category_id):
         "description": data["description"],
         "visible": data.get("visible", True),
     }
+
+def map_roles(data):
+    mapped_roles = []
+    for item in data['_embedded']['items']:
+        mapped_roles.append({
+            'id': item['id'],
+            'name': item['name'],
+            'description': item.get('description', ''),
+        })
+    return mapped_roles
