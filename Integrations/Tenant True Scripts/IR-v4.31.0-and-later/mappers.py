@@ -140,3 +140,55 @@ def map_roles(data):
             'description': item.get('description', ''),
         })
     return mapped_roles
+
+def map_workflows(data):
+    items = []
+    for item in data["_embedded"]["items"]:
+        item_data = {
+            "id": item["id"],
+            "name": item["name"],
+            "referenceId": item["referenceId"],
+            "description": item["description"],
+            "lockThreatModel": item["lockThreatModel"],
+            "usages": item["usages"],
+            "reports": {
+                "residualRisk": {
+                    "watermark": item["reports"]["residualRisk"]["watermark"],
+                    "visible": item["reports"]["residualRisk"]["visible"],
+                },
+                "technicalThreatReport": {
+                    "watermark": item["reports"]["technicalThreatReport"]["watermark"],
+                    "visible": item["reports"]["technicalThreatReport"]["visible"],
+                },
+                "technicalCountermeasureReport": {
+                    "watermark": item["reports"]["technicalCountermeasureReport"]["watermark"],
+                    "visible": item["reports"]["technicalCountermeasureReport"]["visible"],
+                },
+                "complianceReport": {
+                    "watermark": item["reports"]["complianceReport"]["watermark"],
+                    "visible": item["reports"]["complianceReport"]["visible"],
+                },
+            },
+            "permissionExceptions": [
+                {
+                    "role": {
+                        "id": exception["role"]["id"],
+                        "name": exception["role"]["name"],
+                    },
+                    "projectPermissions": exception["projectPermissions"],
+                    "customFieldPermissions": [
+                        {
+                            "customField": {
+                                "id": field_permission["customField"]["id"],
+                                "name": field_permission["customField"]["name"],
+                            },
+                            "accessLevel": field_permission["accessLevel"],
+                        }
+                        for field_permission in exception["customFieldPermissions"]
+                    ],
+                }
+                for exception in item["permissionExceptions"]
+            ],
+        }
+        items.append(item_data)
+    return items

@@ -12,7 +12,7 @@ logger = logging.basicConfig(
 
 # Handles whatever response we get from requests
 def handle_response(response, url):
-    if response.status_code in [200, 201]:
+    if response.status_code in [200, 201, 202]:
         logging.info(
             f"Request {response.request.method} {url} successful with status code {response.status_code}"
         )
