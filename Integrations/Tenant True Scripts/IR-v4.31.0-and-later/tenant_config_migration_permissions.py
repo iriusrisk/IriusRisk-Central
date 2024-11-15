@@ -157,7 +157,7 @@ def migrate_custom_fields_permissions(
                 )
                 logging.info(f"Put {permission_type} for role ID: {role['id']}")
                 # Sleep for 30 seconds to allow permissions to be applied
-                logging.info("Sleeping for 30 seconds to allow permissions to be applied...")
+                logging.info("Sleeping for 15 seconds to allow permissions to be applied...")
                 time.sleep(15)
                 logging.info("Resuming...")
 
