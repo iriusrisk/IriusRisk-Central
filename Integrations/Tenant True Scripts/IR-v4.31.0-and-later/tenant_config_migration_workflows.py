@@ -53,18 +53,24 @@ def map_permission_exceptions(permissionExceptions):
                 return
         
         custom_field_premissions_to_return = []
+        ids_already_mapped = []
         for customFieldPermission in permissionException["customFieldPermissions"]:
             custom_field_permission_name = customFieldPermission["customField"]["name"]
             if custom_field_permission_name:
                 dest_custom_field_permission_id = next(
-                    (perm["id"] for perm in all_dest_custom_fields["_embedded"]["items"] if perm["name"] == custom_field_permission_name),
+                    (perm["id"] for perm in all_dest_custom_fields["_embedded"]["items"] if perm["name"] == custom_field_permission_name and perm["id"] not in ids_already_mapped),
                     None
                 )
+
+                print(f"Processing custom field permission: {custom_field_permission_name} | ID: {dest_custom_field_permission_id}")
+
+
                 if dest_custom_field_permission_id:
                     custom_field_premissions_to_return.append({
                         "customFieldId": dest_custom_field_permission_id,
                         "accessLevel": customFieldPermission["accessLevel"],
                     })
+                    ids_already_mapped.append(dest_custom_field_permission_id)
                 else:
                     logging.error(f"Custom field permission {custom_field_permission_name} not found in destination domain")
                     
