@@ -69,7 +69,8 @@ try:
                     }
                     headers = {
                         'Accept': 'application/hal+json',
-                        'api-token': args.api_token
+                        'api-token': args.api_token,
+			'X-Irius-Async': 'true'
                     }
                     response = requests.post(api_url_libraries, headers=headers, files=files)
                     result_message = f"{file_name} imported as a library into {args.subdomain}. Status: {response.status_code}"
@@ -86,8 +87,8 @@ try:
                     }
                     headers = {
                         'Accept': 'application/hal+json',
-			'X-Irius-Async': 'false',
-                        'api-token': args.api_token
+                        'api-token': args.api_token, 
+			'X-Irius-Async': 'true'
                     }
                     response = requests.post(api_url_templates, headers=headers, files=files)
                     result_message = f"{file_name} imported as a template into {args.subdomain}. Status: {response.status_code}"
