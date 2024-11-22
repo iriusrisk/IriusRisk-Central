@@ -148,9 +148,10 @@ def library_creation(library, riskpattern, usecase, threat, threat_desc, weaknes
 
 
 if __name__ == "__main__":
-    library_data = pd.read_excel(
-        "Integrations/Library Creator/Example-Flattened-Library.xlsx"
-    )
+    
+    path = input("Enter the path of the Excel file: ")
+
+    library_data = pd.read_excel(path)
 
     for index, row in library_data.iterrows():
         library_creation(
