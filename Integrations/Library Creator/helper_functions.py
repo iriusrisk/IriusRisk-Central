@@ -21,7 +21,6 @@ def handle_response(response, url):
         logging.error(
             f"Bad request. Please check if the request is correctly formatted. {response.text}"
         )
-        sys.exit()
     elif response.status_code == 401:
         logging.error(
             "User is unauthorized. Please check if your API token is valid, API is enabled in settings, and you have appropriate permissions."
