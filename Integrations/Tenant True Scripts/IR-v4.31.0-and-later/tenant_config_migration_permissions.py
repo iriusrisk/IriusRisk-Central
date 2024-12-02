@@ -12,31 +12,31 @@ logging.basicConfig(
 
 def get_dest_roles_permissions(permission_type):
     dest_role_permissions = helper_functions.get_request(
-        config.post_domain,
+        config.dest_domain,
         f"{constants.ENDPOINT_ROLES}/{permission_type}",
-        config.post_head,
+        config.dest_head,
     )
 
     return dest_role_permissions["_embedded"]["items"]
 
 
-def get_custom_fields():
+def get_custom_fields(domain, headers):
     custom_fields = helper_functions.get_request(
-        config.post_domain, constants.ENDPOINT_CUSTOM_FIELDS, config.post_head
+        domain, constants.ENDPOINT_CUSTOM_FIELDS, headers
     )
     return custom_fields
 
 
-def migrate_roles():
+def main(source_domain, dest_domain, source_head, dest_head):
     try:
         logging.info("tenant_config_migration_permissions | START")
 
         # Get roles from both domains
         source_roles = helper_functions.get_request(
-            config.start_domain, constants.ENDPOINT_ROLES, config.start_head
+            config.source_domain, constants.ENDPOINT_ROLES, config.source_head
         )
         dest_roles = helper_functions.get_request(
-            config.post_domain, constants.ENDPOINT_ROLES, config.post_head
+            config.dest_domain, constants.ENDPOINT_ROLES, config.dest_head
         )
 
         # Map roles
@@ -55,7 +55,7 @@ def migrate_roles():
         dest_roles_global_permissions = get_dest_roles_permissions("global-permissions")
 
         # get custom fields
-        custom_fields = get_custom_fields()
+        custom_fields = get_custom_fields(dest_domain, dest_head)
 
         # Migrate roles
         for role in source_mapped:
@@ -72,8 +72,8 @@ def migrate_roles():
                     helper_functions.put_request(
                         dest_uuid,
                         role,
-                        config.post_domain + constants.ENDPOINT_ROLES,
-                        config.post_head,
+                    dest_domain + constants.ENDPOINT_ROLES,
+                        dest_head,
                     )
                     role["id"] = dest_uuid
                     logging.info(f"Updated role with UUID: {dest_uuid}")
@@ -85,10 +85,10 @@ def migrate_roles():
                     "name": role["name"],
                     "description": role["description"],
                 }
-                new_role = helper_functions.post_request(
+                new_role = helper_functions.dest_request(
                     role_to_post,
-                    config.post_domain + constants.ENDPOINT_ROLES,
-                    config.post_head,
+                    dest_domain + constants.ENDPOINT_ROLES,
+                    dest_head,
                 )
                 role["id"] = new_role["id"]
                 logging.info(f"Created new role: {role}")
@@ -100,6 +100,10 @@ def migrate_roles():
                 role["id"],
                 custom_fields,
                 "custom-fields-permissions",
+                source_domain,
+                source_head,
+                dest_domain,
+                dest_head,
             )
             migrate_permissions(
                 source_mapped,
@@ -107,6 +111,10 @@ def migrate_roles():
                 role["id"],
                 dest_roles_project_permissions,
                 "project-permissions",
+                source_domain,
+                source_head,
+                dest_domain,
+                dest_head,
             )
             migrate_permissions(
                 source_mapped,
@@ -114,6 +122,10 @@ def migrate_roles():
                 role["id"],
                 dest_roles_global_permissions,
                 "global-permissions",
+                source_domain,
+                source_head,
+                dest_domain,
+                dest_head,
             )
 
         logging.info("tenant_config_migration_permissions | END")
@@ -122,15 +134,15 @@ def migrate_roles():
 
 
 def migrate_custom_fields_permissions(
-    source_roles, source_uuid, dest_role_id, dest_role_permissions, permission_type
+    source_roles, source_uuid, dest_role_id, dest_role_permissions, permission_type, source_domain, source_head, dest_domain, dest_head
 ):
     try:
         for role in source_roles:
             permissions_to_put = []
             role_permissions = helper_functions.get_request(
-                config.start_domain,
+                source_domain,
                 f"{constants.ENDPOINT_ROLES}/{source_uuid}/custom-field-permissions",
-                config.start_head,
+                source_head,
             )
 
             for role_permission in role_permissions["_embedded"]["items"]:
@@ -148,12 +160,12 @@ def migrate_custom_fields_permissions(
 
             if len(permissions_to_put) > 0:
                 # Post permissions
-                config.post_head["X-Irius-Async"] = "True"
+                dest_head["X-Irius-Async"] = "True"
                 helper_functions.put_request(
                     "",
                     permissions_to_put,
-                    f"{config.post_domain}{constants.ENDPOINT_ROLES}/{dest_role_id}/custom-field-permissions/bulk",
-                    config.post_head,
+                    f"{dest_domain}{constants.ENDPOINT_ROLES}/{dest_role_id}/custom-field-permissions/bulk",
+                    dest_head,
                 )
                 logging.info(f"Put {permission_type} for role ID: {role['id']}")
                 # Sleep for 30 seconds to allow permissions to be applied
@@ -166,15 +178,15 @@ def migrate_custom_fields_permissions(
 
 
 def migrate_permissions(
-    source_roles, source_uuid, dest_role_id, dest_role_permissions, permission_type
+    source_roles, source_uuid, dest_role_id, dest_role_permissions, permission_type, source_domain, source_head, dest_domain, dest_head
 ):
     try:
         for role in source_roles:
             permissions_to_post = []
             role_permissions = helper_functions.get_request(
-                config.start_domain,
+                source_domain,
                 f"{constants.ENDPOINT_ROLES}/{source_uuid}/{permission_type}",
-                config.start_head,
+                source_head,
             )
             for this_role_permission in role_permissions["_embedded"]["items"]:
                 for dest_role_permission in dest_role_permissions:
@@ -183,12 +195,12 @@ def migrate_permissions(
 
             if len(permissions_to_post) > 0:
                 # Post permissions
-                config.post_head["X-Irius-Async"] = "True"
+                dest_head["X-Irius-Async"] = "True"
                 json_to_post = {"permissions": permissions_to_post}
-                helper_functions.post_request(
+                helper_functions.dest_request(
                     json_to_post,
-                    f"{config.post_domain}{constants.ENDPOINT_ROLES}/{dest_role_id}/{permission_type}/bulk",
-                    config.post_head,
+                    f"{dest_domain}{constants.ENDPOINT_ROLES}/{dest_role_id}/{permission_type}/bulk",
+                    dest_head,
                 )
                 logging.info(f"Posted {permission_type} for role ID: {role['id']}")
     except Exception as e:
@@ -196,4 +208,4 @@ def migrate_permissions(
 
 
 if __name__ == "__main__":
-    migrate_roles()
+    main(config.source_domain, config.dest_domain, config.source_head, config.dest_head)

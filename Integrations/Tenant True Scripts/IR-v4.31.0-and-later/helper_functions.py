@@ -10,6 +10,13 @@ logger = logging.basicConfig(
 )
 
 
+def get_headers(api_token):
+    return {
+        "Content-Type": "application/json",
+        "api-token": api_token
+    }
+
+
 # Handles whatever response we get from requests
 def handle_response(response, url):
     if response.status_code in [200, 201, 202]:

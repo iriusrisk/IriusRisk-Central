@@ -99,30 +99,30 @@ def associate_risk_patterns_with_component(
             )
 
 
-def process_components_and_associate_risk_patterns():
+def main(start_domain, post_domain, start_head, post_head):
     """Main function to process components and associate risk patterns."""
     # Get all components from both domains
     data1 = helper_functions.get_request(
-        config.start_domain,
+        start_domain,
         constants.ENDPOINT_COMPONENTS,
-        config.start_head,
+        start_head,
     )
     data2 = helper_functions.get_request(
-        config.post_domain,
+        post_domain,
         constants.ENDPOINT_COMPONENTS,
-        config.post_head,
+        post_head,
     )
 
     # Get all component categories from both domains
     categories1 = helper_functions.get_request(
-        config.start_domain,
+        start_domain,
         constants.ENDPOINT_COMPONENTS_CATEGORIES_SUMMARY,
-        config.start_head,
+        start_head,
     )
     categories2 = helper_functions.get_request(
-        config.post_domain,
+        post_domain,
         constants.ENDPOINT_COMPONENTS_CATEGORIES_SUMMARY,
-        config.post_head,
+        post_head,
     )
 
     # Map category IDs
@@ -134,7 +134,7 @@ def process_components_and_associate_risk_patterns():
 
     # Retrieve existing components from domain 2
     existing_components = {item["name"] for item in data2["_embedded"]["items"]}
-    post_url = config.post_domain + constants.ENDPOINT_COMPONENTS
+    post_url = post_domain + constants.ENDPOINT_COMPONENTS
 
     # Process each component
     for component in data1["_embedded"]["items"]:
@@ -163,7 +163,7 @@ def process_components_and_associate_risk_patterns():
                     uuid,
                     component_to_put,
                     post_url,
-                    config.post_head,
+                    post_head,
                 )
                 component_has_been_put = True
                 component_id = uuid
@@ -176,14 +176,14 @@ def process_components_and_associate_risk_patterns():
 
         if component_has_been_put is False:
             component_id = post_component_to_domain(
-                component, category_id, post_url, config.post_head
+                component, category_id, post_url, post_head
             )
             if not component_id:
                 continue
 
         # Get risk patterns for the component from domain 1
         risk_patterns_start = get_risk_patterns_for_component(
-            component["id"], config.start_domain, config.start_head
+            component["id"], start_domain, start_head
         )
 
         # Create a mapping of risk pattern names and library names
@@ -193,7 +193,7 @@ def process_components_and_associate_risk_patterns():
 
         # Get libraries from domain 2
         libraries_data = helper_functions.get_request(
-            config.post_domain, constants.ENDPOINT_LIBRARIES, config.post_head
+            post_domain, constants.ENDPOINT_LIBRARIES, post_head
         )
         library_name_to_id_post = {
             item["name"]: item["id"] for item in libraries_data["_embedded"]["items"]
@@ -203,7 +203,7 @@ def process_components_and_associate_risk_patterns():
         risk_patterns_by_library_post = {}
         for library_name, library_id in library_name_to_id_post.items():
             risk_patterns_by_library_post[library_name] = get_risk_patterns_by_library(
-                library_id, config.post_domain, config.post_head
+                library_id, post_domain, post_head
             )
 
         # Map risk patterns from domain 1 to domain 2 and associate them
@@ -228,12 +228,12 @@ def process_components_and_associate_risk_patterns():
         associate_risk_patterns_with_component(
             component_id,
             risk_patterns_to_associate,
-            config.post_domain,
-            config.post_head,
+            post_domain,
+            post_head,
         )
 
 
 if __name__ == "__main__":
     logging.info("tenant_config_migration_components | START")
-    process_components_and_associate_risk_patterns()
+    main(start_domain=config.source_domain, post_domain=config.dest_domain, start_head=config.source_head, post_head=config.dest_head) 
     logging.info("tenant_config_migration_components | END")

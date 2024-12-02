@@ -8,9 +8,9 @@ import mappers
 # TODO ask questions about the group id
 
 
-def get_or_create_type(item, post_url, post_headers):
+def get_or_create_type(item, dest_url, dest_headers):
     """Ensure type exists and return its ID; create new if not found."""
-    response = helper_functions.get_request(post_url, endpoint="", headers=post_headers)
+    response = helper_functions.get_request(dest_url, endpoint="", headers=dest_headers)
     if response:
         for type_item in response["_embedded"]["items"]:
             if type_item["name"] == item["name"]:
@@ -22,16 +22,16 @@ def get_or_create_type(item, post_url, post_headers):
         "description": item["description"],
         "multiSelectable": item["multiSelectable"],
     }
-    new_type_response = helper_functions.post_request(type_data, post_url, post_headers)
+    new_type_response = helper_functions.dest_request(type_data, dest_url, dest_headers)
     if new_type_response:
         return item["id"], new_type_response["id"]
     return None, None
 
 
-def get_or_create_group(item, post_url, post_headers):
+def get_or_create_group(item, dest_url, dest_headers):
     """Ensure group exists and return its ID; create new if not found."""
     response = helper_functions.get_request(
-        post_url, endpoint=None, headers=post_headers
+        dest_url, endpoint=None, headers=dest_headers
     )
     if response:
         for group_item in response["_embedded"]["items"]:
@@ -40,8 +40,8 @@ def get_or_create_group(item, post_url, post_headers):
 
     # Create new group if not found
     group_data = {"name": item["name"], "entity": item["entity"]}
-    new_group_response = helper_functions.post_request(
-        group_data, post_url, post_headers
+    new_group_response = helper_functions.dest_request(
+        group_data, dest_url, dest_headers
     )
     return new_group_response["id"]
 
@@ -59,7 +59,7 @@ def get_type_values(type_id, url, headers):
         return []
 
 
-def post_type_values(type_id, values, url, headers):
+def dest_type_values(type_id, values, url, headers):
     """Post values to a specific custom field type in the POST domain."""
     for value in values:
         data = {"value": value["value"], "after": ""}
@@ -76,56 +76,56 @@ def post_type_values(type_id, values, url, headers):
             )
 
 
-def main():
+def main(source_domain, dest_domain, source_head, dest_head):
     type_ids_mapping = {}
 
     # Handle types
     types_data = helper_functions.get_request(
-        config.start_domain, constants.ENDPOINT_CUSTOM_FIELDS_TYPES, config.start_head
+        source_domain, constants.ENDPOINT_CUSTOM_FIELDS_TYPES, source_head
     )
     if types_data:
         for item in types_data["_embedded"]["items"]:
-            start_type_id, post_type_id = get_or_create_type(
+            source_type_id, dest_type_id = get_or_create_type(
                 item,
-                config.post_domain + constants.ENDPOINT_CUSTOM_FIELDS_TYPES,
-                config.post_head,
+                dest_domain + constants.ENDPOINT_CUSTOM_FIELDS_TYPES,
+                dest_head,
             )
-            if start_type_id and post_type_id:
-                type_ids_mapping[start_type_id] = post_type_id
+            if source_type_id and dest_type_id:
+                type_ids_mapping[source_type_id] = dest_type_id
                 logging.info(
-                    f"Handled type {item['name']} with GET ID {start_type_id} and POST ID {post_type_id}"
+                    f"Handled type {item['name']} with GET ID {source_type_id} and POST ID {dest_type_id}"
                 )
 
     # Get and post values for types
-    for start_type_id, post_type_id in type_ids_mapping.items():
+    for source_type_id, dest_type_id in type_ids_mapping.items():
         values = get_type_values(
-            start_type_id,
-            config.start_domain + constants.ENDPOINT_CUSTOM_FIELDS_TYPES,
-            config.start_head,
+            source_type_id,
+            source_domain + constants.ENDPOINT_CUSTOM_FIELDS_TYPES,
+            source_head,
         )
-        post_type_values(
-            post_type_id,
+        dest_type_values(
+            dest_type_id,
             values,
-            config.post_domain + constants.ENDPOINT_CUSTOM_FIELDS_TYPES,
-            config.post_head,
+            dest_domain + constants.ENDPOINT_CUSTOM_FIELDS_TYPES,
+            dest_head,
         )
 
     # Handle groups
-    post_url_group = config.post_domain + constants.ENDPOINT_CUSTOM_FIELDS_GROUPS
+    dest_url_group = dest_domain + constants.ENDPOINT_CUSTOM_FIELDS_GROUPS
     groups_data = helper_functions.get_request(
-        config.start_domain, constants.ENDPOINT_CUSTOM_FIELDS_GROUPS, config.start_head
+        source_domain, constants.ENDPOINT_CUSTOM_FIELDS_GROUPS, source_head
     )
     if groups_data:
         for item in groups_data["_embedded"]["items"]:
-            group_id = get_or_create_group(item, post_url_group, config.post_head)
+            group_id = get_or_create_group(item, dest_url_group, dest_head)
             logging.info(f"Handled group {item['name']} with ID {group_id}")
 
     # Handle custom fields
     source_cfs_data = helper_functions.get_request(
-        config.start_domain, constants.ENDPOINT_CUSTOM_FIELDS, config.start_head
+        source_domain, constants.ENDPOINT_CUSTOM_FIELDS, source_head
     )
     dest_cfs_data = helper_functions.get_request(
-        config.post_domain, constants.ENDPOINT_CUSTOM_FIELDS, config.post_head
+        dest_domain, constants.ENDPOINT_CUSTOM_FIELDS, dest_head
     )
 
     mapped_source_cfs_data = mappers.map_custom_fields(
@@ -147,16 +147,11 @@ def main():
 
             # Only add groupId if 'group' key exists and is not None
             if "group" in item and item["group"] is not None:
-                group_id = get_or_create_group(
-                    item["group"], post_url_group, config.post_head
-                )
+                group_id = get_or_create_group(item["group"], dest_url_group, dest_head)
                 if group_id:
                     cf_data["groupId"] = group_id
 
-            if (
-                cf_data["referenceId"] in matches
-                and cf_data["editable"] is True
-            ):
+            if cf_data["referenceId"] in matches and cf_data["editable"] is True:
                 if (
                     helper_functions.is_ir_object_same(
                         mappers.map_single_custom_field(item, type_ids_mapping),
@@ -170,19 +165,19 @@ def main():
                     helper_functions.put_request(
                         uuid,
                         cf_data,
-                        config.post_domain + constants.ENDPOINT_CUSTOM_FIELDS,
-                        config.post_head,
+                        dest_domain + constants.ENDPOINT_CUSTOM_FIELDS,
+                        dest_head,
                     )
             else:
                 logging.info("Posting custom field with data:", cf_data)
                 print(cf_data)
                 del cf_data["id"]
-                helper_functions.post_request(
-                    cf_data, config.post_domain + constants.ENDPOINT_CUSTOM_FIELDS, config.post_head
+                helper_functions.dest_request(
+                    cf_data, dest_domain + constants.ENDPOINT_CUSTOM_FIELDS, dest_head
                 )
 
 
 if __name__ == "__main__":
     logging.info("tenant_config_migration_CustomFields | START")
-    main()
+    main(config.source_domain, config.dest_domain, config.source_head, config.dest_head)
     logging.info("tenant_config_migration_CustomFields | END")

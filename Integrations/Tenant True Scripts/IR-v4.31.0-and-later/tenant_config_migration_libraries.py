@@ -81,19 +81,19 @@ def import_libraries(libraries_info, url, headers):
                     )
 
 
-if __name__ == "__main__":
+def main(start_domain, post_domain, start_head, post_head):
     logging.info("tentant_config_migration_libraries | START")
 
     sys.stdout.reconfigure(encoding="utf-8")
     source_libraries_data = helper_functions.get_request(
-        config.start_domain,
+        start_domain,
         constants.ENDPOINT_LIBRARIES + "?size=10000",
-        config.start_head,
+        start_head,
     )
     dest_libraries_data = helper_functions.get_request(
-        config.post_domain,
+        post_domain,
         constants.ENDPOINT_LIBRARIES + "?size=10000",
-        config.post_head,
+        post_head,
     )
 
     source_libraries_mapped = mappers.map_libraries(source_libraries_data)
@@ -118,18 +118,23 @@ if __name__ == "__main__":
                     helper_functions.put_request(
                         uuid,
                         item,
-                        config.post_domain + constants.ENDPOINT_LIBRARIES,
-                        config.post_head,
+                        post_domain + constants.ENDPOINT_LIBRARIES,
+                        post_head,
                     )
                 else:
                     logging.info(f"Library [{item['name']}] is the same.")
 
     logging.info("Exporting libraries for POSTING...")
     libraries_info = process_libraries_data(source_libraries_data)
-    export_libraries_to_xml(libraries_info, config.start_domain, config.start_head)
+    export_libraries_to_xml(libraries_info, start_domain, start_head)
     import_libraries(
         libraries_info,
-        f"{config.post_domain}{constants.ENDPOINT_LIBRARIES}/import",
-        config.post_head,
+        f"{post_domain}{constants.ENDPOINT_LIBRARIES}/import",
+        post_head,
     )
     logging.info("tentant_config_migration_libraries | END")
+
+if __name__ == "__main__":
+    logging.info("tenant_config_migration_libraries | START")
+    main(config.source_domain, config.dest_domain, config.source_head, config.dest_head)
+    logging.info("tenant_config_migration_libraries | END")
