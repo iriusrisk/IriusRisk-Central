@@ -3,6 +3,7 @@ import pip._vendor.requests as requests
 import sys
 import logging
 import constants
+import re
 
 # Setting up logging
 logger = logging.basicConfig(
@@ -91,3 +92,14 @@ def find_matches(list_1, list_2, field):
             matches_dict[role[field]] = role["id"]
 
     return matches_dict
+
+# Verify reference id matches regex
+def create_and_verify_reference_id(reference_id):
+    # Replace spaces with hyphens
+    reference_id = reference_id.replace(" ", "-")
+
+    # Remove unwanted characters
+    unwanted_chars = r'[!@#$%^&*()+=\{\}\[\]|\\:;"\'<>,.?/]'
+    reference_id = re.sub(unwanted_chars, "", reference_id)
+    
+    return reference_id

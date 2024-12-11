@@ -43,7 +43,7 @@ def handle_risk_pattern(risk_pattern, library_id, headers):
 
 def handle_use_case(use_case, risk_pattern_id, headers):
     usecase_endpoint = f"{config.dest_domain}{constants.ENDPOINT_LIBRARIES}/use-cases"
-    usecase_ref = use_case.replace(" ", "-")
+    usecase_ref = helper_functions.create_and_verify_reference_id(use_case)
     usecase_data = json.dumps({
         "name": use_case,
         "referenceId": usecase_ref,
@@ -56,7 +56,7 @@ def handle_use_case(use_case, risk_pattern_id, headers):
 
 def handle_threat(threat, threat_desc, usecase_id, headers):
     threat_endpoint = f"{config.dest_domain}{constants.ENDPOINT_LIBRARIES}/threats"
-    threat_ref = threat.replace(" ", "-")
+    threat_ref = helper_functions.create_and_verify_reference_id(threat)
     custom_fields = get_dest_custom_fields("threat")
     threat_data = json.dumps({
         "availability": "100",
@@ -74,7 +74,7 @@ def handle_threat(threat, threat_desc, usecase_id, headers):
     logging.info(f"Threat ID: {response.json()['id']}")
 
 def handle_weakness(weakness, risk_pattern_id, headers):
-    weakness_ref = weakness.replace(" ", "-")
+    weakness_ref = helper_functions.create_and_verify_reference_id(weakness)
     weakness_creation_endpoint = f"{config.dest_domain}{constants.ENDPOINT_LIBRARIES}/weaknesses"
     weakness_data = json.dumps({
         "impact": "50",
@@ -89,7 +89,7 @@ def handle_weakness(weakness, risk_pattern_id, headers):
 
 def handle_countermeasure(countermeasure, countermeasure_desc, risk_pattern_id, headers):
     countermeasure_creation_endpoint = f"{config.dest_domain}{constants.ENDPOINT_LIBRARIES}/countermeasures"
-    countermeasure_ref = countermeasure.replace(" ", "-")
+    countermeasure_ref = helper_functions.create_and_verify_reference_id(countermeasure)
     custom_fields = get_dest_custom_fields("countermeasure")
     countermeasure_data = json.dumps({
         "cost": "medium",
@@ -106,7 +106,7 @@ def handle_countermeasure(countermeasure, countermeasure_desc, risk_pattern_id, 
 
 def handle_standards(standardname, headers):
     standard_creation_endpoint = f"{config.dest_domain}/api/v2/standards"
-    standard_ref = standardname.replace(" ", "-")
+    standard_ref = helper_functions.create_and_verify_reference_id(standardname)
     standard_data = json.dumps({
         "name": standardname,
         "referenceId": standard_ref
@@ -131,7 +131,8 @@ def associate_standard(standard_id, suppstandref, headers):
       logging.info(f"Standard association response: {response.status_code}")
 
 def library_creation(library, riskpattern, usecase, threat, threat_desc, weakness, countermeasure, countermeasure_desc, standardref, standardname, suppstandref):
-    library_ref = library.replace(" ", "-")
+    library_ref = helper_functions.create_and_verify_reference_id(library)
+    
     headers = {"Content-Type": "application/json", "api-token": config.dest_apitoken}
 
     library_id = handle_library(library, library_ref, headers)
@@ -145,7 +146,6 @@ def library_creation(library, riskpattern, usecase, threat, threat_desc, weaknes
     handle_countermeasure(countermeasure, countermeasure_desc, risk_pattern_id, headers)
     standard_id = handle_standards(standardname, headers)
     associate_standard(standard_id, suppstandref, headers)
-
 
 if __name__ == "__main__":
     
