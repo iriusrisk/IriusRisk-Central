@@ -15,6 +15,7 @@ SCRIPTS = {
     "Assets": "tenant_config_migration_assets",
     "Components": "tenant_config_migration_components",
     "Libraries": "tenant_config_migration_libraries",
+    "Component Categories": "tenant_config_migration_component_categories",
 
 }
 
