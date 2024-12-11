@@ -1,73 +1,50 @@
-import pip._vendor.requests as requests
-import sys
-import json
 import config
+import constants
+import helper_functions
+import mappers
+import logging
 
-#-------------INITIALISE ENVIRONMENT-----------------#
-#set request and head
-start_domain = config.start_domain
-start_sub_url = config.start_sub_url
-start_apitoken = config.start_apitoken
-start_head = config.start_head
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+def main(start_domain, post_domain, start_head, post_head):
+    logging.info("tenant_config_migration_BUs | START")\
 
-post_domain = config.post_domain
-post_sub_url = config.post_sub_url
-post_apitoken = config.post_apitoken
-post_head = config.post_head
+    source_results = helper_functions.get_request(
+        start_domain, constants.ENDPOINT_BUSINESS_UNIT, start_head
+    )
 
+    dest_results = helper_functions.get_request(
+        post_domain, constants.ENDPOINT_BUSINESS_UNIT, post_head
+    )
 
-#-------------GET ALL ROLES-----------------------#
-#update url
-start_sub_url = '/api/v2/business-units'
-start_url = start_domain + start_sub_url
+    source_mapped = mappers.map_business_units(source_results)
+    dest_mapped = mappers.map_business_units(dest_results)
 
-#GET request
-response = requests.get(start_url, headers=start_head)
+    matches = helper_functions.find_matches(source_mapped, dest_mapped, "referenceId")
 
-#If successful
-if response.status_code == 200:
-  print("Get request successful")
-  data = response.json()
-  #print(data)
-  
-  filtered_data = [item for item in data['_embedded']["items"]]
+    for business_unit in source_mapped:
+        if business_unit["referenceId"] in matches:
+            if helper_functions.is_ir_object_same(business_unit, dest_mapped) is False:
+                uuid = matches[business_unit["referenceId"]]
+                del business_unit["referenceId"]
+                helper_functions.put_request(
+                    uuid,
+                    business_unit,
+                    post_domain + constants.ENDPOINT_BUSINESS_UNIT,
+                    post_head,
+                )
+        else:
+            del business_unit["id"]
+            helper_functions.post_request(
+                business_unit,
+                post_domain + constants.ENDPOINT_BUSINESS_UNIT,
+                post_head,
+            )
 
-#if unauthorised
-elif response.status_code == 401:
-  print("User is unauthorised1. Please check your api token is valid, that your api is enabled in the settings & that you have appropriate permissions on your account")
-  sys.exit() #if unauthorised, exit the script
+    logging.info("tenant_config_migration_BUs | END")
 
-#catch
-else:
-  print("Request: " + response.request.method + ' ' + start_url + " failed")
- 
-#------------POST ALL ROLES-----------------------#
-
-#FILTER results to get the name and description
-post_sub_url = '/api/v2/business-units'
-post_url = post_domain + post_sub_url  
-for item in filtered_data:
-  myobj = {f"referenceId": item['referenceId'],
-        "name": item['name'],
-        "description":item['description']}
-  
-  post_head={'api-token': post_apitoken}
-
-  #post new roles
-  response = requests.post(post_url, headers=post_head, json = myobj)
-  
-  if response.status_code==200:
-    print("successful post")
-    data_new_role = response.json()
-    #filtered_new_role_data = [item for item in data['id']]
-    
-  #if unauthorised
-  elif response.status_code == 401:
-    print("User is unauthorised. Please check your api token is valid, that your api is enabled in the settings & that you have appropriate permissions on your account")
-    sys.exit() #if unauthorised, exit the script
-    
-  else:
-    print("Request: " + response.request.method + ' ' + item['name'] + ' ' + post_url + " failed. This BU likely exists already\n")
-
-  
-
+if __name__ == "__main__":
+    logging.info("tenant_config_migration_BUs | START")
+    main(config.source_domain, config.dest_domain, config.source_head, config.dest_head)
+    logging.info("tenant_config_migration | END")
