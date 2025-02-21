@@ -46,6 +46,16 @@ This feature will export the status of your project to CSV and Excel, focusing o
 In addition, it will include the countermeasure status of associated projects by tag.
 For example, if your project contains a project component tagged with the reference ID of its actual project, the countermeasure data for that project component will be included along with the data for your target project.
 
+Feature: Export Project Threat Hierarchy Data (3)
+This feature will export the project status, while nesting the project hierachical data with respect to components, use cases, threats, weaknesses and countermeasures.
+In addition, the soucre pythong file ("getProject_Threat_Hierarchy_Data.py") includes two toggle options:
+
+ 27         # Toggle options
+ 28         self.include_references =True
+ 29         self.include_standards = False
+
+These toggles determine whether or not Countermeasure references and standards data are included in the resulting output file.
+
 Feature: User Access Report (8)
 This feature generates a report that displays active or inactive users over a specified period in days.
 
