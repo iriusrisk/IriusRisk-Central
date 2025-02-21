@@ -6,6 +6,7 @@ class Reception:
         self.menu = ["Main Menu:", "",
                      "1. Get Project List",
                      "2. Export IR Project Status",
+                     "3. Export Project Threat Hierarchy Data",
                      "8. User Access Report",
                      "9. Business Unit Reports",
                      "10. Audit Log Report",
@@ -18,14 +19,12 @@ class Reception:
         for item in self.menu:
             print(item)
 
-
     def execute_script(self, script_path, args):
         script_absolute_path = os.path.expanduser(script_path)
         try:
             subprocess.run(['python3', script_absolute_path] + args, check=True)
         except subprocess.CalledProcessError as e:
             print(f"Error executing script: {script_absolute_path}, {e}")
-
 
     def execute_script_noArgs(self, script_path):
         script_absolute_path = os.path.expanduser(script_path)
@@ -106,6 +105,10 @@ class Reception:
                 project_id = input("Enter the target Project ID: ")
                 print("")
                 self.execute_script('~/ir_api_util/getProject_CM_Status.py', [project_id])
+            elif choice == "3":
+                project_id = input("Enter the target Project ID: ")
+                print("")
+                self.execute_script('~/ir_api_util/getProject_Threat_Hierarchy_Data.py', [project_id])
             elif choice == "8":
                 days = input("Enter the number of days for the User Access Report: ")
                 print("")
