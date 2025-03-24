@@ -23,7 +23,7 @@ Before using this script, ensure you have the following:
 
    - **Option 2: Export in terminal**  
      ```bash
-     export IRIUSRISK_API_URL=https://your.iriusrisk.instance/api/v1
+     export IRIUSRISK_API_URL=https://your-tenant.iriusrisk.com
      export IRIUSRISK_API_TOKEN=your-api-token-here
      ```
 

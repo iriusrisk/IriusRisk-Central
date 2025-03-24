@@ -143,8 +143,14 @@ def library_creation(
     standardname,
     suppstandref,
 ):
-    api_endpoint = os.getenv("IRIUSRISK_API_URL") + "/api/v1"
+    api_endpoint = os.getenv("IRIUSRISK_API_URL")
     api_token = os.getenv("IRIUSRISK_API_TOKEN")
+
+    if not api_endpoint or not api_token:
+        logging.error("Missing required environment variables: IRIUSRISK_API_URL or IRIUSRISK_API_TOKEN.")
+        exit(1)
+
+    api_endpoint += "/api/v1"
 
     if not api_endpoint or not api_token:
         logging.error(
@@ -393,5 +399,8 @@ for index, row in library_data.iterrows():
             row["supported standardref"],
         )
     except Exception as e:
+        import traceback
         record_summary("failed", "Row", index + 1)
         logging.error(f"❌ Failed processing row {index + 1}: {e}")
+        logging.error("Traceback details:")
+        logging.error(traceback.format_exc())
