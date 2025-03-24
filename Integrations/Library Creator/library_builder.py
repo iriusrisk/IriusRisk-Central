@@ -1,229 +1,406 @@
 import requests
 import json
+import pandas as pd
 import time
-import pandas as pd
-import config
+import logging
+import os
+import csv
+from dotenv import load_dotenv
 
-def library_creation(library, riskpattern, usecase, threat, threat_desc, weakness, countermeasure, countermeasure_desc, standardref, standardname,suppstandref):
+# Load environment variables from .env file
+load_dotenv()
 
-  api_endpoint = config.URL
-  #adds the API token from a seperate file
-  api_token = config.API_KEY
-
-  #CREATES THE LIBRARY
-
-  library_endpoint = api_endpoint + "/libraries"
-
-  library_ref = library.replace(" ","-")
-
-  library_data = json.dumps({
-    "ref" : f"{library_ref}",
-    "name" : f"{library}",
-    "desc" : ""
-  })
-
-  headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "API-token": f"{api_token}"
-  }
-
-  response = requests.post(library_endpoint, headers=headers, data=library_data)
-  if response.status_code == 201:
-    print(response, "Library was created")
-  elif response.status_code == 400:
-    response = requests.put(library_endpoint, headers=headers, data=library_data)
-    if response.status_code == 201:
-      print(response, "Library was updated")
-    elif response.status_code == 405:
-      print(response, "METHOD NOT ALLOWED - Library not updated!")
-
-  #time.sleep(2)
-
-  #CREATES THE RISK PATTERN
-
-  riskpattern_endpoint = api_endpoint + f"/libraries/{library_ref}/riskpatterns"
-
-  #print(riskpattern_endpoint)
-
-  riskpattern_ref = riskpattern.replace(" ", "")
-
-  payload = json.dumps({
-    "ref": f"{riskpattern_ref}",
-    "name": f"{riskpattern}",
-    "desc": "",
-    #"tags": [
-      #"string",
-      #"string"
-    #]
-  })
-  headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'API-token': api_token
-  }
-
-  response = requests.request("POST", riskpattern_endpoint, headers=headers, data=payload)
-  print(response, "Risk Pattern")
-  #print(response.text)
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("library_creator.log"),
+        logging.StreamHandler(),
+    ],
+)
 
 
-  #CREATES THE USE CASE
+class APICache:
+    def __init__(self):
+        self.cache = {
+            "libraries": set(),
+            "riskpatterns": set(),
+            "usecases": set(),
+            "threats": set(),
+            "weaknesses": set(),
+            "countermeasures": set(),
+        }
 
-  usecase_endpoint = api_endpoint + f"/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/usecases"
+    def exists(self, category, key):
+        return key in self.cache[category]
 
-  usecase_ref = usecase.replace(" ", "-")
+    def add(self, category, key):
+        self.cache[category].add(key)
 
-  usecase_data = json.dumps({
-    "ref": f"{usecase_ref}",
-    "name": f"{usecase}",
-    "desc": ""
-  })
 
-  response = requests.post(usecase_endpoint, headers=headers, data=usecase_data)
-  print(response, "Use Case")
+cache = APICache()
 
-  #time.sleep(2)
+summary = {
+    "created": [],
+    "skipped": [],
+    "failed": [],
+}
 
-  #CREATES THE THREATS
+structure_preview = {}
 
-  threat_endpoint = api_endpoint + f"/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/usecases/{usecase_ref}/threats"
 
-  #print(threat_endpoint)
+def api_request(
+    method, url, headers, data=None, expected_status=(200, 201), retries=3
+):
+    for attempt in range(retries):
+        response = requests.request(method, url, headers=headers, data=data)
 
-  threat_ref = threat.replace(" ", "-")
+        if response.status_code in expected_status:
+            return response
 
-  #the only values accepted for riskRating are "[The only risk rating acceptable values are: none, low, medium, high, very-high]"
-  threat_data = json.dumps({
-    "ref": f"{threat_ref}",
-    "name": f"{threat}",
-    "desc": f"{threat_desc}",
-    "riskRating": {
-      "confidentiality": "high",
-      "integrity": "high",
-      "availability": "high",
-      "easeOfExploitation": "low"
-      }
-    })
+        if response.status_code == 400:
+            error_text = response.text
+            if "already exists" in error_text or "exists" in error_text:
+                return "exists"
 
-  response = requests.post(threat_endpoint, headers=headers, data=threat_data)
-  print(response, "Threat")
-  #print(response.text, "Threat Response")
+        if response.status_code in [404, 405, 409]:
+            logging.warning(f"{response.status_code} Error: {response.text}")
+            return None
 
-  #CREATES A WEAKNESS IN A RISK PATTERN
+        logging.error(
+            f"Attempt {attempt + 1}/{retries} failed for {url} - {response.text}"
+        )
+        time.sleep(2)
+    return None
 
-  weakness_ref = weakness.replace(" ","-")
 
-  weakness_creation_endpoint = api_endpoint + f"/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/weaknesses"
+def exists_via_get(full_url, headers):
+    response = requests.get(full_url, headers=headers)
+    return response.status_code == 200
 
-  weakness_data = json.dumps({
-  "ref": f"{weakness_ref}",
-  "name": f"{weakness}",
-  "desc": "",
-  "impact": "medium",
-  "test": {
-    "steps": "",
-    "notes": ""
-  }
-  })
 
-  response = requests.post(weakness_creation_endpoint, headers=headers, data=weakness_data)
-  print(response, "Weakness")
-  #print(response.text)
+def is_blank(value):
+    return pd.isna(value) or str(value).strip().lower() in ["", "nan"]
 
-  #ASSOCIATES A WEAKNESS TO A THREAT
 
-  associate_weakness_endpoint = api_endpoint + f"/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/usecases/{usecase_ref}/threats/{threat_ref}/weaknesses"
+def record_summary(status, entity_type, ref):
+    summary[status].append((entity_type, ref))
 
-  data = json.dumps({
-  "ref": f"{weakness_ref}"
-  })
 
-  response = requests.put(associate_weakness_endpoint, headers=headers, data=data)
-  print(response, "Weakness Associated")
-  #print(response.text)
+def update_structure(library, rp, uc, threat, weakness, countermeasure):
+    structure_preview.setdefault(library, {}).setdefault(rp, {}).setdefault(
+        uc, {}
+    ).setdefault(threat, {"weakness": weakness, "countermeasures": []})
+    if weakness:
+        structure_preview[library][rp][uc][threat]["weakness"] = weakness
+    if countermeasure:
+        structure_preview[library][rp][uc][threat]["countermeasures"].append(
+            countermeasure
+        )
 
-  #CREATES A NEW COUNTERMEASURE IN A RISK PATTERN
-    #for some reason, it is not taking the mitigation value.
 
-  countermeasure_creation_endpoint = api_endpoint + f"/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/countermeasures"
+def print_structure(structure):
+    print("\n📦 Structure Preview\n")
+    for library, patterns in structure.items():
+        print(f"Library: {library}")
+        for rp, usecases in patterns.items():
+            print(f"  └─ Risk Pattern: {rp}")
+            for uc, threats in usecases.items():
+                print(f"     └─ Use Case: {uc}")
+                for threat, items in threats.items():
+                    print(f"        ├─ Threat: {threat}")
+                    if items.get("weakness"):
+                        print(f"        │   ├─ Weakness: {items['weakness']}")
+                    if items.get("countermeasures"):
+                        print(f"        │   └─ Countermeasures:")
+                        for cm in items["countermeasures"]:
+                            print(f"        │       └─ {cm}")
 
-  countermeasure_ref = countermeasure.replace(" ","_")
 
-  countermeasure_data = json.dumps({
-  "ref": f"{countermeasure_ref}",
-  "name": f"{countermeasure}",
-  "desc": countermeasure_desc,
-  #"mitigation": "",
-  "test": {
-    "steps": "",
-    "notes": ""
-  },
-  "state": "required",
-  "costRating": "medium",
-  "standards": [
-    {
-      "ref": f"{standardref}",
-      "name": f"{standardname}",
-      "supportedStandardRef": f"{suppstandref}"
-    },
-  ]
-  })
+def build_structure_preview(library_data):
+    for index, row in library_data.iterrows():
+        update_structure(
+            row["Library"],
+            row["Risk_Pattern"],
+            row["Use_Case"],
+            row["Threat"] if not is_blank(row["Threat"]) else None,
+            row["Weakness"] if not is_blank(row["Weakness"]) else None,
+            row["CM"] if not is_blank(row["CM"]) else None,
+        )
 
-  response = requests.post(countermeasure_creation_endpoint,headers=headers, data=countermeasure_data)
-  print(response, "Countermeasure")
-  #print(response.text)
 
-  #ASSOCIATES A CM WITH A WEAKNESS
+def library_creation(
+    library,
+    riskpattern,
+    usecase,
+    threat,
+    threat_desc,
+    weakness,
+    countermeasure,
+    countermeasure_desc,
+    standardref,
+    standardname,
+    suppstandref,
+):
+    api_endpoint = os.getenv("IRIUSRISK_API_URL")
+    api_token = os.getenv("IRIUSRISK_API_TOKEN")
 
-  associate_cm_endpoint = api_endpoint + f"/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/usecases/{usecase_ref}/threats/{threat_ref}/weaknesses/{weakness_ref}/countermeasures"
+    if not api_endpoint or not api_token:
+        logging.error("Missing required environment variables: IRIUSRISK_API_URL or IRIUSRISK_API_TOKEN.")
+        exit(1)
 
-  data = json.dumps({
-  "ref": f"{countermeasure_ref}"
-  })
+    api_endpoint += "/api/v1"
 
-  response = requests.put(associate_cm_endpoint, headers=headers, data=data)
-  print(response, "CM Associated")
-  #print(response.text)
+    if not api_endpoint or not api_token:
+        logging.error(
+            "Missing IRIUSRISK_API_URL or IRIUSRISK_API_TOKEN environment variable."
+        )
+        exit(1)
 
-  print(f"Row {counter} Complete")
-  print("")
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "API-token": api_token,
+    }
 
-import pandas as pd
+    if is_blank(library) or is_blank(riskpattern) or is_blank(usecase):
+        logging.info(
+            "Skipped row due to missing required fields (Library, Risk Pattern, or Use Case)."
+        )
+        return
+
+    library_ref = str(library).replace(" ", "-")
+    riskpattern_ref = str(riskpattern).replace(" ", "")
+    usecase_ref = str(usecase).replace(" ", "-")
+    threat_ref = str(threat).replace(" ", "-") if not is_blank(threat) else None
+    weakness_ref = (
+        str(weakness).replace(" ", "-") if not is_blank(weakness) else None
+    )
+    countermeasure_ref = (
+        str(countermeasure).replace(" ", "_")
+        if not is_blank(countermeasure)
+        else None
+    )
+
+    library_url = f"{api_endpoint}/libraries/{library_ref}"
+    if not cache.exists("libraries", library_ref):
+        if exists_via_get(library_url, headers):
+            logging.info(
+                f"Library '{library}' already exists (GET confirmed). Skipping creation."
+            )
+            cache.add("libraries", library_ref)
+        else:
+            library_data = json.dumps(
+                {"ref": library_ref, "name": library, "desc": ""}
+            )
+            response = api_request(
+                "POST", f"{api_endpoint}/libraries", headers, library_data
+            )
+            if response:
+                cache.add("libraries", library_ref)
+                logging.info(f"Created Library: {library}")
+
+    riskpattern_url = (
+        f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}"
+    )
+    if not cache.exists("riskpatterns", riskpattern_ref):
+        if exists_via_get(riskpattern_url, headers):
+            logging.info(
+                f"Risk Pattern '{riskpattern}' already exists. Skipping."
+            )
+            cache.add("riskpatterns", riskpattern_ref)
+        else:
+            riskpattern_data = json.dumps(
+                {"ref": riskpattern_ref, "name": riskpattern, "desc": ""}
+            )
+            response = api_request(
+                "POST",
+                f"{api_endpoint}/libraries/{library_ref}/riskpatterns",
+                headers,
+                riskpattern_data,
+            )
+            if response:
+                cache.add("riskpatterns", riskpattern_ref)
+                logging.info(f"Created Risk Pattern: {riskpattern}")
+
+    if not cache.exists("usecases", usecase_ref):
+        usecase_data = json.dumps(
+            {"ref": usecase_ref, "name": usecase, "desc": ""}
+        )
+        response = api_request(
+            "POST",
+            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/usecases",
+            headers,
+            usecase_data,
+        )
+        if response:
+            cache.add("usecases", usecase_ref)
+            if response == "exists":
+                logging.info(f"Use Case '{usecase}' already exists. Skipping.")
+            else:
+                logging.info(f"Created Use Case: {usecase}")
+
+    if threat_ref and not cache.exists("threats", threat_ref):
+        threat_data = json.dumps(
+            {
+                "ref": threat_ref,
+                "name": threat,
+                "desc": threat_desc,
+                "riskRating": {
+                    "confidentiality": "high",
+                    "integrity": "high",
+                    "availability": "high",
+                    "easeOfExploitation": "low",
+                },
+            }
+        )
+        response = api_request(
+            "POST",
+            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/usecases/{usecase_ref}/threats",
+            headers,
+            threat_data,
+        )
+        if response:
+            cache.add("threats", threat_ref)
+            if response == "exists":
+                logging.info(f"Threat '{threat}' already exists. Skipping.")
+            else:
+                logging.info(f"Created Threat: {threat}")
+
+    if weakness_ref and not cache.exists("weaknesses", weakness_ref):
+        weakness_data = json.dumps(
+            {
+                "ref": weakness_ref,
+                "name": weakness,
+                "desc": "",
+                "impact": "medium",
+                "test": {"steps": "", "notes": ""},
+            }
+        )
+        response = api_request(
+            "POST",
+            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/weaknesses",
+            headers,
+            weakness_data,
+        )
+        if response:
+            cache.add("weaknesses", weakness_ref)
+            if response == "exists":
+                logging.info(f"Weakness '{weakness}' already exists. Skipping.")
+            else:
+                logging.info(f"Created Weakness: {weakness}")
+
+    if countermeasure_ref and not cache.exists(
+        "countermeasures", countermeasure_ref
+    ):
+        countermeasure_data = {
+            "ref": countermeasure_ref,
+            "name": countermeasure,
+            "state": "required",
+            "costRating": "medium",
+        }
+        if countermeasure_desc:
+            countermeasure_data["desc"] = countermeasure_desc
+        if (
+            pd.notna(standardref)
+            and standardref.lower() != "nan"
+            and pd.notna(standardname)
+            and standardname.lower() != "nan"
+            and pd.notna(suppstandref)
+            and suppstandref.lower() != "nan"
+        ):
+            countermeasure_data["standards"] = [
+                {
+                    "ref": standardref,
+                    "name": standardname,
+                    "supportedStandardRef": suppstandref,
+                }
+            ]
+        response = api_request(
+            "POST",
+            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/countermeasures",
+            headers,
+            json.dumps(countermeasure_data),
+        )
+        if response:
+            cache.add("countermeasures", countermeasure_ref)
+            if response == "exists":
+                logging.info(
+                    f"Countermeasure '{countermeasure}' already exists. Skipping."
+                )
+            else:
+                logging.info(f"Created Countermeasure: {countermeasure}")
+
+            # Associate the countermeasure with the threat or weakness
+            if threat_ref:
+                if weakness_ref:
+                    # Associate the countermeasure with the weakness
+                    association_url = (
+                        f"{api_endpoint}/libraries/{library_ref}/riskpatterns/"
+                        f"{riskpattern_ref}/usecases/{usecase_ref}/threats/"
+                        f"{threat_ref}/weaknesses/{weakness_ref}/countermeasures"
+                    )
+                else:
+                    # Associate the countermeasure with the threat
+                    association_url = (
+                        f"{api_endpoint}/libraries/{library_ref}/riskpatterns/"
+                        f"{riskpattern_ref}/usecases/{usecase_ref}/threats/"
+                        f"{threat_ref}/countermeasures"
+                    )
+                association_data = json.dumps({"ref": countermeasure_ref})
+                assoc_response = api_request(
+                    "PUT", association_url, headers, association_data
+                )
+                if assoc_response:
+                    logging.info(
+                        f"Associated Countermeasure '{countermeasure}' with "
+                        f"{'Weakness' if weakness_ref else 'Threat'} '{weakness if weakness_ref else threat}'."
+                    )
+
+
+# Log script start
+logging.info("====== Starting Library Creation Process ======")
 
 spreadsheet_location = input("What is the location of your xlsx spreadsheet? ")
-
-final_location = spreadsheet_location.replace("\\", "/").replace('"','')
-
+final_location = spreadsheet_location.replace("\\", "/").replace('"', "")
 sheet_name = input("What is the name of the spreadsheet sheet? ")
 
-library_data = pd.read_excel(final_location, sheet_name)
+try:
+    library_data = pd.read_excel(final_location, sheet_name)
+except Exception as e:
+    logging.error(f"Failed to read spreadsheet: {e}")
+    exit(1)
 
+build_structure_preview(library_data)
+print_structure(structure_preview)
 
-counter = 1
+confirm = input("\nProceed with actual creation? (yes/no): ").strip().lower()
+if confirm != "yes":
+    logging.info("User chose not to proceed with actual creation. Exiting.")
+    exit(0)
 
 for index, row in library_data.iterrows():
-
-  counter += 1
-
-  #create a spreadsheet with column headers and match those the variables in this script.
-
-
-  library = str(row['Library'])
-  riskpattern = str(row['Risk_Pattern'])
-  #riskpattern_id = str(row['Risk_Pattern_ID'])
-  usecase = str(row['Use_Case'])
-  #usecase_id = str(row['Use_Case_ID'])
-  threat = str(row['Threat'])
-  #threat_id = str(row['Threat_ID'])
-  threat_desc = str(row['Threat_Desc'])
-  weakness = str(row['Weakness'])
-  #weakness_id = str(row['Weakness_ID'])
-  countermeasure = str(row['CM'])
-  #countermeasure_id = str(row['CM_ID'])
-  countermeasure_desc = str(row['CM_Desc'])
-  standardref = str(row['standardref'])
-  standardname = str(row['standardname'])
-  suppstandref = str(row['supported standardref'])
-
-  library_creation(library, riskpattern, usecase, threat, threat_desc, weakness, countermeasure, countermeasure_desc, standardref, standardname,suppstandref)
+    try:
+        logging.info(
+            f"--- Processing row {index + 1}: Library='{row['Library']}' | RiskPattern='{row['Risk_Pattern']}' | UseCase='{row['Use_Case']}'"
+        )
+        library_creation(
+            row["Library"],
+            row["Risk_Pattern"],
+            row["Use_Case"],
+            row["Threat"],
+            row["Threat_Desc"],
+            row["Weakness"],
+            row["CM"],
+            row["CM_Desc"],
+            row["standardref"],
+            row["standardname"],
+            row["supported standardref"],
+        )
+    except Exception as e:
+        import traceback
+        record_summary("failed", "Row", index + 1)
+        logging.error(f"❌ Failed processing row {index + 1}: {e}")
+        logging.error("Traceback details:")
+        logging.error(traceback.format_exc())
