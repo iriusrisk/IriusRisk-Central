@@ -17,7 +17,7 @@ Before using this script, ensure you have the following:
    - **Option 1: Using a `.env` file (recommended for local use)**  
      Create a `.env` file in the root directory:
      ```env
-     IRIUSRISK_API_URL=https://your.iriusrisk.instance/api/v1
+     IRIUSRISK_API_URL=https://your-tenant.iriusrisk.com
      IRIUSRISK_API_TOKEN=your-api-token-here
      ```
 
