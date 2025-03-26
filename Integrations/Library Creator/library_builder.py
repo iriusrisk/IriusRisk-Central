@@ -130,6 +130,12 @@ def build_structure_preview(library_data):
         )
 
 
+def sanitize_ref(value):
+    return "".join(
+        e for e in str(value) if e.isalnum() or e in ["-", "_"]
+    ).replace(" ", "-")
+
+
 def library_creation(
     library,
     riskpattern,
@@ -147,7 +153,9 @@ def library_creation(
     api_token = os.getenv("IRIUSRISK_API_TOKEN")
 
     if not api_endpoint or not api_token:
-        logging.error("Missing required environment variables: IRIUSRISK_API_URL or IRIUSRISK_API_TOKEN.")
+        logging.error(
+            "Missing required environment variables: IRIUSRISK_API_URL or IRIUSRISK_API_TOKEN."
+        )
         exit(1)
 
     api_endpoint += "/api/v1"
@@ -170,17 +178,13 @@ def library_creation(
         )
         return
 
-    library_ref = str(library).replace(" ", "-")
-    riskpattern_ref = str(riskpattern).replace(" ", "")
-    usecase_ref = str(usecase).replace(" ", "-")
-    threat_ref = str(threat).replace(" ", "-") if not is_blank(threat) else None
-    weakness_ref = (
-        str(weakness).replace(" ", "-") if not is_blank(weakness) else None
-    )
+    library_ref = sanitize_ref(library)
+    riskpattern_ref = sanitize_ref(riskpattern)
+    usecase_ref = sanitize_ref(usecase)
+    threat_ref = sanitize_ref(threat) if not is_blank(threat) else None
+    weakness_ref = sanitize_ref(weakness) if not is_blank(weakness) else None
     countermeasure_ref = (
-        str(countermeasure).replace(" ", "_")
-        if not is_blank(countermeasure)
-        else None
+        sanitize_ref(countermeasure) if not is_blank(countermeasure) else None
     )
 
     library_url = f"{api_endpoint}/libraries/{library_ref}"
@@ -204,12 +208,12 @@ def library_creation(
     riskpattern_url = (
         f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}"
     )
-    if not cache.exists("riskpatterns", riskpattern_ref):
+    if not cache.exists("riskpatterns", f"{library_ref}:{riskpattern_ref}"):
         if exists_via_get(riskpattern_url, headers):
             logging.info(
                 f"Risk Pattern '{riskpattern}' already exists. Skipping."
             )
-            cache.add("riskpatterns", riskpattern_ref)
+            cache.add("riskpatterns", f"{library_ref}:{riskpattern_ref}")
         else:
             riskpattern_data = json.dumps(
                 {"ref": riskpattern_ref, "name": riskpattern, "desc": ""}
@@ -221,10 +225,11 @@ def library_creation(
                 riskpattern_data,
             )
             if response:
-                cache.add("riskpatterns", riskpattern_ref)
+                cache.add("riskpatterns", f"{library_ref}:{riskpattern_ref}")
                 logging.info(f"Created Risk Pattern: {riskpattern}")
 
-    if not cache.exists("usecases", usecase_ref):
+    usecase_key = f"{library_ref}:{riskpattern_ref}:{usecase_ref}"
+    if not cache.exists("usecases", usecase_key):
         usecase_data = json.dumps(
             {"ref": usecase_ref, "name": usecase, "desc": ""}
         )
@@ -235,128 +240,138 @@ def library_creation(
             usecase_data,
         )
         if response:
-            cache.add("usecases", usecase_ref)
+            cache.add("usecases", usecase_key)
             if response == "exists":
                 logging.info(f"Use Case '{usecase}' already exists. Skipping.")
             else:
                 logging.info(f"Created Use Case: {usecase}")
 
-    if threat_ref and not cache.exists("threats", threat_ref):
-        threat_data = json.dumps(
-            {
-                "ref": threat_ref,
-                "name": threat,
-                "desc": threat_desc,
-                "riskRating": {
-                    "confidentiality": "high",
-                    "integrity": "high",
-                    "availability": "high",
-                    "easeOfExploitation": "low",
-                },
-            }
+    if threat_ref:
+        threat_key = (
+            f"{library_ref}:{riskpattern_ref}:{usecase_ref}:{threat_ref}"
         )
-        response = api_request(
-            "POST",
-            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/usecases/{usecase_ref}/threats",
-            headers,
-            threat_data,
-        )
-        if response:
-            cache.add("threats", threat_ref)
-            if response == "exists":
-                logging.info(f"Threat '{threat}' already exists. Skipping.")
-            else:
-                logging.info(f"Created Threat: {threat}")
-
-    if weakness_ref and not cache.exists("weaknesses", weakness_ref):
-        weakness_data = json.dumps(
-            {
-                "ref": weakness_ref,
-                "name": weakness,
-                "desc": "",
-                "impact": "medium",
-                "test": {"steps": "", "notes": ""},
-            }
-        )
-        response = api_request(
-            "POST",
-            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/weaknesses",
-            headers,
-            weakness_data,
-        )
-        if response:
-            cache.add("weaknesses", weakness_ref)
-            if response == "exists":
-                logging.info(f"Weakness '{weakness}' already exists. Skipping.")
-            else:
-                logging.info(f"Created Weakness: {weakness}")
-
-    if countermeasure_ref and not cache.exists(
-        "countermeasures", countermeasure_ref
-    ):
-        countermeasure_data = {
-            "ref": countermeasure_ref,
-            "name": countermeasure,
-            "state": "required",
-            "costRating": "medium",
-        }
-        if countermeasure_desc:
-            countermeasure_data["desc"] = countermeasure_desc
-        if (
-            pd.notna(standardref)
-            and standardref.lower() != "nan"
-            and pd.notna(standardname)
-            and standardname.lower() != "nan"
-            and pd.notna(suppstandref)
-            and suppstandref.lower() != "nan"
-        ):
-            countermeasure_data["standards"] = [
+        if not cache.exists("threats", threat_key):
+            threat_data = json.dumps(
                 {
-                    "ref": standardref,
-                    "name": standardname,
-                    "supportedStandardRef": suppstandref,
+                    "ref": threat_ref,
+                    "name": threat,
+                    "desc": threat_desc,
+                    "riskRating": {
+                        "confidentiality": "high",
+                        "integrity": "high",
+                        "availability": "high",
+                        "easeOfExploitation": "low",
+                    },
                 }
-            ]
-        response = api_request(
-            "POST",
-            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/countermeasures",
-            headers,
-            json.dumps(countermeasure_data),
-        )
-        if response:
-            cache.add("countermeasures", countermeasure_ref)
-            if response == "exists":
-                logging.info(
-                    f"Countermeasure '{countermeasure}' already exists. Skipping."
-                )
-            else:
-                logging.info(f"Created Countermeasure: {countermeasure}")
+            )
+            response = api_request(
+                "POST",
+                f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/usecases/{usecase_ref}/threats",
+                headers,
+                threat_data,
+            )
+            if response:
+                cache.add("threats", threat_key)
+                if response == "exists":
+                    logging.info(f"Threat '{threat}' already exists. Skipping.")
+                else:
+                    logging.info(f"Created Threat: {threat}")
 
-            # Associate the countermeasure with the threat or weakness
-            if threat_ref:
-                if weakness_ref:
-                    # Associate the countermeasure with the weakness
-                    association_url = (
-                        f"{api_endpoint}/libraries/{library_ref}/riskpatterns/"
-                        f"{riskpattern_ref}/usecases/{usecase_ref}/threats/"
-                        f"{threat_ref}/weaknesses/{weakness_ref}/countermeasures"
+    if weakness_ref:
+        weakness_key = f"{library_ref}:{riskpattern_ref}:{weakness_ref}"
+        if not cache.exists("weaknesses", weakness_key):
+            weakness_data = json.dumps(
+                {
+                    "ref": weakness_ref,
+                    "name": weakness,
+                    "desc": "",
+                    "impact": "medium",
+                    "test": {"steps": "", "notes": ""},
+                }
+            )
+            response = api_request(
+                "POST",
+                f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/weaknesses",
+                headers,
+                weakness_data,
+            )
+            if response:
+                cache.add("weaknesses", weakness_key)
+                if response == "exists":
+                    logging.info(
+                        f"Weakness '{weakness}' already exists. Skipping."
                     )
                 else:
-                    # Associate the countermeasure with the threat
-                    association_url = (
-                        f"{api_endpoint}/libraries/{library_ref}/riskpatterns/"
-                        f"{riskpattern_ref}/usecases/{usecase_ref}/threats/"
-                        f"{threat_ref}/countermeasures"
-                    )
-                association_data = json.dumps({"ref": countermeasure_ref})
-                assoc_response = api_request(
-                    "PUT", association_url, headers, association_data
-                )
-                if assoc_response:
+                    logging.info(f"Created Weakness: {weakness}")
+
+    if countermeasure_ref:
+        countermeasure_key = (
+            f"{library_ref}:{riskpattern_ref}:{countermeasure_ref}"
+        )
+        if not cache.exists("countermeasures", countermeasure_key):
+            countermeasure_data = {
+                "ref": countermeasure_ref,
+                "name": countermeasure,
+                "state": "required",
+                "costRating": "medium",
+            }
+            if countermeasure_desc:
+                countermeasure_data["desc"] = countermeasure_desc
+            if (
+                pd.notna(standardref)
+                and standardref.lower() != "nan"
+                and pd.notna(standardname)
+                and standardname.lower() != "nan"
+                and pd.notna(suppstandref)
+                and suppstandref.lower() != "nan"
+            ):
+                countermeasure_data["standards"] = [
+                    {
+                        "ref": standardref,
+                        "name": standardname,
+                        "supportedStandardRef": suppstandref,
+                    }
+                ]
+            response = api_request(
+                "POST",
+                f"{api_endpoint}/libraries/{library_ref}/riskpatterns/{riskpattern_ref}/countermeasures",
+                headers,
+                json.dumps(countermeasure_data),
+            )
+            if response:
+                cache.add("countermeasures", countermeasure_key)
+                if response == "exists":
                     logging.info(
-                        f"Associated Countermeasure '{countermeasure}' with "
-                        f"{'Weakness' if weakness_ref else 'Threat'} '{weakness if weakness_ref else threat}'."
+                        f"Countermeasure '{countermeasure}' already exists. Skipping."
                     )
+                else:
+                    logging.info(f"Created Countermeasure: {countermeasure}")
+
+                # Associate the countermeasure with the threat or weakness
+                if threat_ref:
+                    if weakness_ref:
+                        # Associate the countermeasure with the weakness
+                        association_url = (
+                            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/"
+                            f"{riskpattern_ref}/usecases/{usecase_ref}/threats/"
+                            f"{threat_ref}/weaknesses/{weakness_ref}/countermeasures"
+                        )
+                    else:
+                        # Associate the countermeasure with the threat
+                        association_url = (
+                            f"{api_endpoint}/libraries/{library_ref}/riskpatterns/"
+                            f"{riskpattern_ref}/usecases/{usecase_ref}/threats/"
+                            f"{threat_ref}/countermeasures"
+                        )
+                    association_data = json.dumps({"ref": countermeasure_ref})
+                    assoc_response = api_request(
+                        "PUT", association_url, headers, association_data
+                    )
+                    if assoc_response:
+                        logging.info(
+                            f"Associated Countermeasure '{countermeasure}' with "
+                            f"{'Weakness' if weakness_ref else 'Threat'} '{weakness if weakness_ref else threat}'."
+                        )
 
 
 # Log script start
@@ -400,6 +415,7 @@ for index, row in library_data.iterrows():
         )
     except Exception as e:
         import traceback
+
         record_summary("failed", "Row", index + 1)
         logging.error(f"❌ Failed processing row {index + 1}: {e}")
         logging.error("Traceback details:")
