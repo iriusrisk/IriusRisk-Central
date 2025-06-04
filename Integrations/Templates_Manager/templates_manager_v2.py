@@ -92,7 +92,7 @@ try:
                     }
                     response = requests.post(api_url_templates, headers=headers, files=files)
                     result_message = f"{file_name} imported as a template into {args.subdomain}. Status: {response.status_code}"
-                    if response.status_code != 200:
+                    if response.status_code != 202:
                         result_message += f", Error: {response.text}"
                     results.append(result_message)
             pbar.update(1)
