@@ -80,4 +80,15 @@ This feature allows users to validate API queries by running checks against expe
 
 Once a query is added, it will be included in future checks performed by the API Query Checker.
 
+Feature: Create Trust Zone Policy (13)
+This feature allows users to create a drool that targets a trust zone.
+
+1. TZ Policy by Component
+   This option creates a Component drool that represetns a Trust Zone Policy that applies to a specific component.
+
+2. TZ Policy by Component Category
+   This option creates a Component drool that represents a Trust Zone policy for an entire category of components.
+
+Be sure to name your drool after the policy name you specified.
+
 Additional features may be added as needed in the future.
