@@ -91,4 +91,4 @@ This feature allows users to create a drool that targets a trust zone.
 
 Be sure to name your drool after the policy name you specified.
 
-Additional features may be added as needed in the future.
+Additional features may be added as needed in the future...
