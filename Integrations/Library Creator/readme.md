@@ -1,86 +1,156 @@
-# Library Creation Script
+# 🛠️ IriusRisk Library Creation Script
 
-This script is designed to automate the creation of security-related entities such as libraries, risk patterns, use cases, threats, weaknesses, and countermeasures in IriusRisk using its API. The script reads input data from a CSV file containing information about these entities and then makes API calls to create them in the IriusRisk platform.
+This script automates the creation of security-related entities such as libraries, risk patterns, use cases, threats, weaknesses, and countermeasures in IriusRisk using its API. It reads from an Excel spreadsheet and interacts with the IriusRisk API to create or skip entities based on their existence. The script includes caching, retries, and detailed logging.
 
-## Prerequisites
+---
 
-Before using this script, ensure that you have the following:
+## ✅ Prerequisites
 
-1. **IriusRisk Account**: You must have an account on IriusRisk with the necessary permissions to create libraries, risk patterns, use cases, threats, weaknesses, and countermeasures.
+Before using this script, ensure you have the following:
 
-2. **API Key**: Obtain an API key from IriusRisk and replace the placeholder in the `config.py` file with your actual API key.
+1. **🔐 IriusRisk Account**  
+   An IriusRisk account with permissions to create entities.
 
-3. **Python Environment**: Make sure you have Python installed on your machine.
+2. **🔑 API Key**  
+   Generate an API token in IriusRisk and set the following environment variables:
 
-4. **Required Libraries**: Install the required Python libraries by running the following command in your terminal:
+   - **Option 1: Using a `.env` file (recommended for local use)**  
+     Create a `.env` file in the root directory:
+     ```env
+     IRIUSRISK_API_URL=https://your-tenant.iriusrisk.com
+     IRIUSRISK_API_TOKEN=your-api-token-here
+     ```
 
-   ```python
+   - **Option 2: Export in terminal**  
+     ```bash
+     export IRIUSRISK_API_URL=https://your-tenant.iriusrisk.com
+     export IRIUSRISK_API_TOKEN=your-api-token-here
+     ```
+
+3. **🐍 Python Environment**  
+   Python 3.7+ is required.
+
+4. **📦 Required Libraries**  
+   Create a `requirements.txt` file with the following:
+   ```
+   pandas
+   openpyxl
+   requests
+   python-dotenv
+   ```
+   Then install them:
+   ```bash
    pip install -r requirements.txt
    ```
 
-## Configuration
+---
 
-1. Open the `config.py` file and replace the `API_KEY` and `URL` placeholders with your IriusRisk API key and endpoint URL.
+## 📝 Excel Format
 
-```python
+The input Excel file must contain a sheet with the following columns:
 
-API_KEY = "your_api_key"
+| Column          | Description                                      |
+|------------------|--------------------------------------------------|
+| Library          | Name of the library                             |
+| Risk_Pattern     | Name of the risk pattern                        |
+| Use_Case         | Name of the use case                            |
+| Threat           | Threat name                                     |
+| Threat_Desc      | Threat description                              |
+| Weakness         | Weakness name                                   |
+| CM               | Countermeasure name                             |
+| CM_Desc          | Countermeasure description                      |
+| standardref      | Reference ID of the overarching standard        |
+| standardname     | Name of the standard                            |
+| supported standardref | Specific reference within the standard (e.g., CWE-79) |
 
-URL = "your_url_here"
+⚠️ Reference IDs are auto-generated from names using safe formatting (e.g., spaces replaced with `-` or `_`).
 
-```
+---
 
-## Usage
+## 🚀 Usage
 
-1. Prepare the input data in a excel file with the following columns:
-   - Library
-   - Risk_Pattern
-   - Use_Case
-   - Threat
-   - Threat_Desc (this is the description for the threat)
-   - Weakness
-   - CM (this is the countermeasure)
-   - CM_Desc (this is the countermeasure description)
-   - standardref (this is the reference id of the standard that already exists in IriusRisk)
-   - standardname (this is the name of the standard)
-   - supportedstandref (this is the actual reference of the specific standard you are adding)
-
-   Currently it is configured to create ref_ids for each of these elements from the names in the summaries. This could be reconfigured based upon your need for different structures of libraries.
-
-   The script collects those variables from the spreadsheet and inputs those into the function. If you want to add additional variables, they can be collected by a secondary sheet or by adding columns to the existing spreadsheet. An example of this layout has been added to this directory. 
-
-2. Update the script with the correct path to your xlsx file and sheet name. Currently the script is configured to request this information after step three but you can add this directly to the script or the config file with some small modifications.
-
-3. Run the script using the following command:
-
-   ```python
-   python library_builder.py
+1. **Run the script**  
+   ```bash
+   python library_creator.py
    ```
 
-    It will request the location of the file and the sheet name
+2. **Provide spreadsheet details**  
+   You’ll be prompted to enter:
+   - Location of your `.xlsx` spreadsheet
+   - Name of the spreadsheet sheet
 
-    Example:
-    ```python
+   Example:
+   ```
+   "C:\Users\you\Documents\library_data.xlsx"
+   Sheet1
+   ```
 
-    What is the location of your xlsx spreadsheet? "C:\Users\jrabe_iriusrisk\library_builder\library_contents.xlsx"
+3. **Structure Preview Before Creation**
 
-    What is the name of the spreadsheet sheet? Library_Creator
-    ```
+   The structure is displayed in a tree-like format:
 
-4. The script will iterate through each row of the Excel file, making API calls to create the specified entities in IriusRisk. As it completes each row from the spreadsheet, it will say "Row {counter} complete" to let you know which row of the spreadsheet it has completed.
+   📦 Structure Preview
 
-5. Troubleshooting - Throughout the script are additional output/print statements that print the full resonse.text value to determine why something is failing. This script's focus is on the creation of new content and not on the update of existing content. If the object exists, it will fail and continue on the next API post call. For example, once the first row creates the library, that call will fail for each additional row that gets processed.
+   Library: WebAppSecurity
 
-## Important Notes
+   └── Risk Pattern: InputValidation
 
-- The script uses the `requests` library to interact with the IriusRisk API.
+       └── Use Case: SQL Injection
 
-- Ensure that the entities in your Excel file have unique names or references to avoid conflicts during creation.
+           ├── Threat: SQLi Attack
 
-- Check the console output for success or error messages after running the script.
+           │   ├── Weakness: Unsanitized Input
 
-- It's recommended to test the script with a small dataset before applying it to a larger set of data.
+           │   └── Countermeasure: Parameterized Queries
 
-## Disclaimer
+   This allows you to visually inspect how your spreadsheet entries map to the IriusRisk hierarchy — including relationships between libraries, risk patterns, use cases, threats, weaknesses, and countermeasures.
 
-Use this script responsibly and ensure that you have the necessary permissions and approvals before making changes to your IriusRisk environment. The script is provided as-is and may require adjustments based on your specific IriusRisk configuration.
+   #### ✅ Confirmation Step
+
+   After previewing the structure, the script will prompt:
+
+   Proceed with actual creation? (yes/no):
+
+   - If you type `yes`, the script will begin creating the content in IriusRisk.
+   - Any other response will cancel execution safely.
+
+   This provides a built-in validation checkpoint so you don’t make accidental changes.
+
+4. **Script Behavior**  
+   - Caches already created entities to avoid duplicates
+   - Checks existence with GET requests (where supported)
+   - Treats 400 “already exists” errors as successful
+   - Logs to `library_creator.log` and terminal
+
+---
+
+## 🧾 Logging & Output
+
+- Output is printed in real-time to your terminal
+- Each entity created or skipped is clearly reported
+- Start and end of the script run are logged
+
+
+---
+
+## 🧪 Troubleshooting
+
+- **Script not doing anything?**  
+  - Ensure the `.env` file exists or environment variables are set
+  - Verify Excel path and sheet name are valid
+  - Check `library_creator.log` for errors
+
+- **Getting 400s?**  
+  - These are handled as “already exists” and logged for review.
+
+- **Want to test first?**  
+  - Use a spreadsheet with a few rows to verify behavior.
+
+---
+
+⚠️ **Disclaimer**  
+Use this script responsibly. Ensure you have the necessary permissions and approvals before making changes to your IriusRisk instance. This tool is provided as-is and may require adjustments for your environment.
+
+---
+
+Happy threat modeling! 🔐✨
