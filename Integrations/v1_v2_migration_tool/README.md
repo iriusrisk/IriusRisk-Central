@@ -60,8 +60,8 @@ v1_v2_migration_tool/
 
 1. **Clone the repository:**
    ```bash
-   git clone 
-   cd 
+   git clone https://github.com/iriusrisk/IriusRisk-Central.git
+   cd IriusRisk-Central/Integrations/v1_v2_migration_tool
    ```
 
 2. **Set up virtual environment:**
