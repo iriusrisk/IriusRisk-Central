@@ -1,0 +1,247 @@
+# ----------------------------------------
+# OS-SPECIFIC FILES
+# ----------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.Trash-*
+
+# ----------------------------------------
+# GENERAL
+# ----------------------------------------
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+*.lock
+*.cache
+*.pid
+*.seed
+*.out
+*.err
+
+# Ignore backups
+*~
+*.old
+
+# Ignore IDE/project settings
+.idea/
+.vscode/
+*.iml
+*.sublime-project
+*.sublime-workspace
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ----------------------------------------
+# PYTHON
+# ----------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+.eggs/
+*.pytest_cache/
+.tox/
+.venv/
+env/
+venv/
+ENV/
+Pipfile.lock
+poetry.lock
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Coverage
+.coverage
+*.coverage
+htmlcov/
+.coverage.*
+
+# Build
+build/
+dist/
+*.spec
+
+# ----------------------------------------
+# JAVA / KOTLIN
+# ----------------------------------------
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+.gradle/
+build/
+
+# Maven
+target/
+dependency-reduced-pom.xml
+
+# ----------------------------------------
+# C / C++
+# ----------------------------------------
+*.o
+*.obj
+*.so
+*.exe
+*.dll
+*.out
+*.a
+*.lib
+*.dSYM/
+*.pch
+*.pdb
+
+# ----------------------------------------
+# DOTNET
+# ----------------------------------------
+bin/
+obj/
+*.exe
+*.dll
+*.app
+*.cache
+*.pdb
+*.mdb
+*.user
+*.aps
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.log
+*.vs/
+*.vscode/
+
+# ----------------------------------------
+# RUBY
+# ----------------------------------------
+.bundle/
+vendor/bundle/
+log/
+tmp/
+*.gem
+*.rbc
+.rspec
+
+# ----------------------------------------
+# PHP
+# ----------------------------------------
+vendor/
+composer.lock
+
+# ----------------------------------------
+# GO
+# ----------------------------------------
+/bin/
+/pkg/
+*.exe
+*.test
+*.out
+
+# ----------------------------------------
+# RUST
+# ----------------------------------------
+/target/
+/Cargo.lock
+
+# ----------------------------------------
+# FRONTEND / WEB
+# ----------------------------------------
+# Build
+dist/
+build/
+.cache/
+.next/
+.nuxt/
+out/
+.tmp/
+
+# Compiled
+*.min.js
+*.min.css
+
+# Dependencies
+bower_components/
+jspm_packages/
+
+# Testing
+coverage/
+.nyc_output/
+
+# ----------------------------------------
+# DOCKER / CONTAINERS
+# ----------------------------------------
+*.pid
+*.seed
+*.bak
+*.swp
+*.tmp
+.docker/
+docker-compose.override.yml
+
+# ----------------------------------------
+# ENVIRONMENT & CONFIG
+# ----------------------------------------
+.env
+.env.*
+*.local
+*.secret
+*.key
+*.pem
+
+# ----------------------------------------
+# MISC
+# ----------------------------------------
+# Logs
+*.log
+
+# IDE specific
+*.code-workspace
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# ----------------------------------------
+# CUSTOM PROJECT FILES (ADD YOUR OWN BELOW)
+# ----------------------------------------
+
+*csv
+
+phase4_cleanup_results.json
+phase4b_transfer_results.json
+plan.md
+v1_components.json
+v2_components.json
+matching_risk_patterns.json
