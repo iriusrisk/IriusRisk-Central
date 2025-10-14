@@ -1,0 +1,7 @@
+[theme]
+base = "light"
+primaryColor = "#00A86B"                 # Irius Green (CTA)
+backgroundColor = "#FFFFFF"              # Page bg
+secondaryBackgroundColor = "#F8F9FA"     # Panels/boxes
+textColor = "#101418"                    # Body text
+font = "sans serif"                      # Inter (fallback to system)

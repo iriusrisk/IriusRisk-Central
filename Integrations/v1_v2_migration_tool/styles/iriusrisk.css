@@ -1,0 +1,61 @@
+/* Page container + max width akin to ~1040px */
+.irius-container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Gradient "hero" band */
+.irius-hero {
+  background: linear-gradient(90deg, #2F6FED 0%, #00A86B 100%);
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 2.5rem 2rem;
+  margin: 1rem 0 2rem;
+}
+
+/* Buttons aligned with brand */
+.stButton > button {
+  background-color: #00A86B;
+  color: #FFFFFF;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.stButton > button:hover { filter: brightness(1.08); }
+
+/* Outline variant (use with label="… (outline)" helper or st.markdown link) */
+.btn-outline {
+  display: inline-block;
+  padding: 0.65rem 1.25rem;
+  border: 2px solid #FFFFFF;
+  color: #FFFFFF;
+  background: transparent;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.btn-outline:hover { background: #FFFFFF; color: #2F6FED; }
+
+/* Cards: white, soft shadow, rounded */
+.irius-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #E5E7EB;
+}
+
+/* Headings tint toward brand blue */
+.irius-h1, .irius-h2, .irius-h3 { color: #1B3A57; }
+
+/* Sidebar tint */
+[data-testid="stSidebar"] {
+  background: #F8F9FA;
+}
+
+/* Focus visibility for a11y */
+:focus-visible {
+  outline: 3px solid #2F6FED;
+  outline-offset: 2px;
+}

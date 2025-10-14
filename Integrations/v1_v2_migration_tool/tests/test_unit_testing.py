@@ -47,15 +47,16 @@ class TestPhase1Units(unittest.TestCase):
         self.assertEqual(base_url, 'https://test-sub.iriusrisk.com/api/v2')
     
     @patch.dict(os.environ, {}, clear=True)
-    def test_get_api_config_with_defaults(self):
-        """Test get_api_config with default values when env vars missing"""
+    @patch('phase1_collect_v1_components.load_dotenv')
+    def test_get_api_config_missing_env_vars(self, mock_load_dotenv):
+        """Test get_api_config with missing environment variables"""
         import phase1_collect_v1_components as phase1
         
         headers, base_url = phase1.get_api_config()
         
-        # Should use defaults
-        self.assertEqual(headers['api-token'], '930f391d-85fc-4461-a860-ae28485b5ec9')
-        self.assertEqual(base_url, 'https://r2.iriusrisk.com/api/v2')
+        # Should have None values when env vars are missing
+        self.assertIsNone(headers['api-token'])
+        self.assertEqual(base_url, 'https://None.iriusrisk.com/api/v2')
     
     def test_save_to_json_success(self):
         """Test successful JSON file saving"""
@@ -515,12 +516,24 @@ class TestPhase4bUnits(unittest.TestCase):
 class TestUtilityFunctions(unittest.TestCase):
     """Unit tests for utility functions across phases"""
     
+    def setUp(self):
+        """Set up test environment"""
+        self.original_cwd = os.getcwd()
+    
+    def tearDown(self):
+        """Clean up test environment"""
+        os.chdir(self.original_cwd)
+    
     def test_json_serialization_special_characters(self):
         """Test JSON handling with special characters"""
         import phase1_collect_v1_components as phase1
         
-        with tempfile.TemporaryDirectory() as temp_dir:
-            os.chdir(temp_dir)
+        # Use a temporary directory that we create and cleanup manually
+        test_dir = tempfile.mkdtemp()
+        old_cwd = os.getcwd()
+        
+        try:
+            os.chdir(test_dir)
             
             special_data = [
                 {'id': '1', 'name': 'Component with émojis 🚀'},
@@ -537,13 +550,21 @@ class TestUtilityFunctions(unittest.TestCase):
                 loaded_data = json.load(f)
             
             self.assertEqual(loaded_data, special_data)
+            
+        finally:
+            os.chdir(old_cwd)
+            shutil.rmtree(test_dir, ignore_errors=True)
     
     def test_large_dataset_handling(self):
         """Test handling of large datasets"""
         import phase1_collect_v1_components as phase1
         
-        with tempfile.TemporaryDirectory() as temp_dir:
-            os.chdir(temp_dir)
+        # Use a temporary directory that we create and cleanup manually
+        test_dir = tempfile.mkdtemp()
+        old_cwd = os.getcwd()
+        
+        try:
+            os.chdir(test_dir)
             
             # Create large dataset
             large_data = []
@@ -562,6 +583,10 @@ class TestUtilityFunctions(unittest.TestCase):
             # Verify file exists and has reasonable size
             file_size = os.path.getsize('large.json')
             self.assertGreater(file_size, 100000)  # Should be > 100KB
+            
+        finally:
+            os.chdir(old_cwd)
+            shutil.rmtree(test_dir, ignore_errors=True)
 
 
 if __name__ == '__main__':

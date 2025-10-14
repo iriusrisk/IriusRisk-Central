@@ -213,11 +213,13 @@ docker-compose.override.yml
 # ENVIRONMENT & CONFIG
 # ----------------------------------------
 .env
-.env.*
+#.env.*
 *.local
 *.secret
 *.key
 *.pem
+.DS_Store
+
 
 # ----------------------------------------
 # MISC
