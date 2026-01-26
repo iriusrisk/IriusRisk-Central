@@ -1,0 +1,97 @@
+{
+  "intake_form": {
+    "name": "Threat Assessment Fields",
+    "description": "Custom fields for enhanced threat tracking",
+    "fields": [
+      {
+        "name": "threat_severity_override",
+        "label": "Threat Severity Override",
+        "required": false,
+        "location": "Threat",
+        "type": "dropdown",
+        "multi_select": false,
+        "options": [
+          "Critical",
+          "High",
+          "Medium",
+          "Low",
+          "Informational"
+        ],
+        "notes": "Manually override the calculated threat severity"
+      },
+      {
+        "name": "threat_exploitability",
+        "label": "Exploitability Rating",
+        "required": false,
+        "location": "Threat",
+        "type": "dropdown",
+        "multi_select": false,
+        "options": [
+          "Very Easy",
+          "Easy",
+          "Moderate",
+          "Difficult",
+          "Very Difficult"
+        ],
+        "notes": "How easy is this threat to exploit?"
+      },
+      {
+        "name": "threat_notes",
+        "label": "Additional Threat Notes",
+        "required": false,
+        "location": "Threat",
+        "type": "textarea",
+        "notes": "Additional context or findings related to this threat",
+        "max_length": 10000
+      },
+      {
+        "name": "countermeasure_priority",
+        "label": "Countermeasure Priority",
+        "required": false,
+        "location": "Countermeasure",
+        "type": "dropdown",
+        "multi_select": false,
+        "options": [
+          "P0 - Critical",
+          "P1 - High",
+          "P2 - Medium",
+          "P3 - Low",
+          "P4 - Nice to Have"
+        ],
+        "notes": "Priority level for implementing this countermeasure"
+      },
+      {
+        "name": "countermeasure_cost_estimate",
+        "label": "Implementation Cost Estimate",
+        "required": false,
+        "location": "Countermeasure",
+        "type": "dropdown",
+        "multi_select": false,
+        "options": [
+          "$0 - $10K",
+          "$10K - $50K",
+          "$50K - $100K",
+          "$100K - $500K",
+          "$500K+"
+        ],
+        "notes": "Estimated cost to implement this countermeasure"
+      },
+      {
+        "name": "countermeasure_owner",
+        "label": "Countermeasure Owner",
+        "required": false,
+        "location": "Countermeasure",
+        "type": "user",
+        "notes": "Person responsible for implementing this countermeasure"
+      },
+      {
+        "name": "countermeasure_target_date",
+        "label": "Target Completion Date",
+        "required": false,
+        "location": "Countermeasure",
+        "type": "date",
+        "notes": "Target date for completing this countermeasure"
+      }
+    ]
+  }
+}
